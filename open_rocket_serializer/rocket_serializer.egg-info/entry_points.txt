@@ -1,4 +1,0 @@
-
-        [console_scripts]
-        serializer=__init__:cli
-    

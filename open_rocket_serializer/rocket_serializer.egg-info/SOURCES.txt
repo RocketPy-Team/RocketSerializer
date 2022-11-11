@@ -1,8 +1,0 @@
-__init__.py
-setup.py
-rocket_serializer.egg-info/PKG-INFO
-rocket_serializer.egg-info/SOURCES.txt
-rocket_serializer.egg-info/dependency_links.txt
-rocket_serializer.egg-info/entry_points.txt
-rocket_serializer.egg-info/requires.txt
-rocket_serializer.egg-info/top_level.txt
