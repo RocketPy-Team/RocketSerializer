@@ -1,0 +1,872 @@
+<?xml version='1.0' encoding='utf-8'?>
+<openrocket version="1.6" creator="OpenRocket 15.03">
+  <rocket>
+    <name>Rocket</name>
+    <motorconfiguration configid="552f8203-d943-4ebb-bfd6-eb2ef7959997"/>
+    <motorconfiguration configid="a0a1479c-c615-4c44-8cca-71ac5f0c828f"><name>SIM_1]</name></motorconfiguration>
+    <motorconfiguration configid="3322e528-e536-44ea-8cdb-7bee49bf1f01"><name>Burnout +2</name></motorconfiguration>
+    <motorconfiguration configid="004438a8-4dc7-44e4-916d-863fb0ba0ebf"><name>+5 Check</name></motorconfiguration>
+    <motorconfiguration configid="7005ed93-0e70-4a77-962b-3c6093d52167"><name>Overridden masses check</name></motorconfiguration>
+    <motorconfiguration configid="963fb042-16bb-4bc9-a1dc-ec6c08bc9e31"/>
+    <motorconfiguration configid="4d079570-0f81-4ea5-b389-d5fe32e3776c"><name>Fin modified simulation</name></motorconfiguration>
+    <motorconfiguration configid="ce0c948b-e2a2-45fe-996e-d906cebf67bf"/>
+    <motorconfiguration configid="5d16101e-2aee-4392-a19a-3800f0603d64"/>
+    <motorconfiguration configid="5849c873-0911-45fb-a608-be8f829efe3f"/>
+    <motorconfiguration configid="1aa14d9b-45a3-4233-9caa-f1975809106e"/>
+    <motorconfiguration configid="fbd761e7-512a-4f3f-a46b-763389fb7e9c"/>
+    <motorconfiguration configid="ac5f19a5-aef6-4d89-a78b-e2130b7197a4" default="true"/>
+    <referencetype>maximum</referencetype>
+
+    <subcomponents>
+      <stage>
+        <name>Sustainer</name>
+
+        <subcomponents>
+          <nosecone>
+            <name>Nose cone</name>
+            <appearance>
+            <paint red="0" green="0" blue="0"/>
+            <shine>1.0</shine>
+            </appearance>
+            <color red="0" green="0" blue="0"/>
+            <linestyle>solid</linestyle>
+            <overridemass>0.35000000000000003</overridemass>
+            <overridesubcomponents>false</overridesubcomponents>
+            <finish>normal</finish>
+            <material type="bulk" density="1850.0">Fiberglass</material>
+            <length>0.511</length>
+            <thickness>0.003</thickness>
+            <shape>haack</shape>
+            <shapeclipped>false</shapeclipped>
+            <shapeparameter>0.0</shapeparameter>
+            <aftradius>0.0508</aftradius>
+            <aftshoulderradius>0.04953</aftshoulderradius>
+            <aftshoulderlength>0.1016</aftshoulderlength>
+            <aftshoulderthickness>0.003</aftshoulderthickness>
+            <aftshouldercapped>false</aftshouldercapped>
+
+            <subcomponents>
+              <masscomponent>
+                <name>LAL-Sat</name>
+                <position type="top">0.23</position>
+                <overridemass>0.3</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <packedlength>0.115</packedlength>
+                <packedradius>0.033</packedradius>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <mass>0.3</mass>
+                <masscomponenttype>payload</masscomponenttype>
+              </masscomponent>
+
+              <bulkhead>
+                <name>Bulkhead</name>
+                <position type="bottom">-0.039380000000000005</position>
+                <overridemass>0.028</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="1430.0">PLA</material>
+                <length>0.006</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>auto</outerradius>
+              </bulkhead>
+
+              <masscomponent>
+                <name>Seed-Sat</name>
+                <position type="top">0.473</position>
+                <overridemass>0.3</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <packedlength>0.115</packedlength>
+                <packedradius>0.033</packedradius>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <mass>0.3</mass>
+                <masscomponenttype>payload</masscomponenttype>
+              </masscomponent>
+            </subcomponents>
+          </nosecone>
+
+          <bodytube>
+            <name>Body tube</name>
+            <appearance>
+            <paint red="255" green="255" blue="255"/>
+            <shine>1.0</shine>
+            </appearance>
+            <overridemass>0.8</overridemass>
+            <overridesubcomponents>false</overridesubcomponents>
+            <finish>normal</finish>
+            <material type="bulk" density="1850.0">Fiberglass</material>
+            <length>1.0</length>
+            <thickness>0.003</thickness>
+            <radius>auto</radius>
+
+            <subcomponents>
+              <innertube>
+                <name>Inner Tube</name>
+                <color red="204" green="0" blue="51"/>
+                <linestyle>solid</linestyle>
+                <position type="bottom">-0.745</position>
+                <overridemass>0.2</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="1430.0">PLA</material>
+                <length>0.151</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.049530000000000005</outerradius>
+                <thickness>0.003</thickness>
+                <clusterconfiguration>single</clusterconfiguration>
+                <clusterscale>1.0</clusterscale>
+                <clusterrotation>0.0</clusterrotation>
+
+                <subcomponents>
+                  <parachute>
+                    <name>Main</name>
+                    <position type="top">0.04572</position>
+                    <packedlength>0.1</packedlength>
+                    <packedradius>0.042</packedradius>
+                    <radialposition>0.0</radialposition>
+                    <radialdirection>0.0</radialdirection>
+                    <cd>auto</cd>
+                    <material type="surface" density="0.067">Ripstop nylon</material>
+                    <deployevent>altitude</deployevent>
+                    <deployaltitude>450.0</deployaltitude>
+                    <deploydelay>0.0</deploydelay>
+                    <diameter>0.8</diameter>
+                    <linecount>6</linecount>
+                    <linelength>0.8</linelength>
+                    <linematerial type="line" density="0.0018">Elastic cord (round 2 mm, 1/16 in)</linematerial>
+                  </parachute>
+
+                  <parachute>
+                    <name>Parachute</name>
+                    <position type="top">0.003</position>
+                    <packedlength>0.039</packedlength>
+                    <packedradius>0.0415</packedradius>
+                    <radialposition>0.0</radialposition>
+                    <radialdirection>0.0</radialdirection>
+                    <cd>auto</cd>
+                    <material type="surface" density="0.067">Ripstop nylon</material>
+                    <deployevent>apogee</deployevent>
+                    <deployaltitude>200.0</deployaltitude>
+                    <deploydelay>0.0</deploydelay>
+                    <diameter>0.3</diameter>
+                    <linecount>6</linecount>
+                    <linelength>0.3</linelength>
+                    <linematerial type="line" density="0.0018">Elastic cord (round 2 mm, 1/16 in)</linematerial>
+                  </parachute>
+                </subcomponents>
+              </innertube>
+
+              <masscomponent>
+                <name>Piston</name>
+                <color red="0" green="102" blue="255"/>
+                <linestyle>dashed</linestyle>
+                <position type="top">0.25639999999999996</position>
+                <overridemass>0.12</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <packedlength>0.211</packedlength>
+                <packedradius>0.008</packedradius>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <mass>0.12</mass>
+                <masscomponenttype>recoveryhardware</masscomponenttype>
+              </masscomponent>
+
+              <bulkhead>
+                <name>Piston holder bulkhead</name>
+                <position type="bottom">-0.52194</position>
+                <overridemass>0.13</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="2700.0">Aluminum</material>
+                <length>0.015</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.04705</outerradius>
+              </bulkhead>
+
+              <masscomponent>
+                <name>Avionics bay</name>
+                <color red="0" green="153" blue="102"/>
+                <linestyle>dashed</linestyle>
+                <position type="top">0.4792</position>
+                <overridemass>0.65</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <packedlength>0.18</packedlength>
+                <packedradius>0.0495</packedradius>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <mass>0.65</mass>
+                <masscomponenttype>flightcomputer</masscomponenttype>
+              </masscomponent>
+
+              <masscomponent>
+                <name>FME-Sat</name>
+                <position type="top">-0.16260000000000027</position>
+                <overridemass>0.3</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <packedlength>0.115</packedlength>
+                <packedradius>0.033</packedradius>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <mass>0.3</mass>
+                <masscomponenttype>payload</masscomponenttype>
+              </masscomponent>
+
+              <bulkhead>
+                <name>Bulkhead</name>
+                <position type="bottom">-0.32123999999999997</position>
+                <overridemass>0.17</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="2700.0">Aluminum</material>
+                <length>0.015</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.04705</outerradius>
+              </bulkhead>
+
+              <innertube>
+                <name>Pro 54 tube</name>
+                <position type="bottom">-0.0020000000000000018</position>
+                <overridemass>0.075</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="950.0">Kraft phenolic</material>
+                <length>0.326</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.0285</outerradius>
+                <thickness>5.000000000000004E-4</thickness>
+                <clusterconfiguration>single</clusterconfiguration>
+                <clusterscale>1.0</clusterscale>
+                <clusterrotation>0.0</clusterrotation>
+                <motormount>
+                  <ignitionevent>burnout</ignitionevent>
+                  <ignitiondelay>6.0</ignitiondelay>
+                  <overhang>0.0</overhang>
+                  <motor configid="552f8203-d943-4ebb-bfd6-eb2ef7959997">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <motor configid="a0a1479c-c615-4c44-8cca-71ac5f0c828f">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <motor configid="3322e528-e536-44ea-8cdb-7bee49bf1f01">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <motor configid="004438a8-4dc7-44e4-916d-863fb0ba0ebf">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <motor configid="7005ed93-0e70-4a77-962b-3c6093d52167">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <motor configid="963fb042-16bb-4bc9-a1dc-ec6c08bc9e31">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <motor configid="4d079570-0f81-4ea5-b389-d5fe32e3776c">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <motor configid="ce0c948b-e2a2-45fe-996e-d906cebf67bf">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <ignitionconfiguration configid="ce0c948b-e2a2-45fe-996e-d906cebf67bf">
+                    <ignitionevent>burnout</ignitionevent>
+                    <ignitiondelay>5.0</ignitiondelay>
+                  </ignitionconfiguration>
+                  <motor configid="5d16101e-2aee-4392-a19a-3800f0603d64">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <ignitionconfiguration configid="5d16101e-2aee-4392-a19a-3800f0603d64">
+                    <ignitionevent>burnout</ignitionevent>
+                    <ignitiondelay>5.0</ignitiondelay>
+                  </ignitionconfiguration>
+                  <motor configid="5849c873-0911-45fb-a608-be8f829efe3f">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <ignitionconfiguration configid="5849c873-0911-45fb-a608-be8f829efe3f">
+                    <ignitionevent>burnout</ignitionevent>
+                    <ignitiondelay>5.0</ignitiondelay>
+                  </ignitionconfiguration>
+                  <motor configid="1aa14d9b-45a3-4233-9caa-f1975809106e">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <ignitionconfiguration configid="1aa14d9b-45a3-4233-9caa-f1975809106e">
+                    <ignitionevent>burnout</ignitionevent>
+                    <ignitiondelay>5.0</ignitiondelay>
+                  </ignitionconfiguration>
+                  <motor configid="fbd761e7-512a-4f3f-a46b-763389fb7e9c">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <ignitionconfiguration configid="fbd761e7-512a-4f3f-a46b-763389fb7e9c">
+                    <ignitionevent>burnout</ignitionevent>
+                    <ignitiondelay>4.0</ignitiondelay>
+                  </ignitionconfiguration>
+                  <motor configid="ac5f19a5-aef6-4d89-a78b-e2130b7197a4">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>54a179dcffed659a6ee2d84c34238368</digest>
+                    <designation>J449BS</designation>
+                    <diameter>0.054</diameter>
+                    <length>0.321</length>
+                    <delay>5.0</delay>
+                  </motor>
+                  <ignitionconfiguration configid="ac5f19a5-aef6-4d89-a78b-e2130b7197a4">
+                    <ignitionevent>burnout</ignitionevent>
+                    <ignitiondelay>4.0</ignitiondelay>
+                  </ignitionconfiguration>
+                </motormount>
+              </innertube>
+
+              <bulkhead>
+                <name>HOLDER PISTON</name>
+                <position type="bottom">-0.6450199999999998</position>
+                <overridemass>0.0</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="1430.0">PLA</material>
+                <length>0.004</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>auto</outerradius>
+              </bulkhead>
+
+              <innertube>
+                <name>Aluminium ROds</name>
+                <position type="bottom">0.0</position>
+                <overridemass>0.228</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="2700.0">Aluminum</material>
+                <length>0.648</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.002</outerradius>
+                <thickness>5.000000000000004E-4</thickness>
+                <clusterconfiguration>3-ring</clusterconfiguration>
+                <clusterscale>21.0</clusterscale>
+                <clusterrotation>0.0</clusterrotation>
+              </innertube>
+
+              <centeringring>
+                <name>Centering ring</name>
+                <position type="bottom">-0.24916000000000005</position>
+                <overridemass>0.022</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="170.0">Balsa</material>
+                <length>0.01</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>auto</outerradius>
+                <innerradius>auto</innerradius>
+              </centeringring>
+
+              <centeringring>
+                <name>Centering ring</name>
+                <position type="bottom">-0.13701999999999998</position>
+                <overridemass>0.022</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="170.0">Balsa</material>
+                <length>0.01</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>auto</outerradius>
+                <innerradius>auto</innerradius>
+              </centeringring>
+
+              <trapezoidfinset>
+                <name>Trapezoidal fin set</name>
+                <position type="bottom">-0.105</position>
+                <finish>normal</finish>
+                <material type="bulk" density="680.0">Cardboard</material>
+                <fincount>4</fincount>
+                <rotation>0.0</rotation>
+                <thickness>0.003</thickness>
+                <crosssection>square</crosssection>
+                <cant>0.0</cant>
+                <filletradius>0.0</filletradius>
+                <filletmaterial type="bulk" density="680.0">Cardboard</filletmaterial>
+                <rootchord>0.18</rootchord>
+                <tipchord>0.1</tipchord>
+                <sweeplength>0.17500000000000002</sweeplength>
+                <height>0.12512</height>
+              </trapezoidfinset>
+            </subcomponents>
+          </bodytube>
+        </subcomponents>
+      </stage>
+
+      <stage>
+        <name>Booster stage</name>
+        <separationevent>upperignition</separationevent>
+        <separationdelay>0.0</separationdelay>
+
+        <subcomponents>
+          <bodytube>
+            <name>Body tube</name>
+            <appearance>
+            <paint red="255" green="255" blue="255"/>
+            <shine>1.0</shine>
+            </appearance>
+            <overridemass>0.7000000000000001</overridemass>
+            <overridesubcomponents>false</overridesubcomponents>
+            <finish>normal</finish>
+            <material type="bulk" density="1850.0">Fiberglass</material>
+            <length>1.0</length>
+            <thickness>0.003</thickness>
+            <radius>auto</radius>
+
+            <subcomponents>
+              <tubecoupler>
+                <name>Interstage</name>
+                <appearance>
+                <paint red="153" green="153" blue="153"/>
+                <shine>1.0</shine>
+                </appearance>
+                <position type="bottom">-0.8849199999999999</position>
+                <overridemass>0.25</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="2700.0">Aluminum</material>
+                <length>0.20800000000000002</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.053</outerradius>
+                <thickness>0.002</thickness>
+
+                <subcomponents>
+                  <bulkhead>
+                    <name>Bulkhead</name>
+                    <position type="bottom">-0.10352</position>
+                    <overridemass>0.176</overridemass>
+                    <overridesubcomponents>false</overridesubcomponents>
+                    <material type="bulk" density="2700.0">Aluminum</material>
+                    <length>0.007999999999999997</length>
+                    <radialposition>0.0</radialposition>
+                    <radialdirection>0.0</radialdirection>
+                    <outerradius>auto</outerradius>
+                  </bulkhead>
+                </subcomponents>
+              </tubecoupler>
+
+              <masscomponent>
+                <name>Piston</name>
+                <position type="top">0.17464</position>
+                <overridemass>0.12</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <packedlength>0.211</packedlength>
+                <packedradius>0.008</packedradius>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <mass>0.12</mass>
+                <masscomponenttype>recoveryhardware</masscomponenttype>
+              </masscomponent>
+
+              <innertube>
+                <name>Bucket</name>
+                <position type="bottom">-0.8310599999999999</position>
+                <overridemass>0.2</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="1430.0">PLA</material>
+                <length>0.151</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.0475</outerradius>
+                <thickness>5.000000000000004E-4</thickness>
+                <clusterconfiguration>single</clusterconfiguration>
+                <clusterscale>1.0</clusterscale>
+                <clusterrotation>0.0</clusterrotation>
+
+                <subcomponents>
+                  <parachute>
+                    <name>Parachute</name>
+                    <position type="top">0.04572</position>
+                    <packedlength>0.1012</packedlength>
+                    <packedradius>0.0441</packedradius>
+                    <radialposition>0.0</radialposition>
+                    <radialdirection>0.0</radialdirection>
+                    <cd>auto</cd>
+                    <material type="surface" density="0.067">Ripstop nylon</material>
+                    <deployevent>altitude</deployevent>
+                    <deployaltitude>450.0</deployaltitude>
+                    <deploydelay>0.0</deploydelay>
+                    <diameter>0.8</diameter>
+                    <linecount>6</linecount>
+                    <linelength>0.8</linelength>
+                    <linematerial type="line" density="0.0018">Elastic cord (round 2 mm, 1/16 in)</linematerial>
+                  </parachute>
+
+                  <parachute>
+                    <name>Drogue</name>
+                    <position type="top">0.0</position>
+                    <packedlength>0.0404</packedlength>
+                    <packedradius>0.037899999999999996</packedradius>
+                    <radialposition>0.0</radialposition>
+                    <radialdirection>0.0</radialdirection>
+                    <cd>auto</cd>
+                    <material type="surface" density="0.067">Ripstop nylon</material>
+                    <deployevent>apogee</deployevent>
+                    <deployaltitude>200.0</deployaltitude>
+                    <deploydelay>0.0</deploydelay>
+                    <diameter>0.3</diameter>
+                    <linecount>6</linecount>
+                    <linelength>0.3</linelength>
+                    <linematerial type="line" density="0.0018">Elastic cord (round 2 mm, 1/16 in)</linematerial>
+                  </parachute>
+                </subcomponents>
+              </innertube>
+
+              <bulkhead>
+                <name>Bulkhead</name>
+                <position type="bottom">-0.6061599999999999</position>
+                <overridemass>0.12</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="2700.0">Aluminum</material>
+                <length>0.015</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.04705</outerradius>
+              </bulkhead>
+
+              <masscomponent>
+                <name>Avionics Bay</name>
+                <position type="top">0.41000000000000003</position>
+                <overridemass>0.65</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <packedlength>0.2</packedlength>
+                <packedradius>0.0495</packedradius>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <mass>0.65</mass>
+                <masscomponenttype>flightcomputer</masscomponenttype>
+              </masscomponent>
+
+              <bulkhead>
+                <name>Bulkhead</name>
+                <position type="bottom">-0.36</position>
+                <overridemass>0.15</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="2700.0">Aluminum</material>
+                <length>0.015</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>auto</outerradius>
+              </bulkhead>
+
+              <innertube>
+                <name>Motor mount Pro 75</name>
+                <position type="bottom">0.0</position>
+                <material type="bulk" density="680.0">Cardboard</material>
+                <length>0.36800000000000005</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.039</outerradius>
+                <thickness>5.000000000000004E-4</thickness>
+                <clusterconfiguration>single</clusterconfiguration>
+                <clusterscale>1.0</clusterscale>
+                <clusterrotation>0.0</clusterrotation>
+                <motormount>
+                  <ignitionevent>automatic</ignitionevent>
+                  <ignitiondelay>0.0</ignitiondelay>
+                  <overhang>0.0</overhang>
+                  <motor configid="552f8203-d943-4ebb-bfd6-eb2ef7959997">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="a0a1479c-c615-4c44-8cca-71ac5f0c828f">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="3322e528-e536-44ea-8cdb-7bee49bf1f01">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="004438a8-4dc7-44e4-916d-863fb0ba0ebf">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="7005ed93-0e70-4a77-962b-3c6093d52167">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="963fb042-16bb-4bc9-a1dc-ec6c08bc9e31">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="4d079570-0f81-4ea5-b389-d5fe32e3776c">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="ce0c948b-e2a2-45fe-996e-d906cebf67bf">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="5d16101e-2aee-4392-a19a-3800f0603d64">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="5849c873-0911-45fb-a608-be8f829efe3f">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="1aa14d9b-45a3-4233-9caa-f1975809106e">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="fbd761e7-512a-4f3f-a46b-763389fb7e9c">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                  <motor configid="ac5f19a5-aef6-4d89-a78b-e2130b7197a4">
+                    <type>reload</type>
+                    <manufacturer>Cesaroni Technology</manufacturer>
+                    <digest>b6060ea05d7fb6cb24d0465f3429c715</digest>
+                    <designation>K510</designation>
+                    <diameter>0.075</diameter>
+                    <length>0.35</length>
+                    <delay>0.0</delay>
+                  </motor>
+                </motormount>
+              </innertube>
+
+              <innertube>
+                <name>Aluminium Rods</name>
+                <position type="bottom">0.0</position>
+                <overridemass>0.296</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="2700.0">Aluminum</material>
+                <length>1.018</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>0.002</outerradius>
+                <thickness>5.000000000000004E-4</thickness>
+                <clusterconfiguration>3-ring</clusterconfiguration>
+                <clusterscale>21.0</clusterscale>
+                <clusterrotation>0.0</clusterrotation>
+              </innertube>
+
+              <centeringring>
+                <name>Centering ring</name>
+                <position type="bottom">-0.21527999999999994</position>
+                <overridemass>0.022</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="170.0">Balsa</material>
+                <length>0.01</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>auto</outerradius>
+                <innerradius>auto</innerradius>
+              </centeringring>
+
+              <centeringring>
+                <name>Centering ring</name>
+                <position type="bottom">-0.09589999999999993</position>
+                <overridemass>0.022</overridemass>
+                <overridesubcomponents>false</overridesubcomponents>
+                <material type="bulk" density="170.0">Balsa</material>
+                <length>0.01</length>
+                <radialposition>0.0</radialposition>
+                <radialdirection>0.0</radialdirection>
+                <outerradius>auto</outerradius>
+                <innerradius>auto</innerradius>
+              </centeringring>
+
+              <trapezoidfinset>
+                <name>Trapezoidal fin set</name>
+                <position type="bottom">-0.06000000000000001</position>
+                <finish>normal</finish>
+                <material type="bulk" density="680.0">Cardboard</material>
+                <fincount>4</fincount>
+                <rotation>0.0</rotation>
+                <thickness>0.003</thickness>
+                <crosssection>square</crosssection>
+                <cant>0.0</cant>
+                <filletradius>0.0</filletradius>
+                <filletmaterial type="bulk" density="680.0">Cardboard</filletmaterial>
+                <rootchord>0.18</rootchord>
+                <tipchord>0.08</tipchord>
+                <sweeplength>0.165</sweeplength>
+                <height>0.154</height>
+              </trapezoidfinset>
+            </subcomponents>
+          </bodytube>
+        </subcomponents>
+      </stage>
+    </subcomponents>
+  </rocket>
+
+  <simulations>
+    <simulation status="outdated">
+      <name>Simulation 27</name>
+      <simulator>RK4Simulator</simulator>
+      <calculator>BarrowmanCalculator</calculator>
+      <conditions>
+        <configid>fbd761e7-512a-4f3f-a46b-763389fb7e9c</configid>
+        <launchrodlength>12.0</launchrodlength>
+        <launchrodangle>4.0</launchrodangle>
+        <launchroddirection>90.0</launchroddirection>
+        <windaverage>2.0</windaverage>
+        <windturbulence>0.1</windturbulence>
+        <launchaltitude>0.0</launchaltitude>
+        <launchlatitude>28.61</launchlatitude>
+        <launchlongitude>-80.6</launchlongitude>
+        <geodeticmethod>spherical</geodeticmethod>
+        <atmosphere model="isa"/>
+        <timestep>0.05</timestep>
+      </conditions>
+      <flightdata maxaltitude="2888.3" maxvelocity="262.16" maxacceleration="78.548" maxmach="0.78431" timetoapogee="26.991" flighttime="122.63" groundhitvelocity="13" launchrodvelocity="33.982" deploymentvelocity="37.947">
+        <warning>Recovery device deployment at high speed (31.1 m/s)</warning>
+        <warning>Discontinuity in rocket body diameter.</warning>
+      </flightdata>
+    </simulation>
+
+    <simulation status="loaded">
+      <name>Simulation 28</name>
+      <simulator>RK4Simulator</simulator>
+      <calculator>BarrowmanCalculator</calculator>
+      <conditions>
+        <configid>ac5f19a5-aef6-4d89-a78b-e2130b7197a4</configid>
+        <launchrodlength>12.0</launchrodlength>
+        <launchrodangle>5.0</launchrodangle>
+        <launchroddirection>90.0</launchroddirection>
+        <windaverage>8.7</windaverage>
+        <windturbulence>0.1</windturbulence>
+        <launchaltitude>160.0</launchaltitude>
+        <launchlatitude>39.0</launchlatitude>
+        <launchlongitude>-82.0</launchlongitude>
+        <geodeticmethod>spherical</geodeticmethod>
+        <atmosphere model="isa"/>
+        <timestep>0.05</timestep>
+      </conditions>
+      <flightdata maxaltitude="2445" maxvelocity="262.88" maxacceleration="79.449" maxmach="0.80112" timetoapogee="24.929" flighttime="110.2" groundhitvelocity="13.098" launchrodvelocity="33.946" deploymentvelocity="38.26">
+        <warning>Recovery device deployment at high speed (61.7 m/s)</warning>
+        <warning>Discontinuity in rocket body diameter.</warning>
+      </flightdata>
+    </simulation>
+  </simulations>
+</openrocket>
