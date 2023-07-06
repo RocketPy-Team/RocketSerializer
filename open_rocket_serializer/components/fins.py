@@ -2,7 +2,7 @@ import yaml
 
 
 def search_trapezoidal_fins(bs, elements, idx):
-    trapezoidal_fins_parameters = {}
+    settings = {}
     fins = bs.findAll("trapezoidfinset")
     print(f"[AddFins]- {len(fins)} detected")
 
@@ -31,9 +31,9 @@ def search_trapezoidal_fins(bs, elements, idx):
             f"finSweepAngle{idx}": sweep_angle,
         }
 
-        trapezoidal_fins_parameters.update(fin_parameter)
+        settings.update(fin_parameter)
         print(
             f"[AddFins][{idx}] Configuration: \n{yaml.dump(fin_parameter, default_flow_style=False)}"
         )
     print(f"[AddFins]- Finished")
-    return trapezoidal_fins_parameters
+    return settings

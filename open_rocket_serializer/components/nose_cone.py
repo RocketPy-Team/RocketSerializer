@@ -2,12 +2,12 @@ import yaml
 
 
 def search_nosecone(bs, elements):
-    nosecone_configuration = {}
-    nosecone = bs.find("nosecone")
-    element_name = nosecone.find("name").text if nosecone else "Nosecone"
-    cm = elements[element_name]["DistanceToCG"]
+    settings = {}
+    nosecone = bs.find("nosecone")  # TODO: allow for multiple nosecones
+    name = nosecone.find("name").text if nosecone else "NoseCone"
+    cm = elements[name]["DistanceToCG"]
 
-    nosecone = bs.find("nosecone")
+    nosecone = bs.find("nosecone")  # Why is it doing it twice?
     if nosecone == None:
         nosecones = list(
             filter(
@@ -18,20 +18,23 @@ def search_nosecone(bs, elements):
             print("Could not fetch the nosecone")
             return
         nosecone = nosecones[0]
-    nosecone_length = float(nosecone.find("length").text)
-    nosecone_shape = nosecone.find("shape").text
-    if nosecone_shape == "haack":
-        nosecone_shape_parameter = float(nosecone.find("shapeparameter").text)
-        nosecone_shape = "Von Karman" if nosecone_shape_parameter == 0.0 else "lvhaack"
-        nosecone_configuration.update({"noseShapeParameter": nosecone_shape_parameter})
-    nosecone_distanceToCM = cm
 
-    nosecone_configuration = {
-        "noseLength": nosecone_length,
-        "noseShape": nosecone_shape,
-        "noseDistanceToCM": nosecone_distanceToCM,
+    length = float(nosecone.find("length").text)
+    shape = nosecone.find("shape").text
+
+    if shape == "haack":
+        shape_parameter = float(nosecone.find("shapeparameter").text)
+        shape = "Von Karman" if shape_parameter == 0.0 else "lvhaack"
+        settings.update({"noseShapeParameter": shape_parameter})
+
+    distanceToCM = cm
+
+    settings = {
+        "noseLength": length,
+        "noseShape": shape,
+        "noseDistanceToCM": distanceToCM,
     }
     print(
-        f"[Nosecone] Found Nosecone| Configuration: \n{yaml.dump(nosecone_configuration, default_flow_style=False)}"
+        f"[Nosecone] Found Nosecone| Configuration: \n{yaml.dump(settings, default_flow_style=False)}"
     )
-    return nosecone_configuration
+    return settings
