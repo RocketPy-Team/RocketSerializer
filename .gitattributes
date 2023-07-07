@@ -1,0 +1,3 @@
+*.py linguist-language=python
+*.ork linguist-language=html
+*.ipynb linguist-documentation
