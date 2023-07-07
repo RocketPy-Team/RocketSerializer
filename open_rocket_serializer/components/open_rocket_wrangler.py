@@ -31,7 +31,7 @@ def process_elements_position(ork, elements, rocket_cg, rocket_mass, top_positio
     element = {
         "length": ork.getLength(),
         "CM": ork.getCG().x,
-        "DistanceToCG": calculate_distance_to_cg(ork, rocket_cg, top_position),
+        "distance_to_cm": calculate_distance_to_cg(ork, rocket_cg, top_position),
     }
 
     elements[ork.getName()] = element
