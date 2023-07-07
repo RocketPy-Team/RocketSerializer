@@ -1,0 +1,89 @@
+{
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 90.0,
+        "rail_length": 1.0
+    },
+    "id": {
+        "comment": null,
+        "designer": null,
+        "filepath": "examples/EPFL--BellaLui--2020/rocket.ork",
+        "rocket_name": "Foguete"
+    },
+    "motors": {
+        "burn_time": 2.5779,
+        "center_of_dry_mass": 0.2895,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0.0,
+        "grain_density": 1378.7438125434685,
+        "grain_initial_height": 0.579,
+        "grain_initial_inner_radius": 0.0135,
+        "grain_number": 1,
+        "grain_outer_radius": 0.027,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0.2895,
+        "nozzle_position": 0,
+        "nozzle_radius": 0.02025,
+        "throat_radius": 0.0135,
+        "thrust_source": "examples/EPFL--BellaLui--2020\\thrust_source.csv"
+    },
+    "nosecones": {
+        "distance_to_cm": 1.317,
+        "kind": "ogive",
+        "length": 0.242
+    },
+    "parachutes": {},
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 1.559,
+        "coordinate_system_orientation": "tail_to_nose",
+        "drag_curve": "examples/EPFL--BellaLui--2020\\drag_curve.csv",
+        "inertia": [
+            0.096246,
+            0.096246,
+            5.8581
+        ],
+        "mass": 8.419,
+        "radius": 0.078
+    },
+    "stored_results": {},
+    "tails": {
+        "0": {
+            "bottom_radius": 0.0675,
+            "distance_to_cm": -1.0686000000000002,
+            "length": 0.05,
+            "name": "Cauda",
+            "top_radius": 0.078
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "distance_to_cm": -0.7886,
+            "name": "Conjunto de aletas trapezoidais",
+            "number": 3,
+            "root_chord": 0.28,
+            "section": "square",
+            "span": 0.2,
+            "sweep_angle": null,
+            "sweep_length": 0.09326153163099972,
+            "tip_chord": 0.125
+        }
+    }
+}
