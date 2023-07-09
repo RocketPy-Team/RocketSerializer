@@ -1,0 +1,89 @@
+{
+    "id": {
+        "rocket_name": "Foguete",
+        "comment": null,
+        "designer": null,
+        "filepath": "examples/EPFL--BellaLui--2020/rocket.ork"
+    },
+    "environment": {
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "elevation": 0.0,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1,
+        "geodetic_method": "spherical",
+        "base_temperature": null,
+        "base_pressure": null,
+        "date": null
+    },
+    "rocket": {
+        "radius": 0.078,
+        "mass": 8.419,
+        "inertia": [
+            0.096246,
+            0.096246,
+            5.8581
+        ],
+        "center_of_mass_without_propellant": 1.559,
+        "coordinate_system_orientation": "tail_to_nose",
+        "drag_curve": "tests/acceptance/EPFL--BellaLui--2020/drag_curve.csv"
+    },
+    "nosecones": {
+        "length": 0.242,
+        "kind": "ogive",
+        "distance_to_cm": 1.317
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "name": "Conjunto de aletas trapezoidais",
+            "number": 3,
+            "root_chord": 0.28,
+            "tip_chord": 0.125,
+            "span": 0.2,
+            "distance_to_cm": -0.7886,
+            "sweep_length": 0.09326153163099972,
+            "sweep_angle": null,
+            "cant_angle": 0.0,
+            "section": "square"
+        }
+    },
+    "tails": {
+        "0": {
+            "name": "Cauda",
+            "top_radius": 0.078,
+            "bottom_radius": 0.0675,
+            "length": 0.05,
+            "distance_to_cm": -1.0686000000000002
+        }
+    },
+    "parachutes": {},
+    "rail_buttons": {},
+    "motors": {
+        "burn_time": 2.5779,
+        "grain_density": 1378.7438125434685,
+        "grain_initial_inner_radius": 0.0135,
+        "grain_outer_radius": 0.027,
+        "grain_initial_height": 0.579,
+        "nozzle_radius": 0.02025,
+        "throat_radius": 0.0135,
+        "dry_mass": 0.0,
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "center_of_dry_mass": 0.2895,
+        "grains_center_of_mass_position": 0.2895,
+        "grain_number": 1,
+        "grain_separation": 0,
+        "nozzle_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "thrust_source": "tests/acceptance/EPFL--BellaLui--2020/thrust_source.csv"
+    },
+    "flight": {
+        "rail_length": 1.0,
+        "inclination": 90.0,
+        "heading": 90.0
+    },
+    "stored_results": {}
+}

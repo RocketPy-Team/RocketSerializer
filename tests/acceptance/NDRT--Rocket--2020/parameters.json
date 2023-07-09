@@ -1,0 +1,108 @@
+{
+    "id": {
+        "rocket_name": "Rocket",
+        "comment": "Actual weight: 68 oz\n\nNoseconre + epoxy: 69.7 oz",
+        "designer": null,
+        "filepath": "examples/NDRT--Rocket--2020/rocket.ork"
+    },
+    "environment": {
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "elevation": 0.0,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1,
+        "geodetic_method": "spherical",
+        "base_temperature": null,
+        "base_pressure": null,
+        "date": null
+    },
+    "rocket": {
+        "radius": 0.1016,
+        "mass": 20.735,
+        "inertia": [
+            0.15089,
+            0.15089,
+            18.411
+        ],
+        "center_of_mass_without_propellant": 1.7041,
+        "coordinate_system_orientation": "tail_to_nose",
+        "drag_curve": "tests/acceptance/NDRT--Rocket--2020/drag_curve.csv"
+    },
+    "nosecones": {
+        "length": 0.6095999999999999,
+        "kind": "ogive",
+        "distance_to_cm": 1.0945
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "name": "Trapezoidal fin set",
+            "number": 4,
+            "root_chord": 0.15239999999999995,
+            "tip_chord": 0.07619999999999999,
+            "span": 0.1651,
+            "distance_to_cm": -1.3439,
+            "sweep_length": 0.038099999999999995,
+            "sweep_angle": null,
+            "cant_angle": 0.0,
+            "section": "rounded"
+        }
+    },
+    "tails": {
+        "0": {
+            "name": "Transition",
+            "top_radius": 0.0776224,
+            "bottom_radius": 0.0776224,
+            "length": 0.127,
+            "distance_to_cm": 0.3833
+        }
+    },
+    "parachutes": {
+        "0": {
+            "name": "Iris120Comp",
+            "cd": 2.2,
+            "cds": 16.052492937808733,
+            "area": 7.296587699003968,
+            "deploy_event": "altitude",
+            "deploy_delay": 0.0,
+            "deploy_altitude": 182.88
+        },
+        "1": {
+            "name": "Drogue Parachute",
+            "cd": 1.5,
+            "cds": 0.437795261940238,
+            "area": 0.29186350796015864,
+            "deploy_event": "apogee",
+            "deploy_delay": 0.0,
+            "deploy_altitude": null
+        }
+    },
+    "rail_buttons": {},
+    "motors": {
+        "burn_time": 3.533,
+        "grain_density": 1202.7971321820446,
+        "grain_initial_inner_radius": 0.01875,
+        "grain_outer_radius": 0.0375,
+        "grain_initial_height": 0.621,
+        "nozzle_radius": 0.028124999999999997,
+        "throat_radius": 0.01875,
+        "dry_mass": 0.0,
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "center_of_dry_mass": 0.3105,
+        "grains_center_of_mass_position": 0.3105,
+        "grain_number": 1,
+        "grain_separation": 0,
+        "nozzle_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "thrust_source": "tests/acceptance/NDRT--Rocket--2020/thrust_source.csv"
+    },
+    "flight": {
+        "rail_length": 2.7432000000000003,
+        "inclination": 85.0,
+        "heading": 90.0
+    },
+    "stored_results": {}
+}
