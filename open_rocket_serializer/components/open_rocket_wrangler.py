@@ -24,8 +24,16 @@ def is_sub_component(ork):
 
 def calculate_distance_to_cg(ork, rocket_cg, top_position):
     if is_sub_component(ork) == True:
-        element_position = ork.getRelativePosition().toString()
-        relative_position = top_position + ork.getPositionValue()
+        try:
+            element_position = ork.getRelativePosition().toString()
+        except AttributeError:
+            "object has no attribute 'getRelativePosition'"
+            element_position = "Top of the parent component"
+        try:
+            relative_position = top_position + ork.getPositionValue()
+        except AttributeError:
+            "object has no attribute 'getPositionValue'"
+            relative_position = top_position
 
         if element_position == "Bottom of the parent component":
             relative_position += ork.getParent().getLength()
