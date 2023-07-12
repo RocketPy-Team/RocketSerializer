@@ -1,0 +1,6 @@
+bs4
+click
+lxml
+numpy
+orhelper
+pyyaml
