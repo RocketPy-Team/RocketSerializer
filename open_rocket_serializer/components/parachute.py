@@ -32,6 +32,7 @@ def search_parachutes(bs, verbose=False):
 
         # parachute settings
         cd = "auto" if "auto" in chute.find("cd").text else float(chute.find("cd").text)
+        cd = search_cd_chute_if_auto(chute) if cd == "auto" else cd
         area = np.pi * float(chute.find("diameter").text) ** 2 / 4
         cds = cd * area
 
@@ -63,9 +64,16 @@ def search_parachutes(bs, verbose=False):
     return settings
 
 
-# def search_cd_chute_if_auto(bs):
-#     return float(
-#         next(
-#             filter(lambda x: x.text.replace(".", "").isnumeric(), bs.findAll("cd"))
-#         ).text
-#     )
+def search_cd_chute_if_auto(bs):
+    # if the parachute cd is st to "auto", then look for the cd in the next tag
+    # return float(
+    #     next(
+    #         filter(lambda x: x.text.replace(".", "").isnumeric(), bs.findAll("cd"))
+    #     ).text
+    # )
+
+    # TODO: for the future, we need to check if the ork object has a drag coefficient
+
+    # simply return 1.0
+    print(f"cd auto: the cd is set to 1.0 for parachute {bs.find('name').text}")
+    return 1.0

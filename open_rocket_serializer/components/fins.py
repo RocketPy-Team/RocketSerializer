@@ -34,7 +34,14 @@ def search_trapezoidal_fins(bs, elements, verbose=False):
 
     for idx, fin in enumerate(fins):
         label = fin.find("name").text
-        element = elements[label]
+        try:
+            element = elements[label]
+        except KeyError:
+            raise KeyError(
+                f"[Trapezoidal Fins][{idx}] Couldn't find the element '{label}' "
+                + "in the elements dictionary. It is possible that the "
+                + "process_elements_position() function got an error."
+            )
 
         n_fin = int(fin.find("fincount").text)
         root_chord = float(fin.find("rootchord").text)

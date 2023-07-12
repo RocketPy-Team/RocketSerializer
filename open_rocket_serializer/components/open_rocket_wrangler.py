@@ -1,11 +1,25 @@
 def is_sub_component(ork):
+    """Determines whether the given object `ork` is a sub-component of another
+    object in a hierarchical structure.
+
+    Parameters:
+    -----------
+    ork: net.sf.openrocket.rocketcomponent
+        The object to be checked.
+
+    Returns:
+    --------
+    bool
+        True if `ork` is a sub-component (at least two levels below the root
+        object), False otherwise.
+    """
     i = 0
     root = ork.getRoot()
-    while ork != ork.getRoot():
+    while ork != root:
         ork = ork.getParent()
         if root != ork.getParent():
             i += 1
-    return True if i >= 2 else False
+    return i > 1  # if i > 1, then ork is a sub-component
 
 
 def calculate_distance_to_cg(ork, rocket_cg, top_position):
@@ -47,5 +61,7 @@ def process_elements_position(ork, elements, rocket_cg, rocket_mass, top_positio
                 top_position += ork.getChild(i).getLength()
             i += 1
         except Exception:
+            # you are getting a java.lang.IndexOutOfBoundsException because
+            # you are trying to access a child that does not exist
             has_child = False
     return elements

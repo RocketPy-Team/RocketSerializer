@@ -102,9 +102,16 @@ def ork2json(filepath, output=None, eng=None, ork_jar=None, verbose=False):
             "The .ork file does not exist.\n" + "Please specify a valid path."
         )
 
-    bs = BeautifulSoup(
-        open(filepath, encoding="utf-8").read(), features="xml", from_encoding="utf-8"
-    )
+    try:
+        bs = BeautifulSoup(open(filepath, encoding="utf-8").read(), features="xml")
+    except UnicodeDecodeError:
+        raise ValueError(
+            "The .ork file is not in UTF-8.\n"
+            + "Please open the .ork file in a text editor and save it as UTF-8."
+            + "Also, you should check if your .ork file is really a xml file or "
+            + "a zip file. If it is a zip file, you should unzip it first."
+        )
+
     datapoints = bs.findAll("datapoint")
 
     if len(datapoints) == 0:
