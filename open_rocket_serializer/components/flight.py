@@ -1,7 +1,13 @@
+import logging
+
 import yaml
 
+from .._helpers import _dict_to_string
 
-def search_launch_conditions(bs, verbose=False):
+logger = logging.getLogger(__name__)
+
+
+def search_launch_conditions(bs):
     """Searches the launch conditions in the bs object. Returns a dict with the
     settings.
 
@@ -9,9 +15,6 @@ def search_launch_conditions(bs, verbose=False):
     ----------
     bs : BeautifulSoup
         The BeautifulSoup object of the open rocket file.
-    verbose : bool, optional
-        Whether or not to print a message of successful execution, by default
-        False.
 
     Returns
     -------
@@ -23,14 +26,14 @@ def search_launch_conditions(bs, verbose=False):
     launch_rod_length = float(bs.find("launchrodlength").text)
     launch_rod_angle = float(bs.find("launchrodangle").text)
     launch_rod_direction = float(bs.find("launchroddirection").text)
+    logger.info(
+        "Collected launch conditions: launch rod length, launch rod angle, launch rod direction."
+    )
 
     settings = {
         "rail_length": launch_rod_length,
         "inclination": 90 - launch_rod_angle,
         "heading": launch_rod_direction,
     }
-    if verbose:
-        print(
-            f"[Launch Conditions] Launch settings were extracted: \n{yaml.dump(settings, default_flow_style=False)}"
-        )
+    logger.info("Exported launch conditions.\n%s", _dict_to_string(settings, indent=23))
     return settings

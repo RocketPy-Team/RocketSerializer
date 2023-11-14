@@ -1,3 +1,10 @@
+import logging
+
+from .._helpers import _dict_to_string
+
+logger = logging.getLogger(__name__)
+
+
 def is_sub_component(ork):
     """Determines whether the given object `ork` is a sub-component of another
     object in a hierarchical structure.
@@ -27,12 +34,12 @@ def calculate_distance_to_cg(ork, rocket_cg, top_position):
         try:
             element_position = ork.getRelativePosition().toString()
         except AttributeError:
-            "object has no attribute 'getRelativePosition'"
+            # "object has no attribute 'getRelativePosition'"
             element_position = "Top of the parent component"
         try:
             relative_position = top_position + ork.getPositionValue()
         except AttributeError:
-            "object has no attribute 'getPositionValue'"
+            # "object has no attribute 'getPositionValue'"
             relative_position = top_position
 
         if element_position == "Bottom of the parent component":
@@ -55,21 +62,49 @@ def process_elements_position(ork, elements, rocket_cg, rocket_mass, top_positio
         "CM": ork.getCG().x,
         "distance_to_cm": calculate_distance_to_cg(ork, rocket_cg, top_position),
     }
+    logger.info("Starting to process '%s'", ork.getName())
 
     elements[ork.getName()] = element
-    has_child = True
     i = 0
-    while has_child:
+
+    while True:
+        if i >= ork.getChildCount():
+            logger.info("No more children for '%s'", ork.getName())
+            break
+
         try:
+            child = ork.getChild(i)
             new_elements = process_elements_position(
-                ork.getChild(i), {}, rocket_cg, rocket_mass, top_position
+                child, {}, rocket_cg, rocket_mass, top_position
             )
             elements.update(new_elements)
-            if is_sub_component(ork.getChild(i)) == False:
-                top_position += ork.getChild(i).getLength()
+            logger.info("Child '%s' processed", child.getName())
+
+            if not is_sub_component(child):
+                top_position += child.getLength()
+                logger.info("The child '%s' is not a sub-component", child.getName())
+
             i += 1
-        except Exception:
-            # you are getting a java.lang.IndexOutOfBoundsException because
-            # you are trying to access a child that does not exist
-            has_child = False
+            logger.info("Moving to the next child")
+
+        except Exception as e:
+            if "IndexOutOfBoundsException" in str(e):
+                logger.warning(
+                    "Index out of bounds - likely no more children to process."
+                )
+                break
+            else:
+                logger.error(
+                    "Error while processing the position of the elements: %s",
+                    e,
+                    exc_info=True,
+                )
+                logger.info(
+                    "The elements are:\n%s",
+                    _dict_to_string(elements, indent=23),
+                )
+                print(e)
+                break  # Exit the loop if an unexpected error occurs
+
+    logger.info("Finished processing '%s'", ork.getName())
     return elements

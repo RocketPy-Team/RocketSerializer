@@ -1,3 +1,7 @@
+import logging
+from pathlib import Path
+
+from ._helpers import _dict_to_string
 from .components.drag_curve import save_drag_curve
 from .components.environment import search_environment
 from .components.fins import search_trapezoidal_fins
@@ -8,10 +12,13 @@ from .components.nose_cone import search_nosecone
 from .components.open_rocket_wrangler import process_elements_position
 from .components.parachute import search_parachutes
 from .components.rocket import search_rocket
+from .components.stored_results import search_stored_results
 from .components.transition import search_transitions
 
+logger = logging.getLogger(__name__)
 
-def ork_extractor(bs, filepath, output_folder, ork, eng, verbose=False):
+
+def ork_extractor(bs, filepath, output_folder, ork, eng):
     """Generates the parameters.json file with the parameters for rocketpy
 
     Parameters
@@ -38,35 +45,45 @@ def ork_extractor(bs, filepath, output_folder, ork, eng, verbose=False):
         "tails", "parachutes", "rail_buttons", "motors", "flight" and
         "stored_results".
     """
-    # TODO: create a list of assumptions
     settings = {}
 
     # Initialize some important vectors
     datapoints, data_labels, time_vector = __init_vectors(bs)
+    logger.info("Initialized data vectors from the ORK file.")
 
     # Retrieve the motor properties
-    motors = search_motor(bs, datapoints, data_labels, time_vector, verbose=False)
+    motors = search_motor(bs, datapoints, data_labels, time_vector)
     _, _, burnout_position = __get_motor_mass(datapoints, data_labels)
+    logger.info("Motor parameters retrieved.")
 
     # Get the first set of parameters
-    id_info = search_id_info(bs, filepath, verbose=False)
-    environment = search_environment(bs, verbose=False)
-    rocket = search_rocket(
-        bs, datapoints, data_labels, ork, burnout_position, verbose=False
-    )
-    flight = search_launch_conditions(bs, verbose=False)
+    id_info = search_id_info(bs, filepath)
+    logger.info("Metadata parameters retrieved.")
+
+    environment = search_environment(bs)
+    logger.info("Environment parameters retrieved.")
+
+    rocket = search_rocket(bs, datapoints, data_labels, ork, burnout_position)
+    logger.info("Rocket parameters retrieved.")
+
+    flight = search_launch_conditions(bs)
+    logger.info("Flight conditions retrieved.")
 
     # process different elements of the rocket
     empty_rocket_cm = rocket["center_of_mass_without_propellant"]
     rocket_mass = rocket["mass"]
     rocket_radius = rocket["radius"]
+
     elements = process_elements_position(
         ork.getRocket(), {}, empty_rocket_cm, rocket_mass, top_position=0
     )
-    nosecones = search_nosecone(bs, elements, verbose=False)
+    logger.info("The elements are:\n%s", _dict_to_string(elements, indent=23))
+
+    nosecones = search_nosecone(bs, elements)
     trapezoidal_fins = search_trapezoidal_fins(bs, elements)
-    transitions = search_transitions(bs, elements, ork, rocket_radius, verbose)
-    parachutes = search_parachutes(bs, verbose=False)
+    transitions = search_transitions(bs, elements, ork, rocket_radius)
+    parachutes = search_parachutes(bs)
+    stored_results = search_stored_results(bs)
 
     # save everything to a dictionary
     settings["id"] = id_info
@@ -79,23 +96,27 @@ def ork_extractor(bs, filepath, output_folder, ork, eng, verbose=False):
     settings["rail_buttons"] = {}  # TODO: implement rail buttons
     settings["motors"] = motors
     settings["flight"] = flight
-    settings["stored_results"] = {}  # TODO: implement stored results
+    settings["stored_results"] = stored_results
 
     # get drag curves
     settings["rocket"]["drag_curve"] = save_drag_curve(
         datapoints, data_labels, output_folder
     )
+    logger.info("Drag curve generated.")
+
     # get thrust curve
     thrust_path = eng or generate_thrust_curve(
         output_folder, datapoints, data_labels, time_vector
     )
     settings["motors"]["thrust_source"] = thrust_path
+    logger.info("Thrust curve generated.")
 
-    if verbose:
-        print(
-            "[ork_extractor] Extraction complete. A dictionary with the "
-            + "parameters was generated and returned."
-        )
+    logger.info(
+        "Extraction complete. A dictionary with all the parameters was generated and returned."
+    )
+    logger.info(
+        "Dictionary with the parameters:\n%s", _dict_to_string(settings, indent=23)
+    )
 
     return settings
 
@@ -132,4 +153,5 @@ def __init_vectors(bs):
     # Filter the datapoints to get only the ones after the ignition.
     datapoints = datapoints[start_pos:final_pos]
     time_vector = time_vector[start_pos:final_pos]
+    logger.info("Successfully initialized vectors with %d datapoints", len(datapoints))
     return datapoints, data_labels, time_vector

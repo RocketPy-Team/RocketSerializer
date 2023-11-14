@@ -1,9 +1,13 @@
+import logging
 import os
+from pathlib import Path
 
 import numpy as np
 
+logger = logging.getLogger(__name__)
 
-def save_drag_curve(datapoints, data_labels, output_folder, verbose=False):
+
+def save_drag_curve(datapoints, data_labels, output_folder):
     """Extracts the drag curve from the data and saves it to a csv file.
 
     Parameters
@@ -15,9 +19,6 @@ def save_drag_curve(datapoints, data_labels, output_folder, verbose=False):
     path : str
         Path to the folder where the drag curve should be saved. This needs to
         be a folder that already exists.
-    verbose : bool, optional
-        Whether or not to print a message of successful execution, by default
-        False.
 
     Returns
     -------
@@ -29,8 +30,11 @@ def save_drag_curve(datapoints, data_labels, output_folder, verbose=False):
         float(datapoint.text.split(",")[data_labels.index("Altitude")])
         for datapoint in datapoints
     ]
+    logger.info(f"Collected altitude vector")
+
     apogee_index = np.argmax(altitude_vector)
     datapoints = datapoints[:apogee_index]
+    logger.info(f"Removed data after apogee")
 
     # Extract the drag coefficient and Mach number
     cd = [
@@ -41,6 +45,7 @@ def save_drag_curve(datapoints, data_labels, output_folder, verbose=False):
         float(datapoint.text.split(",")[data_labels.index("Mach number")])
         for datapoint in datapoints
     ]
+    logger.info(f"Collected drag coefficient and Mach number")
 
     # Convert to numpy array
     cd = np.array([mach, cd]).T
@@ -52,11 +57,10 @@ def save_drag_curve(datapoints, data_labels, output_folder, verbose=False):
     cd = np.unique(cd, axis=0)
     # Remove values when the drag is lower than 0
     cd = cd[cd[:, 1] > 0, :]
+    logger.info(f"Successfully created the drag curve")
 
     # Save to csv file
     path = os.path.join(output_folder, "drag_curve.csv")
     np.savetxt(path, cd, delimiter=",", fmt="%.6f")
-
-    if verbose:
-        print(f"[Drag Curve] Successfully extracted the drag curve: {path}")
+    logger.info(f"Successfully saved the drag curve file to: '{Path(path).as_posix()}'")
     return path
