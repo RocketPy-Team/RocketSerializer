@@ -113,3 +113,5 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+databank/

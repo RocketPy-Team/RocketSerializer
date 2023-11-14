@@ -18,7 +18,7 @@
     "id": {
         "comment": null,
         "designer": null,
-        "filepath": "examples/EPFL--BellaLui--2020/rocket.ork",
+        "filepath": "examples\\EPFL--BellaLui--2020\\rocket.ork",
         "rocket_name": "Foguete"
     },
     "motors": {
@@ -41,7 +41,7 @@
         "nozzle_position": 0,
         "nozzle_radius": 0.02025,
         "throat_radius": 0.0135,
-        "thrust_source": "examples/EPFL--BellaLui--2020\\thrust_source.csv"
+        "thrust_source": "examples\\EPFL--BellaLui--2020\\thrust_source.csv"
     },
     "nosecones": {
         "distance_to_cm": 1.317,
@@ -53,7 +53,7 @@
     "rocket": {
         "center_of_mass_without_propellant": 1.559,
         "coordinate_system_orientation": "tail_to_nose",
-        "drag_curve": "examples/EPFL--BellaLui--2020\\drag_curve.csv",
+        "drag_curve": "examples\\EPFL--BellaLui--2020\\drag_curve.csv",
         "inertia": [
             0.096246,
             0.096246,
@@ -62,7 +62,16 @@
         "mass": 8.419,
         "radius": 0.078
     },
-    "stored_results": {},
+    "stored_results": {
+        "flight_time": 92.782,
+        "ground_hit_velocity": 26.142,
+        "launch_rod_velocity": 14.728,
+        "max_acceleration": 122.07,
+        "max_altitude": 1190.0,
+        "max_mach": 0.5587,
+        "max_velocity": 189.56,
+        "time_to_apogee": 14.851
+    },
     "tails": {
         "0": {
             "bottom_radius": 0.0675,
@@ -75,7 +84,7 @@
     "trapezoidal_fins": {
         "0": {
             "cant_angle": 0.0,
-            "distance_to_cm": -0.7886,
+            "distance_to_cm": 1.317,
             "name": "Conjunto de aletas trapezoidais",
             "number": 3,
             "root_chord": 0.28,
