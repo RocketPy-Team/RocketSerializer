@@ -1,7 +1,14 @@
+import logging
+from pathlib import Path
+
 import yaml
 
+from .._helpers import _dict_to_string
 
-def search_trapezoidal_fins(bs, elements, verbose=False):
+logger = logging.getLogger(__name__)
+
+
+def search_trapezoidal_fins(bs, elements):
     """Search for trapezoidal fins in the bs and return the settings as a dict.
     It is flexible in the sense that it can handle multiple trapezoidal fin sets.
 
@@ -11,9 +18,6 @@ def search_trapezoidal_fins(bs, elements, verbose=False):
         The BeautifulSoup object of the open rocket file.
     elements : dict
         Dictionary with the settings for the elements of the rocket.
-    verbose : bool, optional
-        Whether or not to print a message of successful execution, by default
-        False.
 
     Returns
     -------
@@ -26,29 +30,60 @@ def search_trapezoidal_fins(bs, elements, verbose=False):
     """
     settings = {}
     fins = bs.findAll("trapezoidfinset")
-    if verbose:
-        print(f"[Trapezoidal Fins] - {len(fins)} trapezoidal fin set detected")
+    logger.info(f"A total of {len(fins)} trapezoidal fin sets were detected")
 
     if len(fins) == 0:
+        logger.info(
+            f"Since no trapezoidal fins were detected, returning empty dictionary"
+        )
         return settings
 
     for idx, fin in enumerate(fins):
+        logger.info(
+            "Starting collecting the settings for the trapezoidal fin set number "
+            + f"'{idx}'"
+        )
         label = fin.find("name").text
-        element = elements[label]
+        try:
+            element = elements[label]
+            logger.info(f"Found the element '{label}' in the elements dictionary.")
+        except KeyError:
+            message = (
+                f"Couldn't find the element '{label}' in the elements dictionary."
+                + "in the elements dictionary. It is possible that the "
+                + "process_elements_position() function got an error."
+            )
+            logger.error(message)
+            raise KeyError(message)
 
         n_fin = int(fin.find("fincount").text)
+        logger.info(f"Number of fins retrieved: {n_fin}")
+
         root_chord = float(fin.find("rootchord").text)
+        logger.info(f"Root chord retrieved: {root_chord}")
+
         tip_chord = float(fin.find("tipchord").text)
+        logger.info(f"Tip chord retrieved: {tip_chord}")
+
         span = float(fin.find("height").text)
+        logger.info(f"Span retrieved: {span}")
+
         sweep_length = (
             float(fin.find("sweeplength").text) if fin.find("sweeplength") else None
         )
         sweep_angle = (
             float(fin.find("sweepangle").text) if fin.find("sweepangle") else None
         )
+        logger.info(f"Sweep angle and length retrieved: {sweep_length}")
+
         fin_distance_to_cm = element["distance_to_cm"]
+        logger.info(f"Fin distance to cm retrieved: {fin_distance_to_cm}")
+
         cant_angle = float(fin.find("cant").text)
+        logger.info(f"Cant angle retrieved: {cant_angle}")
+
         section = fin.find("crosssection").text
+        logger.info(f"Crosssection format retrieved")
 
         # save to a dictionary
         fin_settings = {
@@ -66,10 +101,13 @@ def search_trapezoidal_fins(bs, elements, verbose=False):
 
         settings[idx] = fin_settings
 
-        if verbose:
-            print(
-                f"[Trapezoidal Fins][{idx}] setting: \n{yaml.dump(fin_settings, default_flow_style=False)}"
-            )
-    if verbose:
-        print(f"[Trapezoidal Fins] Finished searching for trapezoidal fins.")
+        logger.info(
+            f"Trapezoidal fin set number '{idx}' was defined:\n"
+            + _dict_to_string(fin_settings, indent=23)
+        )
+    logger.info(f"Finished collecting all the trapezoidal fins.")
     return settings
+
+
+# TODO: what if the fins are not trapezoidal?
+# freeformfinset and tubefinset

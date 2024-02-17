@@ -1,7 +1,13 @@
+import logging
+
 import yaml
 
+from .._helpers import _dict_to_string
 
-def search_environment(bs, verbose=False):
+logger = logging.getLogger(__name__)
+
+
+def search_environment(bs):
     """Searches the launch conditions in the bs object. Returns a dict with the
     settings.
 
@@ -9,9 +15,6 @@ def search_environment(bs, verbose=False):
     ----------
     bs : BeautifulSoup
         BeautifulSoup object of the .ork file.
-    verbose : bool, optional
-        Whether or not to print a message of successful execution, by default
-        False.
 
     Returns
     -------
@@ -28,13 +31,33 @@ def search_environment(bs, verbose=False):
     wind_average = float(bs.find("windaverage").text)
     wind_turbulence = float(bs.find("windturbulence").text)
     geodetic_method = bs.find("geodeticmethod").text
+    logger.info(
+        "Collected first environment settings: latitude, "
+        + "longitude, elevation, wind_average, wind_turbulence, geodetic_method"
+    )
     try:
         base_temperature = float(bs.find("basetemperature").text)
+        logger.info(
+            "The base temperature was found in the .ork file. "
+            + f"It is {base_temperature} °C."
+        )
     except AttributeError:
+        logger.warning(
+            "No base temperature was found in the .ork file. "
+            + "The base temperature will be set to None."
+        )
         base_temperature = None
     try:
         base_pressure = float(bs.find("basepressure").text)
+        logger.info(
+            "The base pressure was found in the .ork file. "
+            + f"It is {base_pressure} Pa."
+        )
     except AttributeError:
+        logger.warning(
+            "No base pressure was found in the .ork file. "
+            + "The base pressure will be set to None."
+        )
         base_pressure = None
     date = None
 
@@ -49,9 +72,8 @@ def search_environment(bs, verbose=False):
         "base_pressure": base_pressure,
         "date": date,
     }
-    if verbose:
-        print(
-            f"[Environment] The environment settings were extracted."
-            + f" \n{yaml.dump(settings, default_flow_style=False)}"
-        )
+    logger.info(
+        "Successfully extracted all the environment settings.\n"
+        + _dict_to_string(settings, indent=23)
+    )
     return settings

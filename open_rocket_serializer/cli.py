@@ -1,12 +1,31 @@
 import json
+import logging
 import os
+from pathlib import Path
 
 import click
 import orhelper
 from bs4 import BeautifulSoup
 from orhelper import OrLogLevel
 
+from ._helpers import extract_ork_from_zip, parse_ork_file
 from .ork_extractor import ork_extractor
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%Y.%b.%d %H:%M:%S",
+    filename="serializer.log",
+    filemode="w",
+)
+logger = logging.getLogger(__name__)
+
+# define the logger handler for the console (useful for the command line interface)
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+console.setFormatter(formatter)
+logger.addHandler(console)
 
 
 @click.group()
@@ -44,9 +63,11 @@ def cli():
 
 
 @cli.command("ork2json")
-@click.option("--filepath", type=str, required=True, help="The path to the .ork file.")
 @click.option(
-    "--output", type=str, required=False, help="The path to the output folder."
+    "--filepath", type=click.Path(), required=True, help="The path to the .ork file."
+)
+@click.option(
+    "--output", type=click.Path(), required=False, help="The path to the output folder."
 )
 @click.option(
     "--eng",
@@ -57,7 +78,7 @@ def cli():
 )
 @click.option(
     "--ork_jar",
-    type=str,
+    type=click.Path(),
     default=None,
     required=False,
     help="The path to the OpenRocket .jar file.",
@@ -95,30 +116,39 @@ def ork2json(filepath, output=None, eng=None, ork_jar=None, verbose=False):
     --------
     >>> serializer ork2json("rocket.ork", "rocket", "motor.eng")
     """
+    log_level = logging.DEBUG if verbose else logging.WARNING
+    logger.setLevel(log_level)
 
-    # first check if the file exists
-    if os.path.exists(filepath) is False:
-        raise ValueError(
-            "The .ork file does not exist.\n" + "Please specify a valid path."
-        )
+    filepath = Path(filepath)
 
-    bs = BeautifulSoup(
-        open(filepath, encoding="utf-8").read(), features="xml", from_encoding="utf-8"
-    )
-    datapoints = bs.findAll("datapoint")
+    if not filepath.exists():
+        error = "[ork2json] The .ork file or zip archive does not exist. Please specify a valid path."
+        logger.error(error)
+        raise FileNotFoundError(error)
+
+    if filepath.suffix.lower() == ".ork":
+        extract_dir = filepath.parent
+        filepath = extract_ork_from_zip(filepath, extract_dir)
+        logger.info(f"[ork2json] Extracted .ork file to: '{filepath.as_posix()}'")
+
+    bs, datapoints = parse_ork_file(filepath)
 
     if len(datapoints) == 0:
-        raise ValueError(
-            "The file must contain the simulation data.\n"
+        error_msg = (
+            "[ork2json] The file must contain the simulation data.\n"
             + "Open the .ork file and run the simulation first."
         )
+        logger.error(error_msg)
+        raise ValueError(error_msg)
 
     data_labels = bs.find("databranch").attrs["types"].split(",")
     if "CG location" not in data_labels:
-        raise ValueError(
-            "The file must be in English.\n"
-            + "Open the .ork file and change the language to English."
+        message = (
+            "[ork2json] The file must contain the simulation data.\n"
+            + "Open the .ork file and run the simulation first."
         )
+        logger.error(message)
+        raise ValueError(message)
 
     if not ork_jar:
         # get any .jar file in the current directory that starts with "OpenRocket"
@@ -127,49 +157,51 @@ def ork2json(filepath, output=None, eng=None, ork_jar=None, verbose=False):
         ]
         if len(ork_jar) == 0:
             raise ValueError(
-                "It was impossible to find the OpenRocket .jar file in the current directory.\n"
+                "[ork2json] It was impossible to find the OpenRocket .jar file in the current directory.\n"
                 + "Please specify the path to the .jar file."
             )
         ork_jar = ork_jar[0]
-        # print to the user that the .jar file was found, and show the name of the file
-        if verbose:
-            print(f"[ork2json] Found OpenRocket .jar file: {ork_jar}")
+        logger.info(
+            f"[ork2json] Found OpenRocket .jar file: '{Path(ork_jar).as_posix()}'"
+        )
 
     if not output:
         # get the same folder as the .ork file
         output = os.path.dirname(filepath)
-        if verbose:
-            print(f"[ork2json] Output folder not specified. Using {output} instead.")
+        logger.warning(
+            f"[ork2json] Output folder not specified. Using '{Path(output).as_posix()}' instead."
+        )
 
     # orhelper options are: OFF, ERROR, WARN, INFO, DEBUG, TRACE and ALL
-    log_level = "OFF" if verbose else "OFF"
+    # log_level = "OFF" if verbose else "OFF"
     # TODO: even if the log level is set to OFF, the orhelper still prints msgs
 
-    with orhelper.OpenRocketInstance(ork_jar, log_level=log_level) as instance:
+    with orhelper.OpenRocketInstance(ork_jar, log_level="OFF") as instance:
         # create the output folder if it does not exist
         if os.path.exists(output) is False:
             os.mkdir(output)
 
         orh = orhelper.Helper(instance)
-        ork = orh.load_doc(filepath)
+        ork = orh.load_doc(str(filepath))
 
         settings = ork_extractor(
             bs=bs,
-            filepath=filepath,
+            filepath=str(filepath),
             output_folder=output,
             ork=ork,
             eng=eng,
-            verbose=verbose,
         )
 
         with open(os.path.join(output, "parameters.json"), "w") as convert_file:
             convert_file.write(
                 json.dumps(settings, indent=4, sort_keys=True, ensure_ascii=False)
             )
-            if verbose:
-                print(f"[ork2json] parameters.json file saved in {output}")
-
-    return None
+            logger.info(
+                f"[ork2json] The file 'parameters.json' was saved to: '{Path(output).as_posix()}'"
+            )
+            logger.info(
+                f"[ork2json] Operation completed successfully. You can now use the 'parameters.json' file to run a simulation."
+            )
 
 
 @cli.command("ork2py")
@@ -202,7 +234,6 @@ def ork2py(
         _description_
     """
     get_dict = ork2json(filepath, output, eng, ork_jar)
-    return None
 
 
 @cli.command("ork2ipynb")
@@ -212,4 +243,3 @@ def ork2py(
 @click.option("--ork_jar", type=str, default=None, required=False)
 def ork2ipynb(filepath, output, eng=None, ork_jar=None):
     get_dict = ork2json(filepath, output, eng, ork_jar)
-    return None

@@ -1,10 +1,16 @@
+import logging
 import os
+from pathlib import Path
 
 import numpy as np
 import yaml
 
+from .._helpers import _dict_to_string
 
-def search_motor(bs, datapoints, data_labels, time_vector, verbose=False):
+logger = logging.getLogger(__name__)
+
+
+def search_motor(bs, datapoints, data_labels, time_vector):
     """Search for the motor properties in the .ork file. The only property that
     is not included is the thrust curve, which is generated in the
     generate_thrust_curve function. Only rocketpy.SolidMotor class would be able
@@ -20,9 +26,6 @@ def search_motor(bs, datapoints, data_labels, time_vector, verbose=False):
         The labels of the datapoints.
     time_vector : list
         The time vector of the simulation.
-    verbose : bool, optional
-        Whether or not to print a message of successful execution, by default
-        False.
 
     Returns
     -------
@@ -39,6 +42,7 @@ def search_motor(bs, datapoints, data_labels, time_vector, verbose=False):
     # retrieve motor geometry
     motor_length = float(bs.find("motormount").find("length").text)
     motor_radius = float(bs.find("motormount").find("diameter").text) / 2
+    logger.info("Collected motor geometry: motor length and motor radius.")
 
     # get motor mass properties
     total_propellant_mass, motor_dry_mass, burnout_position = __get_motor_mass(
@@ -60,9 +64,11 @@ def search_motor(bs, datapoints, data_labels, time_vector, verbose=False):
     ) / grain_number
     grain_density = total_propellant_mass / (grain_volume * grain_number)
     grains_center_of_mass_position = motor_length / 2
+    logger.info("Calculated motor mass properties.")
 
     # retrieve burnout time
     burnout_time = time_vector[burnout_position]
+    logger.info("Collected burnout time.")
 
     # get nozzle properties (impossible to retrieve from .ork file)
     throat_radius = 1.0 * grain_initial_inner_radius
@@ -89,12 +95,9 @@ def search_motor(bs, datapoints, data_labels, time_vector, verbose=False):
         "nozzle_position": nozzle_position,
         "coordinate_system_orientation": coordinate_system_orientation,
     }
-
-    if verbose:
-        print(
-            f"[Motor] Successfully configured motor: \n{yaml.dump(settings, default_flow_style=False)}"
-        )
-
+    logger.info(
+        f"Successfully configured the motor.\n" + _dict_to_string(settings, indent=23)
+    )
     return settings
 
 
@@ -124,26 +127,30 @@ def generate_thrust_curve(
         float(datapoint.text.split(",")[data_labels.index("Thrust")])
         for datapoint in datapoints
     ]
+    logger.info("Collected thrust vector")
 
     # convert to numpy array
     thrust = np.array([time_vector, thrust]).T
 
     # sort by time
     thrust = thrust[thrust[:, 0].argsort()]
+    logger.info("The thrust points were sorted to be in ascending order")
 
     # clip the thrust curve to remove negative values
     thrust[thrust[:, 1] < 0, 1] = 0
+    logger.info("Successfully clipped the thrust curve to remove negative values")
 
     # remove any items with thrust lower than 0.0001 N
     thrust = thrust[thrust[:, 1] > 0.0001, :]
+    logger.info("Successfully created the thrust curve")
 
     # save to a csv file
     source_name = os.path.join(folder_path, "thrust_source.csv")
     np.savetxt(source_name, thrust, delimiter=",", fmt="%1.5f")
 
-    if verbose:
-        print(f"[Thrust] Successfully generated thrust curve: {source_name}")
-
+    logger.info(
+        f"Successfully saved the thrust curve to: '{Path(source_name).as_posix()}'"
+    )
     return source_name
 
 
@@ -173,6 +180,7 @@ def __get_motor_mass(datapoints, data_labels):
             for datapoint in datapoints
         ]
         motor_dry_mass = min(prop_mass_vector)
+        logger.info("The motor dry mass is %.3f kg.", motor_dry_mass)
     elif "Motor mass" in data_labels:
         motor_mass = np.array(
             [
@@ -183,6 +191,7 @@ def __get_motor_mass(datapoints, data_labels):
         motor_dry_mass = min(motor_mass)
         prop_mass_vector = motor_mass - motor_dry_mass
         prop_mass_vector = list(prop_mass_vector)
+        logger.info("The motor dry mass is %.3f kg.", motor_dry_mass)
 
     normalize = np.array(prop_mass_vector)
     normalize = normalize - normalize[np.argmin(normalize)]
@@ -193,4 +202,9 @@ def __get_motor_mass(datapoints, data_labels):
     # a: to ensure that we are using the propellant mass, without the motor mass.
     #    Also, to ensure the final propellant mass is zero.
 
+    logger.info(
+        "The total propellant mass is %.3f kg. The motor dry mass is %.3f kg.",
+        total_propellant_mass,
+        motor_dry_mass,
+    )
     return total_propellant_mass, motor_dry_mass, burnout_position
