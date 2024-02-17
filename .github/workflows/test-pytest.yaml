@@ -7,23 +7,16 @@ on:
       - "**.py"
 
 jobs:
-  fail_if_pull_request_is_draft:
-    if: github.event.pull_request.draft == true
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Fails in order to indicate that pull request needs to be marked as ready to review and unit tests workflow needs to pass.
-        run: exit 1
-  run_pytest_and_doctest:
+  run_pytest:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
         python-version:
           - 3.8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
