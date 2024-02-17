@@ -8,6 +8,8 @@ import orhelper
 from bs4 import BeautifulSoup
 from orhelper import OrLogLevel
 
+from open_rocket_serializer.nb_builder import NotebookBuilder
+
 from ._helpers import extract_ork_from_zip, parse_ork_file
 from .ork_extractor import ork_extractor
 
@@ -242,4 +244,6 @@ def ork2py(
 @click.option("--eng", type=str, default=None, required=False)
 @click.option("--ork_jar", type=str, default=None, required=False)
 def ork2ipynb(filepath, output, eng=None, ork_jar=None):
-    get_dict = ork2json(filepath, output, eng, ork_jar)
+    ork2json(filepath, output, eng, ork_jar)
+    instance = NotebookBuilder(parameters_json=output + "/parameters.json")
+    instance.build(destination=output)
