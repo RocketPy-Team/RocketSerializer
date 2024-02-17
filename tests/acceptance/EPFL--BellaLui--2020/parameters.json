@@ -85,5 +85,14 @@
         "inclination": 90.0,
         "heading": 90.0
     },
-    "stored_results": {}
+    "stored_results": {
+        "max_altitude": 1190.0,
+        "max_velocity": 189.56,
+        "max_acceleration": 122.07,
+        "max_mach": 0.5587,
+        "time_to_apogee": 14.851,
+        "flight_time": 92.782,
+        "ground_hit_velocity": 26.142,
+        "launch_rod_velocity": 14.728
+    }
 }

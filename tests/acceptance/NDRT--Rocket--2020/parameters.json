@@ -1,7 +1,7 @@
 {
     "id": {
         "rocket_name": "Rocket",
-        "comment": "Actual weight: 68 oz\n\nNoseconre + epoxy: 69.7 oz",
+        "comment": "Actual weight: 68 ozNoseconre + epoxy: 69.7 oz",
         "designer": null,
         "filepath": "examples/NDRT--Rocket--2020/rocket.ork"
     },
@@ -104,5 +104,14 @@
         "inclination": 85.0,
         "heading": 90.0
     },
-    "stored_results": {}
+    "stored_results": {
+        "max_altitude": 1085.9,
+        "max_velocity": 145.01,
+        "max_acceleration": 67.386,
+        "max_mach": 0.42789,
+        "time_to_apogee": 15.761,
+        "flight_time": 86.725,
+        "ground_hit_velocity": 4.7426,
+        "launch_rod_velocity": 17.993
+    }
 }

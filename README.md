@@ -31,8 +31,13 @@ The options are the following:
 
 ### Limitations
 
-- Only a single nosecone is supported.
-- Only a single stage is supported.
+This code won't work for your rocket if it has any of the following features:
+
+- Your file wasn't saved in English
+- Your file doesn't contain simulation data
+- Your rocket has more than one stage
+- Your rocket has more than one engine
+- Your rocket has more than one nosecone
 
 ### Deserialization
 
