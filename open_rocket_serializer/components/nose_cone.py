@@ -1,7 +1,13 @@
+import logging
+
 import yaml
 
+from .._helpers import _dict_to_string
 
-def search_nosecone(bs, elements, verbose=False):
+logger = logging.getLogger(__name__)
+
+
+def search_nosecone(bs, elements):
     """Search for the nosecone in the bs and return the settings as a dict.
 
     Parameters
@@ -10,9 +16,6 @@ def search_nosecone(bs, elements, verbose=False):
         The BeautifulSoup object of the .ork file.
     elements : dict
         Dictionary with the elements of the rocket.
-    verbose : bool, optional
-        Whether or not to print a message of successful execution, by default
-        False.
 
     Returns
     -------
@@ -31,30 +34,31 @@ def search_nosecone(bs, elements, verbose=False):
             )
         )
         if len(nosecones) == 0:
-            if verbose:
-                print("[Nosecone] Could not fetch the nosecone")
+            logger.info("Could not fetch a nosecone")
             return settings
         if len(nosecones) > 1:
-            if verbose:
-                print("[Nosecone] Multiple nosecones found, using only the first one")
+            logger.info("Multiple nosecones found, using only the first one")
         nosecone = nosecones[0]  # only the first nosecone is considered
 
     length = float(nosecone.find("length").text)
     kind = nosecone.find("shape").text
     distance_to_cm = elements[name]["distance_to_cm"]
+    logger.info(
+        f"Collected the dimensions of the nosecone: length, shape and distance to CM"
+    )
 
     if kind == "haack":
+        logger.info("Nosecone is a haack nosecone, searching for the shape parameter")
+
         shape_parameter = float(nosecone.find("shapeparameter").text)
         kind = "Von Karman" if shape_parameter == 0.0 else "lvhaack"
         settings.update({"noseShapeParameter": shape_parameter})
+        logger.info(f"Shape parameter of the nosecone: {shape_parameter}")
 
     settings = {
         "length": length,
         "kind": kind,
         "distance_to_cm": distance_to_cm,
     }
-    if verbose:
-        print(
-            f"[Nosecone] Nosecone setting defined: \n{yaml.dump(settings, default_flow_style=False)}"
-        )
+    logger.info("Nosecone setting defined:\n" + _dict_to_string(settings, indent=23))
     return settings

@@ -21,7 +21,6 @@ def get_settings(filepath, output, ork):
         output_folder=output,
         ork=ork,
         eng=None,
-        verbose=False,
     )
     return settings
 

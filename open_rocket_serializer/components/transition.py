@@ -1,7 +1,13 @@
+import logging
+
 import yaml
 
+from .._helpers import _dict_to_string
 
-def search_transitions(bs, elements, ork, rocket_radius, verbose=False):
+logger = logging.getLogger(__name__)
+
+
+def search_transitions(bs, elements, ork, rocket_radius):
     """Search for the transitions in the bs and return the settings as a dict.
 
     Parameters
@@ -26,11 +32,14 @@ def search_transitions(bs, elements, ork, rocket_radius, verbose=False):
     settings = {}
     transitions = bs.findAll("transition")
     top_radius = rocket_radius  # TODO: this is not so good, but it works for now
-    if verbose:
-        print(f"[Transitions] {len(transitions)} transitions were found")
+    logger.info(f"A total of {len(transitions)} transitions were found")
 
     for idx, transition in enumerate(transitions):
+        logger.info(f"Starting to collect the settings of the transition number {idx}")
+
         label = transition.find("name").text
+        logger.info(f"Collected the name of the transition number {idx}")
+
         transition_ork = [ele for ele in ork.getRocket().getChild(0).getChildren()][-1]
         top_radius = float(transition_ork.getForeRadius())
         bottom_radius = (
@@ -39,18 +48,20 @@ def search_transitions(bs, elements, ork, rocket_radius, verbose=False):
             else float(transition.find("aftradius").text)
         )
         length = float(transition.find("length").text)
+        logger.info(f"Collected the dimensions of the transition number {idx}")
 
         transition_setting = {
-            f"name": label,
-            f"top_radius": top_radius,
-            f"bottom_radius": bottom_radius,
-            f"length": length,
-            f"distance_to_cm": elements[label]["distance_to_cm"],
+            "name": label,
+            "top_radius": top_radius,
+            "bottom_radius": bottom_radius,
+            "length": length,
+            "distance_to_cm": elements[label]["distance_to_cm"],
         }
         settings[idx] = transition_setting
+        logger.info(
+            f"The transition number {idx} was defined with the following settings:\n"
+            + _dict_to_string(transition_setting, indent=23)
+        )
 
-        if verbose:
-            print(
-                f"[Transitions][{idx}] setting defined: \n{yaml.dump(transition_setting, default_flow_style=False)}"
-            )
+    logger.info(f"All the {len(transitions)} transition settings were defined")
     return settings
