@@ -20,49 +20,62 @@ def is_sub_component(ork):
         True if `ork` is a sub-component (at least two levels below the root
         object), False otherwise.
     """
-    i = 0
+    level = 0
     root = ork.getRoot()
     while ork != root:
         ork = ork.getParent()
-        if root != ork.getParent():
-            i += 1
-    return i > 1  # if i > 1, then ork is a sub-component
+        level += 1
+    return level > 1
 
 
-def calculate_distance_to_cg(ork, rocket_cg, top_position):
+def parent_is_a_stage(ork) -> bool:
+    # Verify if the parent of the object is a Stage or not.
+    try:
+        parent = ork.getParent()
+    except AttributeError:
+        return False
+
+    return parent.getClass().getSimpleName() in ["Stage", "AxialStage"]
+
+
+def calculate_distance_to_the_nose_tip(ork, top_position: float):
+    # NOTE: Always considering the nose tip as the reference point, it's the 0.
+
+    if ork.getClass().getSimpleName() in ["Rocket"]:
+        return 0
+
     if is_sub_component(ork) == True:
         try:
-            element_position = ork.getRelativePosition().toString()
-        except AttributeError:
-            # "object has no attribute 'getRelativePosition'"
-            element_position = "Top of the parent component"
-        try:
-            relative_position = top_position + ork.getPositionValue()
+            distance_to_nose = top_position + ork.getPositionValue()
         except AttributeError:
             # "object has no attribute 'getPositionValue'"
-            relative_position = top_position
-
-        if element_position == "Bottom of the parent component":
-            relative_position += ork.getParent().getLength()
-        elif element_position == "Middle of the parent component":
-            relative_position += ork.getParent().getLength() / 2
+            if parent_is_a_stage(ork):
+                distance_to_nose = top_position
+            else:
+                distance_to_nose = top_position + ork.getPosition().x
     else:
-        relative_position = top_position + ork.getLength()
-
-    if (rocket_cg - relative_position) < 0:
-        relative_position -= ork.getLength()
-
-    distance_to_cg = rocket_cg - (relative_position)
-    return distance_to_cg
+        distance_to_nose = top_position + ork.getLength()
+    return distance_to_nose
 
 
-def process_elements_position(ork, elements, rocket_cg, rocket_mass, top_position=0):
+def process_elements_position(
+    ork, elements, center_of_dry_mass, rocket_mass, top_position=0
+):
+    if ork.getClass().getSimpleName() in ["Parachute", "MassComponent"]:
+        # These classes are irrelevant for our work
+        return elements
+
     element = {
+        "type": ork.getClass().getSimpleName(),
+        "name": ork.getName(),
         "length": ork.getLength(),
-        "CM": ork.getCG().x,
-        "distance_to_cm": calculate_distance_to_cg(ork, rocket_cg, top_position),
+        "position": calculate_distance_to_the_nose_tip(ork, top_position),
     }
-    logger.info("Starting to process '%s'", ork.getName())
+    logger.info(
+        "Starting to process element '%s' of type '%s'",
+        ork.getName(),
+        ork.getClass().getSimpleName(),
+    )
 
     elements[ork.getName()] = element
     i = 0
@@ -75,14 +88,12 @@ def process_elements_position(ork, elements, rocket_cg, rocket_mass, top_positio
         try:
             child = ork.getChild(i)
             new_elements = process_elements_position(
-                child, {}, rocket_cg, rocket_mass, top_position
+                child, {}, center_of_dry_mass, rocket_mass, top_position
             )
             elements.update(new_elements)
             logger.info("Child '%s' processed", child.getName())
 
-            if not is_sub_component(child):
-                top_position += child.getLength()
-                logger.info("The child '%s' is not a sub-component", child.getName())
+            top_position += child.getLength()
 
             i += 1
             logger.info("Moving to the next child")
