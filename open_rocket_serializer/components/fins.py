@@ -1,7 +1,4 @@
 import logging
-from pathlib import Path
-
-import yaml
 
 from .._helpers import _dict_to_string
 
@@ -25,7 +22,7 @@ def search_trapezoidal_fins(bs, elements):
         Dictionary with the settings for the trapezoidal fins. The keys are
         integers and the values are dicts containing the settings for each
         trapezoidal fin set. The keys of the trapezoidal fin set dicts are:
-        "name", "number", "root_chord", "tip_chord", "span", "distance_to_cm",
+        "name", "number", "root_chord", "tip_chord", "span", "position",
         "sweep_length", "sweep_angle", "cant_angle", "section".
     """
     settings = {}
@@ -76,27 +73,23 @@ def search_trapezoidal_fins(bs, elements):
         )
         logger.info(f"Sweep angle and length retrieved: {sweep_length}")
 
-        fin_distance_to_cm = element["distance_to_cm"]
-        logger.info(f"Fin distance to cm retrieved: {fin_distance_to_cm}")
-
         cant_angle = float(fin.find("cant").text)
         logger.info(f"Cant angle retrieved: {cant_angle}")
 
         section = fin.find("crosssection").text
         logger.info(f"Crosssection format retrieved")
 
-        # save to a dictionary
         fin_settings = {
-            f"name": label,
-            f"number": n_fin,
-            f"root_chord": root_chord,
-            f"tip_chord": tip_chord,
-            f"span": span,
-            f"distance_to_cm": fin_distance_to_cm,
-            f"sweep_length": sweep_length,
-            f"sweep_angle": sweep_angle,
-            f"cant_angle": cant_angle,
-            f"section": section,
+            "name": label,
+            "number": n_fin,
+            "root_chord": root_chord,
+            "tip_chord": tip_chord,
+            "span": span,
+            "position": element["position"],
+            "sweep_length": sweep_length,
+            "sweep_angle": sweep_angle,
+            "cant_angle": cant_angle,
+            "section": section,
         }
 
         settings[idx] = fin_settings

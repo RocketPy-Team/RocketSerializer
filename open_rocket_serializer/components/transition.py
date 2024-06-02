@@ -27,12 +27,17 @@ def search_transitions(bs, elements, ork, rocket_radius):
         Dictionary with the settings for the transitions. The keys are integers
         and the values are dicts containing the settings for each transition.
         The keys of the transition dicts are: "name", "top_radius",
-        "bottom_radius", "length", "distance_to_cm".
+        "bottom_radius", "length", "position".
     """
     settings = {}
     transitions = bs.findAll("transition")
-    top_radius = rocket_radius  # TODO: this is not so good, but it works for now
     logger.info(f"A total of {len(transitions)} transitions were found")
+
+    transitions_ork = [
+        ele
+        for ele in ork.getRocket().getChild(0).getChildren()
+        if ele.getClass().getSimpleName() == "Transition"
+    ]
 
     for idx, transition in enumerate(transitions):
         logger.info(f"Starting to collect the settings of the transition number {idx}")
@@ -40,7 +45,7 @@ def search_transitions(bs, elements, ork, rocket_radius):
         label = transition.find("name").text
         logger.info(f"Collected the name of the transition number {idx}")
 
-        transition_ork = [ele for ele in ork.getRocket().getChild(0).getChildren()][-1]
+        transition_ork = transitions_ork[idx]
         top_radius = float(transition_ork.getForeRadius())
         bottom_radius = (
             transition.find("aftradius").text
@@ -55,7 +60,7 @@ def search_transitions(bs, elements, ork, rocket_radius):
             "top_radius": top_radius,
             "bottom_radius": bottom_radius,
             "length": length,
-            "distance_to_cm": elements[label]["distance_to_cm"],
+            "position": elements[label]["position"],
         }
         settings[idx] = transition_setting
         logger.info(

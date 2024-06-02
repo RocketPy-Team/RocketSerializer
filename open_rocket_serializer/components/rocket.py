@@ -1,10 +1,3 @@
-# radius,
-# mass,
-# inertia,
-
-# center_of_mass_without_motor,
-# coordinate_system_orientation="tail_to_nose", done
-
 import logging
 
 import numpy as np
@@ -35,20 +28,27 @@ def search_rocket(bs, datapoints, data_labels, ork, burnout_position):
     logger.info("Collected rocket inertia.")
 
     # get center of mass
-    empty_rocket_cm = cg_location_vector[burnout_position]
-    # TODO: needs correction bc the motor's structure is also included
-    settings["center_of_mass_without_propellant"] = empty_rocket_cm
+    center_of_dry_mass = cg_location_vector[burnout_position]
+    center_of_mass = cg_location_vector[0]
+    rocket_dry_mass = settings["mass"]
+    propellant_mass = get_mass(datapoints, data_labels, 0) - rocket_dry_mass
+
+    center_of_propellant_mass = (
+        center_of_mass * (rocket_dry_mass + propellant_mass)
+        - rocket_dry_mass * center_of_dry_mass
+    ) / propellant_mass
+    motor_position = center_of_propellant_mass
+    settings["center_of_mass_without_propellant"] = center_of_dry_mass
     logger.info("Collected rocket center of mass.")
 
     # get coordinate system orientation
-    # TODO: check if it can be different from tail_to_nose in some cases
-    settings["coordinate_system_orientation"] = "tail_to_nose"
+    settings["coordinate_system_orientation"] = "nose_to_tail"
 
     logger.info(
         "All the Rocket information was collected:\n%s",
         _dict_to_string(settings, indent=23),
     )
-    return settings
+    return settings, motor_position
 
 
 def get_rocket_radius(ork):
