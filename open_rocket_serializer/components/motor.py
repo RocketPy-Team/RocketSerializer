@@ -3,14 +3,13 @@ import os
 from pathlib import Path
 
 import numpy as np
-import yaml
 
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
 
 
-def search_motor(bs, datapoints, data_labels, time_vector):
+def search_motor(bs, datapoints, data_labels):
     """Search for the motor properties in the .ork file. The only property that
     is not included is the thrust curve, which is generated in the
     generate_thrust_curve function. Only rocketpy.SolidMotor class would be able
@@ -48,7 +47,8 @@ def search_motor(bs, datapoints, data_labels, time_vector):
     total_propellant_mass, motor_dry_mass, burnout_position = __get_motor_mass(
         datapoints, data_labels
     )
-    center_of_dry_mass = motor_length / 2
+    motor_dry_mass = 0  # If NOTE: dry inertia is 0, this should ALWAYS be 0 too.
+    center_of_dry_mass = 0
     dry_inertia = (0, 0, 0)  # impossible to retrieve from .ork file
 
     # define grains properties
@@ -63,23 +63,18 @@ def search_motor(bs, datapoints, data_labels, time_vector):
         * grain_initial_height
     ) / grain_number
     grain_density = total_propellant_mass / (grain_volume * grain_number)
-    grains_center_of_mass_position = motor_length / 2
+    grains_center_of_mass_position = 0
     logger.info("Calculated motor mass properties.")
-
-    # retrieve burnout time
-    burnout_time = time_vector[burnout_position]
-    logger.info("Collected burnout time.")
 
     # get nozzle properties (impossible to retrieve from .ork file)
     throat_radius = 1.0 * grain_initial_inner_radius
     nozzle_radius = 1.5 * grain_initial_inner_radius
-    nozzle_position = 0
+    nozzle_position = -motor_length / 2
 
     # set other motor properties
     coordinate_system_orientation = "nozzle_to_combustion_chamber"
 
     settings = {
-        "burn_time": burnout_time,
         "grain_density": grain_density,
         "grain_initial_inner_radius": grain_initial_inner_radius,
         "grain_outer_radius": motor_radius,
@@ -88,7 +83,7 @@ def search_motor(bs, datapoints, data_labels, time_vector):
         "throat_radius": throat_radius,
         "dry_mass": motor_dry_mass,
         "dry_inertia": dry_inertia,
-        "center_of_dry_mass": center_of_dry_mass,
+        "center_of_dry_mass_position": center_of_dry_mass,
         "grains_center_of_mass_position": grains_center_of_mass_position,
         "grain_number": grain_number,
         "grain_separation": grain_separation,

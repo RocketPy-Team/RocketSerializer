@@ -30,7 +30,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     output_folder : str
         Path to the output folder.
     ork : orhelper
-        OpenRocket object.
+        An object representing the OpenRocket document.
     eng : str
         Engine file name.
     verbose : bool, optional
@@ -52,7 +52,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     logger.info("Initialized data vectors from the ORK file.")
 
     # Retrieve the motor properties
-    motors = search_motor(bs, datapoints, data_labels, time_vector)
+    motors = search_motor(bs, datapoints, data_labels)
     _, _, burnout_position = __get_motor_mass(datapoints, data_labels)
     logger.info("Motor parameters retrieved.")
 
@@ -63,19 +63,22 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     environment = search_environment(bs)
     logger.info("Environment parameters retrieved.")
 
-    rocket = search_rocket(bs, datapoints, data_labels, ork, burnout_position)
+    rocket, motor_position = search_rocket(
+        bs, datapoints, data_labels, ork, burnout_position
+    )
+    motors["position"] = motor_position
     logger.info("Rocket parameters retrieved.")
 
     flight = search_launch_conditions(bs)
     logger.info("Flight conditions retrieved.")
 
     # process different elements of the rocket
-    empty_rocket_cm = rocket["center_of_mass_without_propellant"]
+    center_of_dry_mass = rocket["center_of_mass_without_propellant"]
     rocket_mass = rocket["mass"]
     rocket_radius = rocket["radius"]
 
     elements = process_elements_position(
-        ork.getRocket(), {}, empty_rocket_cm, rocket_mass, top_position=0
+        ork.getRocket(), {}, center_of_dry_mass, rocket_mass, top_position=0
     )
     logger.info("The elements are:\n%s", _dict_to_string(elements, indent=23))
 
