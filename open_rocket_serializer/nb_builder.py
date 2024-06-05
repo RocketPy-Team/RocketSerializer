@@ -233,19 +233,19 @@ class NotebookBuilder:
 
         # adding nosecone
         surface_text += "nosecone, "
-        position_text += f"{self.parameters["nosecones"]["distance_to_cm"]
+        position_text += f"{self.parameters["nosecones"]["position"]
                             +self.parameters["rocket"]["center_of_mass_without_propellant"]}, "
         
         # adding trapezoidal 
         for i in range(len(self.parameters["trapezoidal_fins"])):
             surface_text += f"trapezoidal_fins[{i}], "
-            position_text += f"{self.parameters["trapezoidal_fins"][str(i)]['distance_to_cm']
+            position_text += f"{self.parameters["trapezoidal_fins"][str(i)]['position']
                                 +self.parameters["rocket"]["center_of_mass_without_propellant"]}, "
         
         # adding tails
         for i in range(len(self.parameters["tails"])):
             surface_text += f"tails[{i}], "
-            position_text += f"{self.parameters["tails"][str(i)]["distance_to_cm"]}, "
+            position_text += f"{self.parameters["tails"][str(i)]["position"]}, "
         
         # closing sufarces and positions text
         surface_text = surface_text[:-2] + "]"
