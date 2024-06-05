@@ -1,7 +1,5 @@
 import logging
 
-import yaml
-
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
@@ -20,8 +18,7 @@ def search_nosecone(bs, elements):
     Returns
     -------
     settings : dict
-        Dictionary with the settings for the nosecone. The keys are: "length",
-        "kind", "distance_to_cm".
+        Dictionary with the settings for the nosecone.
     """
     settings = {}
     nosecone = bs.find("nosecone")  # TODO: allow for multiple nosecones
@@ -42,9 +39,11 @@ def search_nosecone(bs, elements):
 
     length = float(nosecone.find("length").text)
     kind = nosecone.find("shape").text
-    distance_to_cm = elements[name]["distance_to_cm"]
+    base_radius = float(nosecone.find("aftradius").text)
+    position = elements[name]["position"]
+
     logger.info(
-        f"Collected the dimensions of the nosecone: length, shape and distance to CM"
+        f"Collected the dimensions of the nosecone: length, shape and position."
     )
 
     if kind == "haack":
@@ -56,9 +55,11 @@ def search_nosecone(bs, elements):
         logger.info(f"Shape parameter of the nosecone: {shape_parameter}")
 
     settings = {
-        "length": length,
+        "name": name,
         "kind": kind,
-        "distance_to_cm": distance_to_cm,
+        "length": length,
+        "base_radius": base_radius,
+        "position": position,
     }
     logger.info("Nosecone setting defined:\n" + _dict_to_string(settings, indent=23))
     return settings

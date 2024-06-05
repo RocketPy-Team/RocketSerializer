@@ -22,31 +22,33 @@
         "rocket_name": "Rocket"
     },
     "motors": {
-        "burn_time": 3.533,
-        "center_of_dry_mass": 0.3105,
+        "center_of_dry_mass_position": 0,
         "coordinate_system_orientation": "nozzle_to_combustion_chamber",
         "dry_inertia": [
             0,
             0,
             0
         ],
-        "dry_mass": 0.0,
+        "dry_mass": 0,
         "grain_density": 1202.7971321820446,
         "grain_initial_height": 0.621,
         "grain_initial_inner_radius": 0.01875,
         "grain_number": 1,
         "grain_outer_radius": 0.0375,
         "grain_separation": 0,
-        "grains_center_of_mass_position": 0.3105,
-        "nozzle_position": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.3105,
         "nozzle_radius": 0.028124999999999997,
+        "position": 3.079819999999998,
         "throat_radius": 0.01875,
         "thrust_source": "examples\\NDRT--Rocket--2020\\thrust_source.csv"
     },
     "nosecones": {
-        "distance_to_cm": 1.0945,
+        "base_radius": 0.1016,
         "kind": "ogive",
-        "length": 0.6095999999999999
+        "length": 0.6095999999999999,
+        "name": "Nose cone",
+        "position": 0
     },
     "parachutes": {
         "0": {
@@ -71,7 +73,7 @@
     "rail_buttons": {},
     "rocket": {
         "center_of_mass_without_propellant": 1.7041,
-        "coordinate_system_orientation": "tail_to_nose",
+        "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "examples\\NDRT--Rocket--2020\\drag_curve.csv",
         "inertia": [
             0.15089,
@@ -94,18 +96,18 @@
     "tails": {
         "0": {
             "bottom_radius": 0.0776224,
-            "distance_to_cm": 0.3833,
             "length": 0.127,
             "name": "Transition",
-            "top_radius": 0.0776224
+            "position": 1.1938,
+            "top_radius": 0.1016
         }
     },
     "trapezoidal_fins": {
         "0": {
             "cant_angle": 0.0,
-            "distance_to_cm": -0.3786999999999998,
             "name": "Trapezoidal fin set",
             "number": 4,
+            "position": 3.3528000000000002,
             "root_chord": 0.15239999999999995,
             "section": "rounded",
             "span": 0.1651,

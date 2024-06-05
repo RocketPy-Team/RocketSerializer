@@ -18,41 +18,43 @@
     "id": {
         "comment": null,
         "designer": null,
-        "filepath": "examples\\EPFL--BellaLui--2020\\rocket.ork",
+        "filepath": "examples/EPFL--BellaLui--2020/rocket.ork",
         "rocket_name": "Foguete"
     },
     "motors": {
-        "burn_time": 2.5779,
-        "center_of_dry_mass": 0.2895,
+        "center_of_dry_mass_position": 0,
         "coordinate_system_orientation": "nozzle_to_combustion_chamber",
         "dry_inertia": [
             0,
             0,
             0
         ],
-        "dry_mass": 0.0,
+        "dry_mass": 0,
         "grain_density": 1378.7438125434685,
         "grain_initial_height": 0.579,
         "grain_initial_inner_radius": 0.0135,
         "grain_number": 1,
         "grain_outer_radius": 0.027,
         "grain_separation": 0,
-        "grains_center_of_mass_position": 0.2895,
-        "nozzle_position": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.2895,
         "nozzle_radius": 0.02025,
+        "position": 2.3379117844381234,
         "throat_radius": 0.0135,
         "thrust_source": "examples\\EPFL--BellaLui--2020\\thrust_source.csv"
     },
     "nosecones": {
-        "distance_to_cm": 1.317,
+        "base_radius": 0.078,
         "kind": "ogive",
-        "length": 0.242
+        "length": 0.242,
+        "name": "Ogiva",
+        "position": 0
     },
     "parachutes": {},
     "rail_buttons": {},
     "rocket": {
         "center_of_mass_without_propellant": 1.559,
-        "coordinate_system_orientation": "tail_to_nose",
+        "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "examples\\EPFL--BellaLui--2020\\drag_curve.csv",
         "inertia": [
             0.096246,
@@ -75,18 +77,18 @@
     "tails": {
         "0": {
             "bottom_radius": 0.0675,
-            "distance_to_cm": -1.0686000000000002,
             "length": 0.05,
             "name": "Cauda",
+            "position": 2.6276,
             "top_radius": 0.078
         }
     },
     "trapezoidal_fins": {
         "0": {
             "cant_angle": 0.0,
-            "distance_to_cm": 1.317,
             "name": "Conjunto de aletas trapezoidais",
             "number": 3,
+            "position": 2.3476,
             "root_chord": 0.28,
             "section": "square",
             "span": 0.2,
