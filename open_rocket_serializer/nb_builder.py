@@ -116,7 +116,7 @@ class NotebookBuilder:
         text += f"    dry_mass={self.parameters['motors']['dry_mass']},\n"
         text += (
             "    center_of_dry_mass_position="
-            + f"{self.parameters['motors']['center_of_dry_mass']},\n"
+            + f"{self.parameters['motors']['center_of_dry_mass_position']},\n"
         )
         text += (
             "    dry_inertia="
@@ -138,7 +138,7 @@ class NotebookBuilder:
             f"    grain_separation={self.parameters['motors']['grain_separation']},\n"
         )
         text += f"    nozzle_radius={self.parameters['motors']['nozzle_radius']},\n"
-        text += f"    burn_time={self.parameters['motors']['burn_time']},\n"
+        # text += f"    burn_time={self.parameters['motors']['burn_time']},\n"
         text += f"    nozzle_position={self.parameters['motors']['nozzle_position']},\n"
         text += f"    throat_radius={self.parameters['motors']['throat_radius']},\n"
         text += (
@@ -192,10 +192,9 @@ class NotebookBuilder:
         self.add_surfaces_to_rocket(nb)
 
         # add the motor to the rocket
-        # TODO: kinda needs to fix this
         text = (
             "rocket.add_motor(motor, position= "
-            + f"{self.parameters['rocket']['radius']})\n"
+            + f"{self.parameters['motors']['position']})\n"
         )
         nb["cells"].append(nbf.v4.new_code_cell(text))
 
@@ -225,10 +224,32 @@ class NotebookBuilder:
         text = "### Adding surfaces to the rocket\n"
         text += "Now that we have all the surfaces, we can add them to the rocket\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
+        text = "rocket.add_surfaces("
+        
+        # building surfaces and positions text
+        surface_text = "surfaces=["
+        position_text = "positions=["
 
-        # add a code cell
-        text = "rocket.add_surfaces"
+        # adding nosecone
+        surface_text += "nosecone, "
+        position_text += f"{self.parameters['nosecones']['position']}, "
 
+        # adding trapezoidal
+        for i in range(len(self.parameters["trapezoidal_fins"])):
+            surface_text += f"trapezoidal_fins[{i}], "
+            position_text += f"{self.parameters['trapezoidal_fins'][str(i)]['position']}, "
+
+        # adding tails
+        for i in range(len(self.parameters["tails"])):
+            surface_text += f"tails[{i}], "
+            position_text += f"{self.parameters['tails'][str(i)]['position']}, "
+
+        # closing surfaces and positions text
+        surface_text = surface_text[:-2] + "]"
+        position_text = position_text[:-2] + "]"
+        text += surface_text + ", " + position_text + ")"
+        nb["cells"].append(nbf.v4.new_code_cell(text))
+        # building trapezoidal fins text
         return nb
 
     def build_nosecones(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
