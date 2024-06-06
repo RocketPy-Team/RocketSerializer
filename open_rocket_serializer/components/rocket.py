@@ -3,6 +3,7 @@ import logging
 import numpy as np
 
 from .._helpers import _dict_to_string
+from ..components.nose_cone import search_nosecone
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +12,7 @@ def search_rocket(bs, datapoints, data_labels, ork, burnout_position):
     settings = {}
 
     # get radius
-    settings["radius"] = get_rocket_radius(ork)
+    settings["radius"] = get_rocket_radius(bs)
     logger.info("Collected rocket radius.")
 
     # get mass
@@ -51,12 +52,31 @@ def search_rocket(bs, datapoints, data_labels, ork, burnout_position):
     return settings, motor_position
 
 
-def get_rocket_radius(ork):
+def get_rocket_radius(bs):
     # TODO: Improve this. Usually breaks when the rocket has more than one tube.
     # logger.warning(
     #     "This function usually breaks when the rocket has more than one tube."
     # )
-    return ork.getRocket().getChild(0).getChild(1).getAftRadius()
+    bodytubes = bs.findAll("bodytube") # if there is no bodytubes (len == 0), there is no rocket
+    logger.info(f"A total of {len(bodytubes)} bodytubes were detected")
+
+    radius_vector = [i.find("radius").text for i in bodytubes]
+    logger.info("rocket radius founded: {}".format(radius_vector))
+
+    if 'auto' in radius_vector:
+        if len(radius_vector) == 1:
+            radius = search_nosecone(bs, elements_use="n")
+            return radius
+        else:
+            radius_vector_float = []
+            for i in radius_vector:
+                if i != 'auto':
+                    radius_vector_float.append(float(i))
+            radius = max(radius_vector_float)
+            return radius
+    else:
+        radius = max([float(i) for i in radius_vector])
+        return radius
 
 
 def get_mass(datapoints, data_labels, burnout_position):
