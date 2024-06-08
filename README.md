@@ -12,6 +12,39 @@ You can install Rocket Serializer using pip:
 pip install rocket-serializer
 ```
 
+## Requirements
+
+### Java
+
+You need Java to be installed on your system to use Rocket Serializer.
+We recommend downloading Java 17, which is required to run OpenRocket-23.09.
+
+https://www.oracle.com/java/technologies/downloads/
+
+### OpenRocket
+
+You also need to download the OpenRocket JAR file. You can download it from the
+following link:
+
+https://openrocket.info/downloads.html?vers=23.09#content-JAR
+
+Each version of OpenRocket has its own jar file, and it is important to use the
+correct java version to run the jar file.
+
+### Python Packages
+
+Once you download the package `rocket-serializer`, the following dependencies
+will be automatically installed:
+
+- bs4
+- click
+- lxml
+- numpy
+- orhelper
+- pyyaml
+- rocketpy
+- nbformat
+
 ## Usage - command line interface
 
 To use Rocket Serializer, you just need to use the cli option of the library.
@@ -42,26 +75,6 @@ This code won't work for your rocket if it has any of the following features:
 ### Deserialization
 
 Still to be done.
-
-## Requirements
-
-Rocket Serializer has the following requirements:
-
-- bs4
-- click
-- lxml
-- numpy
-- orhelper
-- pyyaml
-
-You can install them using the following command:
-
-```shell
-pip install -r requirements.txt
-```
-
-However, simply installing Rocket Serializer using pip will install all the
-requirements automatically.
 
 ## License
 
