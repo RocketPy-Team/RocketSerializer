@@ -48,7 +48,7 @@
         "kind": "ogive",
         "length": 0.6095999999999999,
         "name": "Nose cone",
-        "position": 0
+        "position": 0.0
     },
     "parachutes": {
         "0": {

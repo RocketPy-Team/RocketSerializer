@@ -16,8 +16,8 @@
         "rail_length": 5.7
     },
     "id": {
-        "comment": "Foguete voou no fim da tarde do dia 10 de agosto de 2019, mais precisamente às 17:56 no horário de Brasília. O apogeu registrado pelo altímetro comercial RRC3 foi de 872 metros, enquanto que nossas estimativas feitas com o uso do Rocketpy foram de 840-850 metros",
-        "designer": "Projeto Jupiter - Gerência 2019-2020",
+        "comment": "Foguete voou no fim da tarde do dia 10 de agosto de 2019, mais precisamente Ã s 17:56 no horÃ¡rio de BrasÃ­lia. O apogeu registrado pelo altÃ­metro comercial RRC3 foi de 872 metros, enquanto que nossas estimativas feitas com o uso do Rocketpy foram de 840-850 metros",
+        "designer": "Projeto Jupiter - GerÃªncia 2019-2020",
         "filepath": "examples/ProjetoJupiter--Valetudo--2019/rocket.ork",
         "rocket_name": "Valetudo"
     },
@@ -48,7 +48,7 @@
         "kind": "Von Karman",
         "length": 0.274169,
         "name": "Ogiva",
-        "position": 0
+        "position": 0.0
     },
     "parachutes": {
         "0": {
@@ -61,7 +61,13 @@
             "name": "Drogue_chute"
         }
     },
-    "rail_buttons": {},
+    "rail_buttons": {
+        "angular_position": 29.999999999999996,
+        "distance": 1.2515,
+        "lower_position": 2.399169,
+        "name": "Guia de lanÃ§amento",
+        "upper_position": 1.147669
+    },
     "rocket": {
         "center_of_mass_without_propellant": 1.4023,
         "coordinate_system_orientation": "nose_to_tail",
