@@ -85,8 +85,11 @@ def cli():
     required=False,
     help="The path to the OpenRocket .jar file.",
 )
+@click.option("--encoding", type=str, default="utf-8", required=False)
 @click.option("--verbose", type=bool, default=False, required=False)
-def ork2json(filepath, output=None, eng=None, ork_jar=None, verbose=False):
+def ork2json(
+    filepath, output=None, eng=None, ork_jar=None, encoding="utf-8", verbose=False
+):
     """Generates a .json file from the .ork file.
     The .json file will be generated in the output folder using the information
     of the .ork file. It is possible to specify the .eng file to extract the
@@ -194,7 +197,9 @@ def ork2json(filepath, output=None, eng=None, ork_jar=None, verbose=False):
             eng=eng,
         )
 
-        with open(os.path.join(output, "parameters.json"), "w") as convert_file:
+        with open(
+            os.path.join(output, "parameters.json"), "w", encoding=encoding
+        ) as convert_file:
             convert_file.write(
                 json.dumps(settings, indent=4, sort_keys=True, ensure_ascii=False)
             )
