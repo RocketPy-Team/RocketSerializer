@@ -55,7 +55,7 @@ def calculate_distance_to_the_nose_tip(ork, top_position: float):
                 distance_to_nose = top_position + ork.getPosition().x
     else:
         distance_to_nose = top_position + ork.getLength()
-    return distance_to_nose
+    return float(distance_to_nose)
 
 
 def process_elements_position(
@@ -66,9 +66,9 @@ def process_elements_position(
         return elements
 
     element = {
-        "type": ork.getClass().getSimpleName(),
-        "name": ork.getName(),
-        "length": ork.getLength(),
+        "type": str(ork.getClass().getSimpleName()),
+        "name": str(ork.getName()),
+        "length": float(ork.getLength()),
         "position": calculate_distance_to_the_nose_tip(ork, top_position),
     }
     logger.info(
@@ -76,8 +76,8 @@ def process_elements_position(
         ork.getName(),
         ork.getClass().getSimpleName(),
     )
-
-    elements[ork.getName()] = element
+    unique_id = hash(frozenset(element.items()))
+    elements[unique_id] = element
     i = 0
 
     while True:

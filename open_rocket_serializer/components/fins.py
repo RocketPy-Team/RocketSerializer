@@ -42,7 +42,14 @@ def search_trapezoidal_fins(bs, elements):
         )
         label = fin.find("name").text
         try:
-            element = elements[label]
+
+            def get_element_by_name(name):
+                for element in elements.values():
+                    if element["name"] == name:
+                        return element
+                return None
+
+            element = get_element_by_name(label)
             logger.info(f"Found the element '{label}' in the elements dictionary.")
         except KeyError:
             message = (

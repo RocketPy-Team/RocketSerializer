@@ -40,7 +40,19 @@ def search_nosecone(bs, elements):
     length = float(nosecone.find("length").text)
     kind = nosecone.find("shape").text
     base_radius = float(nosecone.find("aftradius").text)
-    position = elements[name]["position"]
+
+    def get_position(name, length):
+        count = 0
+        for element in elements.values():
+            if element["name"] == name and element["length"] == length:
+                count += 1
+                position = element["position"]
+        if count > 1:
+            logger.warning(
+                "Multiple nosecones with the same name and length, "
+                "using the last one found."
+            )
+        return position
 
     logger.info(
         f"Collected the dimensions of the nosecone: length, shape and position."
@@ -59,7 +71,7 @@ def search_nosecone(bs, elements):
         "kind": kind,
         "length": length,
         "base_radius": base_radius,
-        "position": position,
+        "position": get_position(name, length),
     }
     logger.info("Nosecone setting defined:\n" + _dict_to_string(settings, indent=23))
     return settings
