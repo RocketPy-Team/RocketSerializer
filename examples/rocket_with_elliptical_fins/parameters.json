@@ -1,0 +1,105 @@
+{
+    "elliptical_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Elliptical Fin Set",
+            "number": 4,
+            "position": 0.6250000000000001,
+            "root_chord": 0.09,
+            "section": "square",
+            "span": 0.08
+        }
+    },
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 90.0,
+        "rail_length": 1.0
+    },
+    "id": {
+        "comment": "This rocket doesn't exist, it is hear for testing purposes only.",
+        "designer": "Gui Fernandes",
+        "filepath": "examples/rocket_with_elliptical_fins/rocket.ork",
+        "rocket_name": "Rocket example with Elliptical Fins"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 692.6964523164174,
+        "grain_initial_height": 0.12219999694824218,
+        "grain_initial_inner_radius": 0.0095,
+        "grain_number": 1,
+        "grain_outer_radius": 0.019,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.06109999847412109,
+        "nozzle_radius": 0.014249999999999999,
+        "position": 0.6728055555555557,
+        "throat_radius": 0.0095,
+        "thrust_source": "examples\\rocket_with_elliptical_fins\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.025,
+        "kind": "ogive",
+        "length": 0.15000000000000002,
+        "name": "Nose Cone",
+        "position": 0.0
+    },
+    "parachutes": {},
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 0.489,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\rocket_with_elliptical_fins\\drag_curve.csv",
+        "inertia": [
+            0.000278,
+            0.000278,
+            0.024
+        ],
+        "mass": 0.437,
+        "radius": 0.025
+    },
+    "stored_results": {
+        "flight_time": 25.121,
+        "ground_hit_velocity": 61.047,
+        "launch_rod_velocity": 20.107,
+        "max_acceleration": 218.701,
+        "max_altitude": 662.045,
+        "max_mach": 0.536,
+        "max_velocity": 181.876,
+        "time_to_apogee": 9.735
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.015,
+            "length": 0.02500000000000002,
+            "name": "Transition",
+            "position": 0.20000000000000007,
+            "top_radius": 0.025
+        },
+        "1": {
+            "bottom_radius": 0.025,
+            "length": 0.11,
+            "name": "Transition",
+            "position": 0.4250000000000001,
+            "top_radius": 0.015
+        }
+    },
+    "trapezoidal_fins": {}
+}
