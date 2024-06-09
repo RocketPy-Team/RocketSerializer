@@ -25,13 +25,15 @@
             5.5915
         ],
         "center_of_mass_without_propellant": 1.4023,
-        "coordinate_system_orientation": "tail_to_nose",
+        "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "tests/acceptance/ProjetoJupiter--Valetudo--2019/drag_curve.csv"
     },
     "nosecones": {
-        "length": 0.274169,
+        "name": "Ogiva",
         "kind": "Von Karman",
-        "distance_to_cm": 1.1281310000000002
+        "length": 0.274169,
+        "base_radius": 0.04045000000000001,
+        "position": 0.0
     },
     "trapezoidal_fins": {
         "0": {
@@ -40,7 +42,7 @@
             "root_chord": 0.058,
             "tip_chord": 0.018000000000000002,
             "span": 0.077,
-            "distance_to_cm": -0.9196690000000001,
+            "position": 1.489969,
             "sweep_length": 0.03933010329337934,
             "sweep_angle": null,
             "cant_angle": 0.0,
@@ -59,27 +61,33 @@
             "deploy_altitude": null
         }
     },
-    "rail_buttons": {},
+    "rail_buttons": {
+        "name": "Guia de lançamento",
+        "upper_position": 0.8811690000000001,
+        "lower_position": 1.969169,
+        "distance": 1.0879999999999999,
+        "angular_position": 29.999999999999996
+    },
     "motors": {
-        "burn_time": 5.2902,
         "grain_density": 1728.4572172886988,
         "grain_initial_inner_radius": 0.0107,
         "grain_outer_radius": 0.0214,
         "grain_initial_height": 0.756,
         "nozzle_radius": 0.01605,
         "throat_radius": 0.0107,
-        "dry_mass": 0.0,
+        "dry_mass": 0,
         "dry_inertia": [
             0,
             0,
             0
         ],
-        "center_of_dry_mass": 0.378,
-        "grains_center_of_mass_position": 0.378,
+        "center_of_dry_mass_position": 0,
+        "grains_center_of_mass_position": 0,
         "grain_number": 1,
         "grain_separation": 0,
-        "nozzle_position": 0,
+        "nozzle_position": -0.378,
         "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "position": 2.052896709219859,
         "thrust_source": "tests/acceptance/ProjetoJupiter--Valetudo--2019/thrust_source.csv"
     },
     "flight": {

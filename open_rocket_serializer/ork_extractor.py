@@ -11,6 +11,7 @@ from .components.motor import __get_motor_mass, generate_thrust_curve, search_mo
 from .components.nose_cone import search_nosecone
 from .components.open_rocket_wrangler import process_elements_position
 from .components.parachute import search_parachutes
+from .components.rail_buttons import search_rail_buttons
 from .components.rocket import search_rocket
 from .components.stored_results import search_stored_results
 from .components.transition import search_transitions
@@ -85,6 +86,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     nosecones = search_nosecone(bs, elements)
     trapezoidal_fins = search_trapezoidal_fins(bs, elements)
     transitions = search_transitions(bs, elements, ork, rocket_radius)
+    rail_buttons = search_rail_buttons(bs, elements)
     parachutes = search_parachutes(bs)
     stored_results = search_stored_results(bs)
 
@@ -96,7 +98,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     settings["trapezoidal_fins"] = trapezoidal_fins
     settings["tails"] = transitions
     settings["parachutes"] = parachutes
-    settings["rail_buttons"] = {}  # TODO: implement rail buttons
+    settings["rail_buttons"] = rail_buttons
     settings["motors"] = motors
     settings["flight"] = flight
     settings["stored_results"] = stored_results
