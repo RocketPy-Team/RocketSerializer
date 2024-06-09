@@ -109,5 +109,98 @@ def search_trapezoidal_fins(bs, elements):
     return settings
 
 
-# TODO: what if the fins are not trapezoidal?
-# freeformfinset and tubefinset
+def search_elliptical_fins(bs, elements):
+    """Search for elliptical fins in the bs and return the settings as a dict.
+    It is flexible in the sense that it can handle multiple elliptical fin sets.
+
+    Parameters
+    ----------
+    bs : BeautifulSoup
+        The BeautifulSoup object of the open rocket file.
+    elements : dict
+        Dictionary with the settings for the elements of the rocket.
+
+    Returns
+    -------
+    settings : dict
+        Dictionary with the settings for the elliptical fins. The keys are
+        integers and the values are dicts containing the settings for each
+        elliptical fin set. The keys of the elliptical fin set dicts are:
+        "name", "number", "root_chord", "span", "position", "cant_angle",
+        "section".
+    """
+    settings = {}
+    fins = bs.findAll("ellipticalfinset")
+    logger.info(f"A total of {len(fins)} elliptical fin sets were detected")
+
+    if len(fins) == 0:
+        logger.info(
+            f"Since no elliptical fins were detected, returning empty dictionary"
+        )
+        return settings
+
+    for idx, fin in enumerate(fins):
+        logger.info(
+            "Starting collecting the settings for the elliptical fin set number "
+            + f"'{idx}'"
+        )
+        label = fin.find("name").text
+        try:
+
+            def get_element_by_name(name):
+                for element in elements.values():
+                    if element["name"] == name:
+                        return element
+                return None
+
+            element = get_element_by_name(label)
+            logger.info(f"Found the element '{label}' in the elements dictionary.")
+        except KeyError:
+            message = (
+                f"Couldn't find the element '{label}' in the elements dictionary."
+                + "It is possible that the "
+                + "process_elements_position() function got an error."
+            )
+            logger.error(message)
+            raise KeyError(message)
+
+        n_fin = int(fin.find("fincount").text)
+        logger.info(f"Number of fins retrieved: {n_fin}")
+
+        root_chord = float(fin.find("rootchord").text)
+        logger.info(f"Root chord retrieved: {root_chord}")
+
+        span = float(fin.find("height").text)
+        logger.info(f"Span retrieved: {span}")
+
+        cant_angle = float(fin.find("cant").text)
+        logger.info(f"Cant angle retrieved: {cant_angle}")
+
+        section = fin.find("crosssection").text
+        logger.info(f"Crosssection format retrieved")
+
+        fin_settings = {
+            "name": label,
+            "number": n_fin,
+            "root_chord": root_chord,
+            "span": span,
+            "position": element["position"],
+            "cant_angle": cant_angle,
+            "section": section,
+        }
+
+        settings[idx] = fin_settings
+
+        logger.info(
+            f"Elliptical fin set number '{idx}' was defined:\n"
+            + _dict_to_string(fin_settings, indent=23)
+        )
+    logger.info(f"Finished collecting all the elliptical fins.")
+    return settings
+
+
+def search_free_form_fins(bs, elements):
+    return {}
+
+
+# TODO: support for tubefinset (low priority)

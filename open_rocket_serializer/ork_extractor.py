@@ -4,7 +4,7 @@ from pathlib import Path
 from ._helpers import _dict_to_string
 from .components.drag_curve import save_drag_curve
 from .components.environment import search_environment
-from .components.fins import search_trapezoidal_fins
+from .components.fins import search_elliptical_fins, search_trapezoidal_fins
 from .components.flight import search_launch_conditions
 from .components.id import search_id_info
 from .components.motor import __get_motor_mass, generate_thrust_curve, search_motor
@@ -85,6 +85,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
 
     nosecones = search_nosecone(bs, elements)
     trapezoidal_fins = search_trapezoidal_fins(bs, elements)
+    elliptical_fins = search_elliptical_fins(bs, elements)
     transitions = search_transitions(bs, elements, ork, rocket_radius)
     rail_buttons = search_rail_buttons(bs, elements)
     parachutes = search_parachutes(bs)
@@ -96,6 +97,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     settings["rocket"] = rocket
     settings["nosecones"] = nosecones
     settings["trapezoidal_fins"] = trapezoidal_fins
+    settings["elliptical_fins"] = elliptical_fins
     settings["tails"] = transitions
     settings["parachutes"] = parachutes
     settings["rail_buttons"] = rail_buttons

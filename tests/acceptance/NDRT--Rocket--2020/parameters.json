@@ -49,6 +49,7 @@
             "section": "rounded"
         }
     },
+    "elliptical_fins": {},
     "tails": {
         "0": {
             "name": "Transition",

@@ -49,6 +49,7 @@
             "section": "square"
         }
     },
+    "elliptical_fins": {},
     "tails": {
         "0": {
             "name": "Cauda",
