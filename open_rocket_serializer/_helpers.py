@@ -1,4 +1,5 @@
 import logging
+import os
 import shutil
 from pathlib import Path
 from zipfile import BadZipFile, ZipFile
@@ -42,7 +43,6 @@ def extract_ork_from_zip(zip_path: Path, extract_dir: Path) -> Path:
             zip_path.as_posix(),
             extract_dir.as_posix(),
         )
-        temp_zip_path.unlink()
         return extract_dir / "rocket.ork"
     except BadZipFile:
         logger.warning(
@@ -55,6 +55,9 @@ def extract_ork_from_zip(zip_path: Path, extract_dir: Path) -> Path:
             'Error while extracting data from "%s": %s', zip_path.as_posix(), e
         )
         raise
+    finally:
+        if temp_zip_path.exists():
+            os.remove(temp_zip_path)
 
 
 def parse_ork_file(ork_path: Path):
