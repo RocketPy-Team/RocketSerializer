@@ -79,7 +79,7 @@ class NotebookBuilder:
         # import classes
         text = (
             "from rocketpy import Environment, SolidMotor, Rocket, Flight, "
-            + "TrapezoidalFins, RailButtons, NoseCone, Tail\n"
+            + "TrapezoidalFins, EllipticalFins, RailButtons, NoseCone, Tail\n"
         )
         text += "import datetime\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
@@ -340,10 +340,10 @@ class NotebookBuilder:
                 text += ")\n\n"
                 nb["cells"].append(nbf.v4.new_code_cell(text))
             logger.info("[NOTEBOOK BUILDER] Trapezoidal fins created.")
-            
+        else:
+            pass
         # elliptical fins
         # add a code cell
-        print("len trap: ".format(len(self.parameters["elliptical_fins"])))
         if len(self.parameters["elliptical_fins"]) > 0:
             self.elliptical_fins_check = True
             fin_counter += len(self.parameters["elliptical_fins"])
@@ -362,6 +362,8 @@ class NotebookBuilder:
                 text += ")\n\n"
                 nb["cells"].append(nbf.v4.new_code_cell(text))
             logger.info("[NOTEBOOK BUILDER] Elliptical fins created.")
+        else:
+            pass
         # free form fins
         # checking if fins were added
         try:

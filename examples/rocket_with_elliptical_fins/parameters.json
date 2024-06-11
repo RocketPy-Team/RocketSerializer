@@ -52,7 +52,7 @@
         "nozzle_radius": 0.014249999999999999,
         "position": 0.6728055555555557,
         "throat_radius": 0.0095,
-        "thrust_source": "examples\\rocket_with_elliptical_fins\\thrust_source.csv"
+        "thrust_source": "examples/rocket_with_elliptical_fins/thrust_source.csv"
     },
     "nosecones": {
         "base_radius": 0.025,
@@ -66,7 +66,7 @@
     "rocket": {
         "center_of_mass_without_propellant": 0.489,
         "coordinate_system_orientation": "nose_to_tail",
-        "drag_curve": "examples\\rocket_with_elliptical_fins\\drag_curve.csv",
+        "drag_curve": "examples/rocket_with_elliptical_fins/drag_curve.csv",
         "inertia": [
             0.000278,
             0.000278,
