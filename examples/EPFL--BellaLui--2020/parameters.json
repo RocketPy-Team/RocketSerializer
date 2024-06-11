@@ -1,4 +1,5 @@
 {
+    "elliptical_fins": {},
     "environment": {
         "base_pressure": null,
         "base_temperature": null,
@@ -41,7 +42,7 @@
         "nozzle_radius": 0.02025,
         "position": 2.3379117844381234,
         "throat_radius": 0.0135,
-        "thrust_source": "examples\\EPFL--BellaLui--2020\\thrust_source.csv"
+        "thrust_source": "examples/EPFL--BellaLui--2020/thrust_source.csv"
     },
     "nosecones": {
         "base_radius": 0.078,
@@ -55,7 +56,7 @@
     "rocket": {
         "center_of_mass_without_propellant": 1.559,
         "coordinate_system_orientation": "nose_to_tail",
-        "drag_curve": "examples\\EPFL--BellaLui--2020\\drag_curve.csv",
+        "drag_curve": "examples/EPFL--BellaLui--2020/drag_curve.csv",
         "inertia": [
             0.096246,
             0.096246,
