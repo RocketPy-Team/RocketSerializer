@@ -15,8 +15,12 @@ class NotebookBuilder:
     def __init__(self, parameters_json: str) -> None:
         """read the file and process the dictionary do not build anything yet"""
         self.parameters_json = parameters_json
+        self.__extract_output_folder_from_parameters_json()
         self.read()
         self.process()
+
+    def __extract_output_folder_from_parameters_json(self):
+        self.__output_folder = os.path.dirname(self.parameters_json)
 
     def read(self) -> dict:
         # read the json file and return the dict and save it to self.parameters dict
@@ -30,6 +34,14 @@ class NotebookBuilder:
         return self.parameters
 
     def build(self, destination: str):
+        if os.path.isdir(destination):
+            self.__output_folder = destination
+        else:
+            raise FileNotFoundError(
+                f"Destination folder '{destination}' not found. Please create it "
+                "first or verify if it is really a folder."
+            )
+
         nb = nbf.v4.new_notebook()
         nb = self.build_header(nb)
         nb = self.build_imports(nb)
@@ -50,7 +62,7 @@ class NotebookBuilder:
         text += " tool to convert simulation files to RocketPy simulations\n"
         text += (
             "The notebook was generated using the following parameters file: "
-            + f"{self.parameters_json}\n"
+            + f"`{self.parameters_json}`\n"
         )
 
         nb["cells"] = [nbf.v4.new_markdown_cell(text)]
@@ -110,9 +122,12 @@ class NotebookBuilder:
         text += "If you want to use a Liquid or Hybrid motor, please use rocketpy directly.\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
 
+        thrust_source = self.parameters["motors"]["thrust_source"]
+        thrust_source = os.path.relpath(thrust_source, self.__output_folder)
+
         # define the motor
         text = "motor = SolidMotor(\n"
-        text += f"    thrust_source='{self.parameters['motors']['thrust_source']}',\n"
+        text += f"    thrust_source='{thrust_source}',\n"
         text += f"    dry_mass={self.parameters['motors']['dry_mass']},\n"
         text += (
             "    center_of_dry_mass_position="
@@ -170,13 +185,16 @@ class NotebookBuilder:
 
         self.build_all_aerodynamic_surfaces(nb)
 
+        drag_curve = self.parameters["rocket"]["drag_curve"]
+        drag_curve = os.path.relpath(drag_curve, self.__output_folder)
+
         # define the Rocket
         text = "rocket = Rocket(\n"
         text += f"    radius={self.parameters['rocket']['radius']},\n"
         text += f"    mass={self.parameters['rocket']['mass']},\n"
         text += f"    inertia={'[' + str(self.parameters['rocket']['inertia'])[1:-1] + ']'},\n"
-        text += f"    power_off_drag='{self.parameters['rocket']['drag_curve']}',\n"
-        text += f"    power_on_drag='{self.parameters['rocket']['drag_curve']}',\n"
+        text += f"    power_off_drag='{drag_curve}',\n"
+        text += f"    power_on_drag='{drag_curve}',\n"
         text += (
             "    center_of_mass_without_motor="
             + f"{self.parameters['rocket']['center_of_mass_without_propellant']},\n"
@@ -225,7 +243,7 @@ class NotebookBuilder:
         text += "Now that we have all the surfaces, we can add them to the rocket\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
         text = "rocket.add_surfaces("
-        
+
         # building surfaces and positions text
         surface_text = "surfaces=["
         position_text = "positions=["
@@ -237,7 +255,9 @@ class NotebookBuilder:
         # adding trapezoidal
         for i in range(len(self.parameters["trapezoidal_fins"])):
             surface_text += f"trapezoidal_fins[{i}], "
-            position_text += f"{self.parameters['trapezoidal_fins'][str(i)]['position']}, "
+            position_text += (
+                f"{self.parameters['trapezoidal_fins'][str(i)]['position']}, "
+            )
 
         # adding tails
         for i in range(len(self.parameters["tails"])):
@@ -366,7 +386,7 @@ class NotebookBuilder:
     def save_notebook(self, nb: nbf.v4.new_notebook, destination: str) -> None:
         """Writes the .ipynb file to the destination folder. Also applies black
         formatting to the file to improve readability."""
-        out_file = destination + "/simulation.ipynb"
+        out_file = os.path.join(destination, "simulation.ipynb")
 
         nbf.write(nb, out_file)
         logger.info("[NOTEBOOK BUILDER] Notebook saved to '%s'", out_file)
