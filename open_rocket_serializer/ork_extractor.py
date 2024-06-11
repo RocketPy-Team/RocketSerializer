@@ -83,7 +83,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     )
     logger.info("The elements are:\n%s", _dict_to_string(elements, indent=23))
 
-    nosecones = search_nosecone(bs, elements)
+    nosecones = search_nosecone(bs, elements, rocket_radius)
     trapezoidal_fins = search_trapezoidal_fins(bs, elements)
     elliptical_fins = search_elliptical_fins(bs, elements)
     transitions = search_transitions(bs, elements, ork, rocket_radius)

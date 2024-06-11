@@ -5,7 +5,7 @@ from .._helpers import _dict_to_string
 logger = logging.getLogger(__name__)
 
 
-def search_nosecone(bs, elements):
+def search_nosecone(bs, elements, rocket_radius: float):
     """Search for the nosecone in the bs and return the settings as a dict.
 
     Parameters
@@ -14,6 +14,8 @@ def search_nosecone(bs, elements):
         The BeautifulSoup object of the .ork file.
     elements : dict
         Dictionary with the elements of the rocket.
+    rocket_radius : float
+        The radius of the rocket.
 
     Returns
     -------
@@ -39,7 +41,13 @@ def search_nosecone(bs, elements):
 
     length = float(nosecone.find("length").text)
     kind = nosecone.find("shape").text
-    base_radius = float(nosecone.find("aftradius").text)
+    base_radius = nosecone.find("aftradius").text
+    try:
+        base_radius = float(base_radius)
+    except ValueError:
+        if "auto" in base_radius:
+            # TODO: this is a temporary fix, we should look to the next component radius
+            base_radius = rocket_radius
 
     def get_position(name, length):
         count = 0
