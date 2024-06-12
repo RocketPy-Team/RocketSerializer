@@ -5,7 +5,7 @@ from .._helpers import _dict_to_string
 logger = logging.getLogger(__name__)
 
 
-def search_nosecone(bs, elements=None, elements_use="s"):
+def search_nosecone(bs, elements=None, just_radius=False):
     """Search for the nosecone in the bs and return the settings as a dict.
 
     Parameters
@@ -42,8 +42,10 @@ def search_nosecone(bs, elements=None, elements_use="s"):
     base_radius = float(nosecone.find("aftradius").text)
     # TO DO: elements_use parameter is for specific use in the get_rocket_radius function
     # once the search_nosecone is changed, the get_rocket_radius function must be re-evaluated
-    if elements_use == "n":
+    if just_radius:
         return base_radius # return nosecone radius to the get_rocket_radius function
+    else:
+        pass
     position = elements[name]["position"]
 
     logger.info(

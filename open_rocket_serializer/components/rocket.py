@@ -53,7 +53,6 @@ def search_rocket(bs, datapoints, data_labels, ork, burnout_position):
 
 
 def get_rocket_radius(bs):
-    # TODO: Improve this. Usually breaks when the rocket has more than one tube.
     # logger.warning(
     #     "This function usually breaks when the rocket has more than one tube."
     # )
@@ -65,7 +64,7 @@ def get_rocket_radius(bs):
 
     if 'auto' in radius_vector:
         if len(radius_vector) == 1:
-            radius = search_nosecone(bs, elements_use="n")
+            radius = search_nosecone(bs, just_radius=True)
             return radius
         else:
             radius_vector_float = []
