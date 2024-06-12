@@ -5,10 +5,8 @@ from pathlib import Path
 
 import click
 import orhelper
-from bs4 import BeautifulSoup
-from orhelper import OrLogLevel
 
-from rocketserializer.nb_builder import NotebookBuilder
+from .nb_builder import NotebookBuilder
 
 from ._helpers import extract_ork_from_zip, parse_ork_file
 from .ork_extractor import ork_extractor
@@ -22,7 +20,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# define the logger handler for the console (useful for the command line interface)
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -44,7 +41,7 @@ def cli():
     To easily use the library, you can use the command line interface. For
     example, to generate a .json file from a .ork file, you can use the
     following command:
-    >>> serializer ork2json("rocket.ork", "rocket", "motor.eng")
+    >>> ork2json("rocket.ork", "rocket", "motor.eng")
 
     If you want to use the library with Python, you can import the library and
     use the functions directly. For example, to generate a .json file from a
@@ -109,6 +106,10 @@ def ork2json(
     ork_jar : str, optional
         The path to the OpenRocket .jar file. If unspecified, the .jar file
         will be searched in the current directory.
+    encoding : str, optional
+        The encoding of the .json file. Default is 'utf-8'.
+    verbose : bool, optional
+        If True, the log level will be set to DEBUG. Default is False.
 
     Raises
     ------
@@ -116,10 +117,6 @@ def ork2json(
         In case the .ork file does not contain the simulation data.
     ValueError
         In case the .ork file is not in English.
-
-    Examples
-    --------
-    >>> serializer ork2json("rocket.ork", "rocket", "motor.eng")
     """
     log_level = logging.DEBUG if verbose else logging.WARNING
     logger.setLevel(log_level)
@@ -209,38 +206,6 @@ def ork2json(
             logger.info(
                 f"[ork2json] Operation completed successfully. You can now use the 'parameters.json' file to run a simulation."
             )
-
-
-# @cli.command("ork2py")
-# @click.option("--filepath", type=str, required=True)
-# @click.option("--output", type=str, required=False)
-# @click.option("--eng", type=str, default=None, required=False)
-# @click.option("--ork_jar", type=str, default=None, required=False)
-# def ork2py(
-#     filepath,
-#     output,
-#     eng=None,
-#     ork_jar=None,
-# ):
-#     """Generates a .py file with rocketpy from the .ork file.
-
-#     Parameters
-#     ----------
-#     filepath : _type_
-#         _description_
-#     output : _type_
-#         _description_
-#     eng : _type_, optional
-#         _description_, by default None
-#     ork_jar : _type_, optional
-#         _description_, by default None
-
-#     Returns
-#     -------
-#     _type_
-#         _description_
-#     """
-#     get_dict = ork2json(filepath, output, eng, ork_jar)
 
 
 @cli.command("ork2ipynb")
