@@ -37,7 +37,7 @@ def search_transitions(bs, elements, ork, rocket_radius):
         ele
         for ele in ork.getRocket().getChild(0).getChildren()
         if ele.getClass().getSimpleName() == "Transition"
-    ]
+    ]  # TODO: only works for a single stage rocket.
 
     for idx, transition in enumerate(transitions):
         logger.info(f"Starting to collect the settings of the transition number {idx}")
