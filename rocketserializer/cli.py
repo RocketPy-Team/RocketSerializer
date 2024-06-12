@@ -211,36 +211,36 @@ def ork2json(
             )
 
 
-@cli.command("ork2py")
-@click.option("--filepath", type=str, required=True)
-@click.option("--output", type=str, required=False)
-@click.option("--eng", type=str, default=None, required=False)
-@click.option("--ork_jar", type=str, default=None, required=False)
-def ork2py(
-    filepath,
-    output,
-    eng=None,
-    ork_jar=None,
-):
-    """Generates a .py file with rocketpy from the .ork file.
+# @cli.command("ork2py")
+# @click.option("--filepath", type=str, required=True)
+# @click.option("--output", type=str, required=False)
+# @click.option("--eng", type=str, default=None, required=False)
+# @click.option("--ork_jar", type=str, default=None, required=False)
+# def ork2py(
+#     filepath,
+#     output,
+#     eng=None,
+#     ork_jar=None,
+# ):
+#     """Generates a .py file with rocketpy from the .ork file.
 
-    Parameters
-    ----------
-    filepath : _type_
-        _description_
-    output : _type_
-        _description_
-    eng : _type_, optional
-        _description_, by default None
-    ork_jar : _type_, optional
-        _description_, by default None
+#     Parameters
+#     ----------
+#     filepath : _type_
+#         _description_
+#     output : _type_
+#         _description_
+#     eng : _type_, optional
+#         _description_, by default None
+#     ork_jar : _type_, optional
+#         _description_, by default None
 
-    Returns
-    -------
-    _type_
-        _description_
-    """
-    get_dict = ork2json(filepath, output, eng, ork_jar)
+#     Returns
+#     -------
+#     _type_
+#         _description_
+#     """
+#     get_dict = ork2json(filepath, output, eng, ork_jar)
 
 
 @cli.command("ork2ipynb")
