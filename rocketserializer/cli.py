@@ -249,6 +249,26 @@ def ork2json(
 @click.option("--eng", type=str, default=None, required=False)
 @click.option("--ork_jar", type=str, default=None, required=False)
 def ork2ipynb(filepath, output, eng=None, ork_jar=None):
-    ork2json(filepath, output, eng, ork_jar)
-    instance = NotebookBuilder(parameters_json=output + "/parameters.json")
+    """Generates a .ipynb file from the .ork file.
+
+    Notes
+    -----
+    Under the hood, this function uses the `ork2json` function to generate the
+    parameters.json file and then uses the `NotebookBuilder` class to generate
+    the .ipynb file.
+    """
+    ork2json(
+        [
+            "--filepath",
+            filepath,
+            "--output",
+            output,
+            "--eng",
+            eng,
+            "--ork_jar",
+            ork_jar,
+        ],
+        standalone_mode=True,
+    )
+    instance = NotebookBuilder(parameters_json=os.path.join(output, "parameters.json"))
     instance.build(destination=output)
