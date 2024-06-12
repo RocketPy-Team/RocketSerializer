@@ -1,4 +1,6 @@
 import logging
+import os
+import shutil
 from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
@@ -12,6 +14,9 @@ def extract_ork_from_zip(zip_path: Path, extract_dir: Path) -> Path:
     This is important because sometimes the .xml file is stuck inside the .ork
     file. The function extracts the .ork (.xml) file from the zip (.ork) file
     and returns its path as a Path object.
+
+    Notes
+    -----
     For illustration: if you try to open the .ork file with a text editor and
     you see a bunch of weird characters, it is probably a "zip" file. You can
     try to rename the file to .zip and open it with a zip extractor.
@@ -29,7 +34,9 @@ def extract_ork_from_zip(zip_path: Path, extract_dir: Path) -> Path:
         The path to the extracted .ork file.
     """
     try:
-        with ZipFile(zip_path) as zf:
+        temp_zip_path = zip_path.with_suffix(".zip")
+        shutil.copy(zip_path, temp_zip_path)
+        with ZipFile(temp_zip_path) as zf:
             zf.extract("rocket.ork", path=extract_dir)
         logger.info(
             'Successfully extracted rocket.ork from "%s" to "%s"',
@@ -48,6 +55,9 @@ def extract_ork_from_zip(zip_path: Path, extract_dir: Path) -> Path:
             'Error while extracting data from "%s": %s', zip_path.as_posix(), e
         )
         raise
+    finally:
+        if temp_zip_path.exists():
+            os.remove(temp_zip_path)
 
 
 def parse_ork_file(ork_path: Path):

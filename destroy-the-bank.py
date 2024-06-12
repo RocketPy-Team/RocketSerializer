@@ -38,12 +38,15 @@ def destroy_the_bank(file):
 if __name__ == "__main__":
     folder = "examples/databank"
 
-    ork_files = [file for file in os.listdir(folder) if file.endswith(".ork")]
+    ork_files = [
+        folder + "/" + name + "/rocket.ork"
+        for name in os.listdir(folder)
+        if name.startswith("Team")
+    ]
 
     for file in ork_files:
-        file_path = os.path.join(folder, file)
         try:
-            destroy_the_bank(file_path)
+            destroy_the_bank(file)
         except Exception as e:
             # Log any unexpected exceptions
             logging.exception(f"An unexpected error occurred in file: {file}")

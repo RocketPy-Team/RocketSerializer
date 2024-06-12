@@ -7,7 +7,7 @@ def search_rail_buttons(bs, elements: dict) -> dict:
 
     lugs_elements = []
     for key, value in elements.items():
-        if value["type"] == "LaunchLug":
+        if value["type"] in ["LaunchLug", "RailButton"]:
             lugs_elements.append(value)
 
     if len(lugs_elements) < 2 or not lugs_elements:

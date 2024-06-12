@@ -310,7 +310,7 @@ class NotebookBuilder:
         text += "dictionary with all the fins sets and then add them to the rocket\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
 
-        fin_counter = 0 # count the number of fins
+        fin_counter = 0  # count the number of fins
         # trapezoidal fins
         # add a code cell
         if len(self.parameters["trapezoidal_fins"]) > 0:
@@ -320,10 +320,14 @@ class NotebookBuilder:
             nb["cells"].append(nbf.v4.new_code_cell(text))
             for i in range(len(self.parameters["trapezoidal_fins"])):
                 text = f"trapezoidal_fins[{i}] = TrapezoidalFins(\n"
-                text += f"    n={self.parameters['trapezoidal_fins'][str(i)]['number']},\n"
+                text += (
+                    f"    n={self.parameters['trapezoidal_fins'][str(i)]['number']},\n"
+                )
                 text += f"    root_chord={self.parameters['trapezoidal_fins'][str(i)]['root_chord']},\n"
                 text += f"    tip_chord={self.parameters['trapezoidal_fins'][str(i)]['tip_chord']},\n"
-                text += f"    span={self.parameters['trapezoidal_fins'][str(i)]['span']},\n"
+                text += (
+                    f"    span={self.parameters['trapezoidal_fins'][str(i)]['span']},\n"
+                )
                 text += f"    cant_angle={self.parameters['trapezoidal_fins'][str(i)]['cant_angle']},\n"
                 text += (
                     "    sweep_length="
@@ -334,9 +338,7 @@ class NotebookBuilder:
                     + f"{self.parameters['trapezoidal_fins'][str(i)]['sweep_angle']},\n"
                 )
                 text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"
-                text += (
-                    f"    name='{self.parameters['trapezoidal_fins'][str(i)]['name']}',\n"
-                )
+                text += f"    name='{self.parameters['trapezoidal_fins'][str(i)]['name']}',\n"
                 text += ")\n\n"
                 nb["cells"].append(nbf.v4.new_code_cell(text))
             logger.info("[NOTEBOOK BUILDER] Trapezoidal fins created.")
@@ -351,14 +353,16 @@ class NotebookBuilder:
             nb["cells"].append(nbf.v4.new_code_cell(text))
             for i in range(len(self.parameters["elliptical_fins"])):
                 text = f"elliptical_fins[{i}] = EllipticalFins(\n"
-                text += f"    n={self.parameters['elliptical_fins'][str(i)]['number']},\n"
+                text += (
+                    f"    n={self.parameters['elliptical_fins'][str(i)]['number']},\n"
+                )
                 text += f"    root_chord={self.parameters['elliptical_fins'][str(i)]['root_chord']},\n"
-                text += f"    span={self.parameters['elliptical_fins'][str(i)]['span']},\n"
+                text += (
+                    f"    span={self.parameters['elliptical_fins'][str(i)]['span']},\n"
+                )
                 text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"
                 text += f"    cant_angle={self.parameters['elliptical_fins'][str(i)]['cant_angle']},\n"
-                text += (
-                    f"    name='{self.parameters['elliptical_fins'][str(i)]['name']}',\n"
-                )
+                text += f"    name='{self.parameters['elliptical_fins'][str(i)]['name']}',\n"
                 text += ")\n\n"
                 nb["cells"].append(nbf.v4.new_code_cell(text))
             logger.info("[NOTEBOOK BUILDER] Elliptical fins created.")
@@ -368,7 +372,9 @@ class NotebookBuilder:
         # checking if fins were added
         try:
             assert fin_counter > 0
-            logger.info(f"[NOTEBOOK BUILDER] {fin_counter} fins were added to the rocket.")
+            logger.info(
+                f"[NOTEBOOK BUILDER] {fin_counter} fins were added to the rocket."
+            )
         except AssertionError:
             text = "No fins were added to the rocket. Please add at least one."
             nb["cells"].append(nbf.v4.new_code_cell(text))

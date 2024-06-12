@@ -1,0 +1,105 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": 86522.0,
+        "base_temperature": 306.47999999999996,
+        "date": null,
+        "elevation": 1401.0,
+        "geodetic_method": "spherical",
+        "latitude": 33.0,
+        "longitude": -107.27,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 84.0,
+        "rail_length": 5.1816
+    },
+    "id": {
+        "comment": "The best goddamn rocket this side of Saugeen",
+        "designer": "Western Engineering Rocket Team",
+        "filepath": "examples/WERT--Prometheus--2022/rocket.ork",
+        "rocket_name": "Blue Streak Mk.2"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1204.132103436312,
+        "grain_initial_height": 0.548,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.274,
+        "nozzle_radius": 0.036750000000000005,
+        "position": 1.968582373426199,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\WERT--Prometheus--2022\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.06985,
+        "kind": "Von Karman",
+        "length": 0.742,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 1.824146924750992,
+            "cd": 2.2,
+            "cds": 4.013123234452183,
+            "deploy_altitude": 457.20000000000005,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Parachute"
+        },
+        "1": {
+            "area": 0.16417322322758926,
+            "cd": 1.6,
+            "cds": 0.2626771571641428,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Parachute"
+        }
+    },
+    "rail_buttons": {
+        "angular_position": 0.0,
+        "distance": 0.5540000000000003,
+        "lower_position": 3.2256530000000003,
+        "name": "Launch lug",
+        "upper_position": 2.671653
+    },
+    "rocket": {
+        "center_of_mass_without_propellant": 1.266,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\WERT--Prometheus--2022\\drag_curve.csv",
+        "inertia": [
+            0.043,
+            0.043,
+            4.563
+        ],
+        "mass": 14.737,
+        "radius": 0.06985
+    },
+    "stored_results": {
+        "flight_time": 172.557,
+        "ground_hit_velocity": 8.311,
+        "launch_rod_velocity": 29.042,
+        "max_acceleration": 93.447,
+        "max_altitude": 3795.695,
+        "max_mach": 1.007,
+        "max_velocity": 348.714,
+        "time_to_apogee": 26.847
+    },
+    "tails": {},
+    "trapezoidal_fins": {}
+}

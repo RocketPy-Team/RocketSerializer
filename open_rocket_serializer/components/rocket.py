@@ -53,29 +53,23 @@ def search_rocket(bs, datapoints, data_labels, ork, burnout_position):
 
 
 def get_rocket_radius(bs):
-    # logger.warning(
-    #     "This function usually breaks when the rocket has more than one tube."
-    # )
-    bodytubes = bs.findAll("bodytube") # if there is no bodytubes (len == 0), there is no rocket
-    logger.info(f"A total of {len(bodytubes)} bodytubes were detected")
+    # We want to take the maximum radius of the rocket
+    tubes = bs.findAll("bodytube")
+    noses = bs.findAll("nosecone")
 
-    radius_vector = [i.find("radius").text for i in bodytubes]
-    logger.info("rocket radius founded: {}".format(radius_vector))
+    tubes_radius = [i.find("radius").text for i in tubes]
+    noses_radius = [i.find("aftradius").text for i in noses]
 
-    if 'auto' in radius_vector:
-        if len(radius_vector) == 1:
-            radius = search_nosecone(bs, just_radius=True)
-            return radius
-        else:
-            radius_vector_float = []
-            for i in radius_vector:
-                if i != 'auto':
-                    radius_vector_float.append(float(i))
-            radius = max(radius_vector_float)
-            return radius
-    else:
-        radius = max([float(i) for i in radius_vector])
-        return radius
+    all_radius = tubes_radius + noses_radius
+
+    # We need to convert to float, but removing the "auto" string first
+    all_radius = [i.replace("auto ", "") for i in all_radius]
+    all_radius = [i for i in all_radius if i != "auto"]
+    all_radius = [float(i) for i in all_radius]
+
+    rocket_radius = max(all_radius)
+    logger.info("The maximum radius of the rocket is: %f", rocket_radius)
+    return rocket_radius
 
 
 def get_mass(datapoints, data_labels, burnout_position):
