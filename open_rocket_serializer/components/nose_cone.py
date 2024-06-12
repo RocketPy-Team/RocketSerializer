@@ -5,7 +5,7 @@ from .._helpers import _dict_to_string
 logger = logging.getLogger(__name__)
 
 
-def search_nosecone(bs, elements, rocket_radius: float):
+def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
     """Search for the nosecone in the bs and return the settings as a dict.
 
     Parameters
@@ -16,6 +16,8 @@ def search_nosecone(bs, elements, rocket_radius: float):
         Dictionary with the elements of the rocket.
     rocket_radius : float
         The radius of the rocket.
+    just_radius : bool
+        If True, returns only the radius of the nosecone.
 
     Returns
     -------
@@ -48,6 +50,11 @@ def search_nosecone(bs, elements, rocket_radius: float):
         if "auto" in base_radius:
             # TODO: this is a temporary fix, we should look to the next component radius
             base_radius = rocket_radius
+
+    # TODO: elements_use parameter is for specific use in the get_rocket_radius function
+    # once the search_nosecone is changed, the get_rocket_radius function must be re-evaluated
+    if just_radius:
+        return base_radius  # return nosecone radius to the get_rocket_radius function
 
     def get_position(name, length):
         count = 0
