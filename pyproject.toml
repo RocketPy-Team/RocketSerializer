@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools]
+packages = { find = { where = ["."], include = ["rocketserializer*"] } }
+
+[project]
+name = "rocketserializer"
+version = "0.1.0"
+dynamic = ["dependencies"]
+requires-python = ">= 3.8"
+description = "Easily convert your OpenRocket files into RocketPy simulations."
+readme = "README.md"
+license = {file = "LICENSE.md"}
+authors = [
+    {name = "Guilherme Fernandes", email = "guilherme_fernandes@usp.br"},
+    {name = "Patrick Sampaio", email = "patricksampaio@usp.br"},
+    {name = "Julio Machado", email = "julioromac@outlook.com"},
+]
+maintainers = [
+    {name = "RocketPy Team", email = "rocketpyteam@gmail.com"},
+]
+keywords = [
+    "python",
+    "simulation",
+    "aerospace",
+    "motor",
+    "flight-simulator",
+    "trajectory", 
+    "trajectory-simulator",
+    "rocket-simulator",
+    "openrocket",
+    "rocket-simulation",
+]
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.scripts]
+ork2json = "rocketserializer.cli:ork2json"
+ork2ipynb = "rocketserializer.cli:ork2ipynb"
+
+
+[project.urls]
+Documentation = "https://docs.rocketpy.org/en/latest/"
+Repository = "https://github.com/RocketPy-Team/RocketSerializer"
+Issues = "https://github.com/RocketPy-Team/RocketSerializer/issues"
+
+
+[tool.black]
+line-length = 88
+
+
+[tool.isort]
+profile = "black"
+
+
+[tool.pylint]
+line-length = 88
