@@ -25,13 +25,15 @@
             18.411
         ],
         "center_of_mass_without_propellant": 1.7041,
-        "coordinate_system_orientation": "tail_to_nose",
+        "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "tests/acceptance/NDRT--Rocket--2020/drag_curve.csv"
     },
     "nosecones": {
-        "length": 0.6095999999999999,
+        "name": "Nose cone",
         "kind": "ogive",
-        "distance_to_cm": 1.0945
+        "length": 0.6095999999999999,
+        "base_radius": 0.1016,
+        "position": 0.0
     },
     "trapezoidal_fins": {
         "0": {
@@ -40,20 +42,21 @@
             "root_chord": 0.15239999999999995,
             "tip_chord": 0.07619999999999999,
             "span": 0.1651,
-            "distance_to_cm": -1.3439,
+            "position": 2.3876,
             "sweep_length": 0.038099999999999995,
             "sweep_angle": null,
             "cant_angle": 0.0,
             "section": "rounded"
         }
     },
+    "elliptical_fins": {},
     "tails": {
         "0": {
             "name": "Transition",
-            "top_radius": 0.0776224,
+            "top_radius": 0.1016,
             "bottom_radius": 0.0776224,
             "length": 0.127,
-            "distance_to_cm": 0.3833
+            "position": 1.1938
         }
     },
     "parachutes": {
@@ -78,25 +81,25 @@
     },
     "rail_buttons": {},
     "motors": {
-        "burn_time": 3.533,
         "grain_density": 1202.7971321820446,
         "grain_initial_inner_radius": 0.01875,
         "grain_outer_radius": 0.0375,
         "grain_initial_height": 0.621,
         "nozzle_radius": 0.028124999999999997,
         "throat_radius": 0.01875,
-        "dry_mass": 0.0,
+        "dry_mass": 0,
         "dry_inertia": [
             0,
             0,
             0
         ],
-        "center_of_dry_mass": 0.3105,
-        "grains_center_of_mass_position": 0.3105,
+        "center_of_dry_mass_position": 0,
+        "grains_center_of_mass_position": 0,
         "grain_number": 1,
         "grain_separation": 0,
-        "nozzle_position": 0,
+        "nozzle_position": -0.3105,
         "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "position": 3.079819999999998,
         "thrust_source": "tests/acceptance/NDRT--Rocket--2020/thrust_source.csv"
     },
     "flight": {

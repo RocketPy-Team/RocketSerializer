@@ -55,12 +55,25 @@ def search_transitions(bs, elements, ork, rocket_radius):
         length = float(transition.find("length").text)
         logger.info(f"Collected the dimensions of the transition number {idx}")
 
+        def get_position(name, length):
+            count = 0
+            for element in elements.values():
+                if element["name"] == name and element["length"] == length:
+                    count += 1
+                    position = element["position"]
+            if count > 1:
+                logger.warning(
+                    "Multiple transitions with the same name and length, "
+                    "using the last one found."
+                )
+            return position
+
         transition_setting = {
             "name": label,
             "top_radius": top_radius,
             "bottom_radius": bottom_radius,
             "length": length,
-            "position": elements[label]["position"],
+            "position": get_position(label, length),
         }
         settings[idx] = transition_setting
         logger.info(

@@ -15,8 +15,14 @@ class NotebookBuilder:
     def __init__(self, parameters_json: str) -> None:
         """read the file and process the dictionary do not build anything yet"""
         self.parameters_json = parameters_json
+        self.trapezoidal_fins_check = False
+        self.elliptical_fins_check = False
+        self.__extract_output_folder_from_parameters_json()
         self.read()
         self.process()
+
+    def __extract_output_folder_from_parameters_json(self):
+        self.__output_folder = os.path.dirname(self.parameters_json)
 
     def read(self) -> dict:
         # read the json file and return the dict and save it to self.parameters dict
@@ -30,6 +36,14 @@ class NotebookBuilder:
         return self.parameters
 
     def build(self, destination: str):
+        if os.path.isdir(destination):
+            self.__output_folder = destination
+        else:
+            raise FileNotFoundError(
+                f"Destination folder '{destination}' not found. Please create it "
+                "first or verify if it is really a folder."
+            )
+
         nb = nbf.v4.new_notebook()
         nb = self.build_header(nb)
         nb = self.build_imports(nb)
@@ -50,7 +64,7 @@ class NotebookBuilder:
         text += " tool to convert simulation files to RocketPy simulations\n"
         text += (
             "The notebook was generated using the following parameters file: "
-            + f"{self.parameters_json}\n"
+            + f"`{self.parameters_json}`\n"
         )
 
         nb["cells"] = [nbf.v4.new_markdown_cell(text)]
@@ -65,7 +79,7 @@ class NotebookBuilder:
         # import classes
         text = (
             "from rocketpy import Environment, SolidMotor, Rocket, Flight, "
-            + "TrapezoidalFins, RailButtons, NoseCone, Tail\n"
+            + "TrapezoidalFins, EllipticalFins, RailButtons, NoseCone, Tail\n"
         )
         text += "import datetime\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
@@ -110,9 +124,12 @@ class NotebookBuilder:
         text += "If you want to use a Liquid or Hybrid motor, please use rocketpy directly.\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
 
+        thrust_source = self.parameters["motors"]["thrust_source"]
+        thrust_source = os.path.relpath(thrust_source, self.__output_folder)
+
         # define the motor
         text = "motor = SolidMotor(\n"
-        text += f"    thrust_source='{self.parameters['motors']['thrust_source']}',\n"
+        text += f"    thrust_source='{thrust_source}',\n"
         text += f"    dry_mass={self.parameters['motors']['dry_mass']},\n"
         text += (
             "    center_of_dry_mass_position="
@@ -170,13 +187,16 @@ class NotebookBuilder:
 
         self.build_all_aerodynamic_surfaces(nb)
 
+        drag_curve = self.parameters["rocket"]["drag_curve"]
+        drag_curve = os.path.relpath(drag_curve, self.__output_folder)
+
         # define the Rocket
         text = "rocket = Rocket(\n"
         text += f"    radius={self.parameters['rocket']['radius']},\n"
         text += f"    mass={self.parameters['rocket']['mass']},\n"
         text += f"    inertia={'[' + str(self.parameters['rocket']['inertia'])[1:-1] + ']'},\n"
-        text += f"    power_off_drag='{self.parameters['rocket']['drag_curve']}',\n"
-        text += f"    power_on_drag='{self.parameters['rocket']['drag_curve']}',\n"
+        text += f"    power_off_drag='{drag_curve}',\n"
+        text += f"    power_on_drag='{drag_curve}',\n"
         text += (
             "    center_of_mass_without_motor="
             + f"{self.parameters['rocket']['center_of_mass_without_propellant']},\n"
@@ -212,10 +232,9 @@ class NotebookBuilder:
         """This is simple: receive the current notebook object, start appending
         cells for each aerodynamic surface and return the notebook object"""
         self.build_nosecones(nb)
-        self.build_trapezoidal_fins(nb)
+        self.build_fins(nb)
         self.build_tails(nb)
         self.build_rail_buttons(nb)
-
         logger.info("[NOTEBOOK BUILDER] All aerodynamic surfaces created.")
         return nb
 
@@ -225,7 +244,7 @@ class NotebookBuilder:
         text += "Now that we have all the surfaces, we can add them to the rocket\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
         text = "rocket.add_surfaces("
-        
+
         # building surfaces and positions text
         surface_text = "surfaces=["
         position_text = "positions=["
@@ -234,10 +253,22 @@ class NotebookBuilder:
         surface_text += "nosecone, "
         position_text += f"{self.parameters['nosecones']['position']}, "
 
-        # adding trapezoidal
-        for i in range(len(self.parameters["trapezoidal_fins"])):
-            surface_text += f"trapezoidal_fins[{i}], "
-            position_text += f"{self.parameters['trapezoidal_fins'][str(i)]['position']}, "
+        # checking and adding fins
+        # trapezoidal fins
+        if self.trapezoidal_fins_check:
+            for i in range(len(self.parameters["trapezoidal_fins"])):
+                surface_text += f"trapezoidal_fins[{i}], "
+                position_text += (
+                    f"{self.parameters['trapezoidal_fins'][str(i)]['position']}, "
+                )
+        # elliptical fins
+        if self.elliptical_fins_check:
+            for i in range(len(self.parameters["elliptical_fins"])):
+                surface_text += f"elliptical_fins[{i}], "
+                position_text += (
+                    f"{self.parameters['elliptical_fins'][str(i)]['position']}, "
+                )
+        # free form fins
 
         # adding tails
         for i in range(len(self.parameters["tails"])):
@@ -249,7 +280,6 @@ class NotebookBuilder:
         position_text = position_text[:-2] + "]"
         text += surface_text + ", " + position_text + ")"
         nb["cells"].append(nbf.v4.new_code_cell(text))
-        # building trapezoidal fins text
         return nb
 
     def build_nosecones(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
@@ -273,39 +303,77 @@ class NotebookBuilder:
         logger.info("[NOTEBOOK BUILDER] Nosecone created.")
         return nb
 
-    def build_trapezoidal_fins(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
+    def build_fins(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
         # add a markdown cell
         text = "### Fins\n"
         text += "As rocketpy allows for multiple fins sets, we will create a "
         text += "dictionary with all the fins sets and then add them to the rocket\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
 
+        fin_counter = 0 # count the number of fins
+        # trapezoidal fins
         # add a code cell
-        text = "trapezoidal_fins = {}\n"
-        nb["cells"].append(nbf.v4.new_code_cell(text))
-        for i in range(len(self.parameters["trapezoidal_fins"])):
-            text = f"trapezoidal_fins[{i}] = TrapezoidalFins(\n"
-            text += f"    n={self.parameters['trapezoidal_fins'][str(i)]['number']},\n"
-            text += f"    root_chord={self.parameters['trapezoidal_fins'][str(i)]['root_chord']},\n"
-            text += f"    tip_chord={self.parameters['trapezoidal_fins'][str(i)]['tip_chord']},\n"
-            text += f"    span={self.parameters['trapezoidal_fins'][str(i)]['span']},\n"
-            text += f"    cant_angle={self.parameters['trapezoidal_fins'][str(i)]['cant_angle']},\n"
-            text += (
-                "    sweep_length="
-                + f"{self.parameters['trapezoidal_fins'][str(i)]['sweep_length']},\n"
-            )
-            text += (
-                "    sweep_angle="
-                + f"{self.parameters['trapezoidal_fins'][str(i)]['sweep_angle']},\n"
-            )
-            text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"  # TODO: fix this
-            text += (
-                f"    name='{self.parameters['trapezoidal_fins'][str(i)]['name']}',\n"
-            )
-            text += ")\n\n"
+        if len(self.parameters["trapezoidal_fins"]) > 0:
+            self.trapezoidal_fins_check = True
+            fin_counter = len(self.parameters["trapezoidal_fins"])
+            text = "trapezoidal_fins = {}\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
-
-        logger.info("[NOTEBOOK BUILDER] Trapezoidal fins created.")
+            for i in range(len(self.parameters["trapezoidal_fins"])):
+                text = f"trapezoidal_fins[{i}] = TrapezoidalFins(\n"
+                text += f"    n={self.parameters['trapezoidal_fins'][str(i)]['number']},\n"
+                text += f"    root_chord={self.parameters['trapezoidal_fins'][str(i)]['root_chord']},\n"
+                text += f"    tip_chord={self.parameters['trapezoidal_fins'][str(i)]['tip_chord']},\n"
+                text += f"    span={self.parameters['trapezoidal_fins'][str(i)]['span']},\n"
+                text += f"    cant_angle={self.parameters['trapezoidal_fins'][str(i)]['cant_angle']},\n"
+                text += (
+                    "    sweep_length="
+                    + f"{self.parameters['trapezoidal_fins'][str(i)]['sweep_length']},\n"
+                )
+                text += (
+                    "    sweep_angle="
+                    + f"{self.parameters['trapezoidal_fins'][str(i)]['sweep_angle']},\n"
+                )
+                text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"
+                text += (
+                    f"    name='{self.parameters['trapezoidal_fins'][str(i)]['name']}',\n"
+                )
+                text += ")\n\n"
+                nb["cells"].append(nbf.v4.new_code_cell(text))
+            logger.info("[NOTEBOOK BUILDER] Trapezoidal fins created.")
+        else:
+            pass
+        # elliptical fins
+        # add a code cell
+        if len(self.parameters["elliptical_fins"]) > 0:
+            self.elliptical_fins_check = True
+            fin_counter += len(self.parameters["elliptical_fins"])
+            text = "elliptical_fins = {}\n"
+            nb["cells"].append(nbf.v4.new_code_cell(text))
+            for i in range(len(self.parameters["elliptical_fins"])):
+                text = f"elliptical_fins[{i}] = EllipticalFins(\n"
+                text += f"    n={self.parameters['elliptical_fins'][str(i)]['number']},\n"
+                text += f"    root_chord={self.parameters['elliptical_fins'][str(i)]['root_chord']},\n"
+                text += f"    span={self.parameters['elliptical_fins'][str(i)]['span']},\n"
+                text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"
+                text += f"    cant_angle={self.parameters['elliptical_fins'][str(i)]['cant_angle']},\n"
+                text += (
+                    f"    name='{self.parameters['elliptical_fins'][str(i)]['name']}',\n"
+                )
+                text += ")\n\n"
+                nb["cells"].append(nbf.v4.new_code_cell(text))
+            logger.info("[NOTEBOOK BUILDER] Elliptical fins created.")
+        else:
+            pass
+        # free form fins
+        # checking if fins were added
+        try:
+            assert fin_counter > 0
+            logger.info(f"[NOTEBOOK BUILDER] {fin_counter} fins were added to the rocket.")
+        except AssertionError:
+            text = "No fins were added to the rocket. Please add at least one."
+            nb["cells"].append(nbf.v4.new_code_cell(text))
+            logger.warning("No fins were added to the rocket. Please add at least one.")
+            raise Warning("No fins were added to the rocket. Please add at least one.")
         return nb
 
     def build_tails(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
@@ -366,7 +434,7 @@ class NotebookBuilder:
     def save_notebook(self, nb: nbf.v4.new_notebook, destination: str) -> None:
         """Writes the .ipynb file to the destination folder. Also applies black
         formatting to the file to improve readability."""
-        out_file = destination + "/simulation.ipynb"
+        out_file = os.path.join(destination, "simulation.ipynb")
 
         nbf.write(nb, out_file)
         logger.info("[NOTEBOOK BUILDER] Notebook saved to '%s'", out_file)
