@@ -57,8 +57,12 @@ def search_transitions(bs, elements, ork, rocket_radius):
 
         def get_position(name, length):
             count = 0
+            lower_name = name.lower()
             for element in elements.values():
-                if element["name"] == name and element["length"] == length:
+                if (
+                    element["name"].lower() == lower_name
+                    and element["length"] == length
+                ):
                     count += 1
                     position = element["position"]
             if count > 1:

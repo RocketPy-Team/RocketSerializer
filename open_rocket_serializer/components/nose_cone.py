@@ -51,8 +51,10 @@ def search_nosecone(bs, elements, rocket_radius: float):
 
     def get_position(name, length):
         count = 0
+        # defaults to case insensitive
+        lower_name = name.lower()
         for element in elements.values():
-            if element["name"] == name and element["length"] == length:
+            if element["name"].lower() == lower_name and element["length"] == length:
                 count += 1
                 position = element["position"]
         if count > 1:
