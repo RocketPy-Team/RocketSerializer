@@ -112,7 +112,7 @@ def _dict_to_string(dictionary, indent=0):
 
     Examples
     --------
-    >>> from open_rocket_serializer._helpers import _dict_to_string
+    >>> from rocketserializer._helpers import _dict_to_string
     >>> _dict_to_string({"a": 1, "b": {"c": 2}})
     " a: 1\n b: \n     c: 2\n"
     """

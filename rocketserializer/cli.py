@@ -8,7 +8,7 @@ import orhelper
 from bs4 import BeautifulSoup
 from orhelper import OrLogLevel
 
-from open_rocket_serializer.nb_builder import NotebookBuilder
+from rocketserializer.nb_builder import NotebookBuilder
 
 from ._helpers import extract_ork_from_zip, parse_ork_file
 from .ork_extractor import ork_extractor
@@ -50,7 +50,7 @@ def cli():
     use the functions directly. For example, to generate a .json file from a
     .ork file, you can use the following code:
 
-    >>> from open_rocket_serializer import ork2json
+    >>> from rocketserializer import ork2json
     >>> ork2json("rocket.ork", "rocket", "motor.eng")
 
     If you want to convert a .ork file to a .py file, you can use the following
