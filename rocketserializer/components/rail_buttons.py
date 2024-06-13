@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 def search_rail_buttons(bs, elements: dict) -> dict:
 
     lugs_elements = []
-    for key, value in elements.items():
+    for value in elements.values():
         if value["type"] in ["LaunchLug", "RailButton"]:
             lugs_elements.append(value)
 

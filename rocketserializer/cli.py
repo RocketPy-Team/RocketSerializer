@@ -6,9 +6,8 @@ from pathlib import Path
 import click
 import orhelper
 
-from .nb_builder import NotebookBuilder
-
 from ._helpers import extract_ork_from_zip, parse_ork_file
+from .nb_builder import NotebookBuilder
 from .ork_extractor import ork_extractor
 
 logging.basicConfig(
@@ -124,14 +123,17 @@ def ork2json(
     filepath = Path(filepath)
 
     if not filepath.exists():
-        error = "[ork2json] The .ork file or zip archive does not exist. Please specify a valid path."
+        error = (
+            "[ork2json] The .ork file or zip archive does not exist. "
+            "Please specify a valid path."
+        )
         logger.error(error)
         raise FileNotFoundError(error)
 
     if filepath.suffix.lower() == ".ork":
         extract_dir = filepath.parent
         filepath = extract_ork_from_zip(filepath, extract_dir)
-        logger.info(f"[ork2json] Extracted .ork file to: '{filepath.as_posix()}'")
+        logger.info("[ork2json] Extracted .ork file to: %s", filepath.as_posix())
 
     bs, datapoints = parse_ork_file(filepath)
 
@@ -159,19 +161,20 @@ def ork2json(
         ]
         if len(ork_jar) == 0:
             raise ValueError(
-                "[ork2json] It was impossible to find the OpenRocket .jar file in the current directory.\n"
-                + "Please specify the path to the .jar file."
+                "[ork2json] It was not possible to find the OpenRocket .jar file in "
+                "the current directory. Please specify the path to the .jar file."
             )
         ork_jar = ork_jar[0]
         logger.info(
-            f"[ork2json] Found OpenRocket .jar file: '{Path(ork_jar).as_posix()}'"
+            "[ork2json] Found OpenRocket .jar file: '%s'", Path(ork_jar).as_posix()
         )
 
     if not output:
         # get the same folder as the .ork file
         output = os.path.dirname(filepath)
         logger.warning(
-            f"[ork2json] Output folder not specified. Using '{Path(output).as_posix()}' instead."
+            "[ork2json] Output folder not specified. Using '%s' instead.",
+            Path(output).as_posix(),
         )
 
     # orhelper options are: OFF, ERROR, WARN, INFO, DEBUG, TRACE and ALL
@@ -201,10 +204,12 @@ def ork2json(
                 json.dumps(settings, indent=4, sort_keys=True, ensure_ascii=False)
             )
             logger.info(
-                f"[ork2json] The file 'parameters.json' was saved to: '{Path(output).as_posix()}'"
+                "[ork2json] The file 'parameters.json' was saved to: '%s'",
+                Path(output).as_posix(),
             )
             logger.info(
-                f"[ork2json] Operation completed successfully. You can now use the 'parameters.json' file to run a simulation."
+                "[ork2json] Operation completed successfully. You can now use "
+                "the 'parameters.json' file to run a simulation."
             )
 
 

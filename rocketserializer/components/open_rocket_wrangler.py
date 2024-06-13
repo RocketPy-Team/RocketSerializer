@@ -44,7 +44,7 @@ def calculate_distance_to_the_nose_tip(ork, top_position: float):
     if ork.getClass().getSimpleName() in ["Rocket"]:
         return 0
 
-    if is_sub_component(ork) == True:
+    if is_sub_component(ork) is True:
         try:
             distance_to_nose = top_position + ork.getPositionValue()
         except AttributeError:
@@ -98,7 +98,7 @@ def process_elements_position(
             i += 1
             logger.info("Moving to the next child")
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             if "IndexOutOfBoundsException" in str(e):
                 logger.warning(
                     "Index out of bounds - likely no more children to process."

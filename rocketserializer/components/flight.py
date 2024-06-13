@@ -1,7 +1,5 @@
 import logging
 
-import yaml
-
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
@@ -27,7 +25,8 @@ def search_launch_conditions(bs):
     launch_rod_angle = float(bs.find("launchrodangle").text)
     launch_rod_direction = float(bs.find("launchroddirection").text)
     logger.info(
-        "Collected launch conditions: launch rod length, launch rod angle, launch rod direction."
+        "Collected launch conditions: launch rod length, launch rod angle, "
+        "launch rod direction."
     )
 
     settings = {
