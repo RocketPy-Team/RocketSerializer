@@ -51,13 +51,14 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
             # TODO: this is a temporary fix, we should look to the next component radius
             base_radius = rocket_radius
 
-    # TODO: elements_use parameter is for specific use in the get_rocket_radius function
-    # once the search_nosecone is changed, the get_rocket_radius function must be re-evaluated
+    # TODO: this is for specific use in the get_rocket_radius() function, given that the
+    # search_nosecone is changed, the get_rocket_radius function must be re-evaluated
     if just_radius:
         return base_radius  # return nosecone radius to the get_rocket_radius function
 
     def get_position(name, length):
         count = 0
+        position = None
         # defaults to case insensitive
         lower_name = name.lower()
         for element in elements.values():
@@ -69,11 +70,15 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
                 "Multiple nosecones with the same name and length, "
                 "using the last one found."
             )
+        elif count == 0:
+            logger.error(
+                "No element with the name '%s' and length '%f' was found",
+                name,
+                length,
+            )
         return position
 
-    logger.info(
-        f"Collected the dimensions of the nosecone: length, shape and position."
-    )
+    logger.info("Collected the dimensions of the nosecone: length, shape and position.")
 
     if kind == "haack":
         logger.info("Nosecone is a haack nosecone, searching for the shape parameter")
@@ -81,7 +86,7 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
         shape_parameter = float(nosecone.find("shapeparameter").text)
         kind = "Von Karman" if shape_parameter == 0.0 else "lvhaack"
         settings.update({"noseShapeParameter": shape_parameter})
-        logger.info(f"Shape parameter of the nosecone: {shape_parameter}")
+        logger.info("Shape parameter of the nosecone: %s", shape_parameter)
 
     settings = {
         "name": name,
@@ -90,5 +95,5 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
         "base_radius": base_radius,
         "position": get_position(name, length),
     }
-    logger.info("Nosecone setting defined:\n" + _dict_to_string(settings, indent=23))
+    logger.info("Nosecone setting defined:\n %s", _dict_to_string(settings, indent=23))
     return settings

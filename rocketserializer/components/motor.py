@@ -44,9 +44,7 @@ def search_motor(bs, datapoints, data_labels):
     logger.info("Collected motor geometry: motor length and motor radius.")
 
     # get motor mass properties
-    total_propellant_mass, motor_dry_mass, burnout_position = __get_motor_mass(
-        datapoints, data_labels
-    )
+    total_propellant_mass, motor_dry_mass, _ = __get_motor_mass(datapoints, data_labels)
     motor_dry_mass = 0  # If NOTE: dry inertia is 0, this should ALWAYS be 0 too.
     center_of_dry_mass = 0
     dry_inertia = (0, 0, 0)  # impossible to retrieve from .ork file
@@ -91,14 +89,12 @@ def search_motor(bs, datapoints, data_labels):
         "coordinate_system_orientation": coordinate_system_orientation,
     }
     logger.info(
-        f"Successfully configured the motor.\n" + _dict_to_string(settings, indent=23)
+        "Successfully configured the motor.\n %s", _dict_to_string(settings, indent=23)
     )
     return settings
 
 
-def generate_thrust_curve(
-    folder_path, datapoints, data_labels, time_vector, verbose=False
-):
+def generate_thrust_curve(folder_path, datapoints, data_labels, time_vector):
     """Generate the thrust curve from the .ork file.
 
     Parameters
@@ -144,7 +140,7 @@ def generate_thrust_curve(
     np.savetxt(source_name, thrust, delimiter=",", fmt="%1.5f")
 
     logger.info(
-        f"Successfully saved the thrust curve to: '{Path(source_name).as_posix()}'"
+        "Successfully saved the thrust curve to: '%s'", Path(source_name).as_posix()
     )
     return source_name
 

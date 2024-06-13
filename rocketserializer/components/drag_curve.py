@@ -30,11 +30,11 @@ def save_drag_curve(datapoints, data_labels, output_folder):
         float(datapoint.text.split(",")[data_labels.index("Altitude")])
         for datapoint in datapoints
     ]
-    logger.info(f"Collected altitude vector")
+    logger.info("Collected altitude vector")
 
     apogee_index = np.argmax(altitude_vector)
     datapoints = datapoints[:apogee_index]
-    logger.info(f"Removed data after apogee")
+    logger.info("Removed data after apogee")
 
     # Extract the drag coefficient and Mach number
     cd = [
@@ -45,7 +45,7 @@ def save_drag_curve(datapoints, data_labels, output_folder):
         float(datapoint.text.split(",")[data_labels.index("Mach number")])
         for datapoint in datapoints
     ]
-    logger.info(f"Collected drag coefficient and Mach number")
+    logger.info("Collected drag coefficient and Mach number")
 
     # Convert to numpy array
     cd = np.array([mach, cd]).T
@@ -57,10 +57,12 @@ def save_drag_curve(datapoints, data_labels, output_folder):
     cd = np.unique(cd, axis=0)
     # Remove values when the drag is lower than 0
     cd = cd[cd[:, 1] > 0, :]
-    logger.info(f"Successfully created the drag curve")
+    logger.info("Successfully created the drag curve")
 
     # Save to csv file
     path = os.path.join(output_folder, "drag_curve.csv")
     np.savetxt(path, cd, delimiter=",", fmt="%.6f")
-    logger.info(f"Successfully saved the drag curve file to: '{Path(path).as_posix()}'")
+    logger.info(
+        "Successfully saved the drag curve file to: '%s'", Path(path).as_posix()
+    )
     return path

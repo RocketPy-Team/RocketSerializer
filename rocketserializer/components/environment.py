@@ -1,7 +1,5 @@
 import logging
 
-import yaml
-
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
@@ -38,8 +36,8 @@ def search_environment(bs):
     try:
         base_temperature = float(bs.find("basetemperature").text)
         logger.info(
-            "The base temperature was found in the .ork file. "
-            + f"It is {base_temperature} °C."
+            "The base temperature was found in the .ork file. It is %f °C.",
+            base_temperature,
         )
     except AttributeError:
         logger.warning(
@@ -50,8 +48,8 @@ def search_environment(bs):
     try:
         base_pressure = float(bs.find("basepressure").text)
         logger.info(
-            "The base pressure was found in the .ork file. "
-            + f"It is {base_pressure} Pa."
+            "The base pressure was found in the .ork file. It is %f Pa.",
+            base_pressure,
         )
     except AttributeError:
         logger.warning(
@@ -73,7 +71,7 @@ def search_environment(bs):
         "date": date,
     }
     logger.info(
-        "Successfully extracted all the environment settings.\n"
-        + _dict_to_string(settings, indent=23)
+        "Successfully extracted all the environment settings.\n %s",
+        _dict_to_string(settings, indent=23),
     )
     return settings

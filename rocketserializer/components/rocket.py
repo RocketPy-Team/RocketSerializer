@@ -1,14 +1,11 @@
 import logging
 
-import numpy as np
-
 from .._helpers import _dict_to_string
-from ..components.nose_cone import search_nosecone
 
 logger = logging.getLogger(__name__)
 
 
-def search_rocket(bs, datapoints, data_labels, ork, burnout_position):
+def search_rocket(bs, datapoints, data_labels, burnout_position):
     settings = {}
 
     # get radius

@@ -64,4 +64,16 @@ profile = "black"
 
 
 [tool.pylint]
-line-length = 88
+max-line-length = 88
+disable = """
+    missing-module-docstring,
+    missing-function-docstring,
+    missing-class-docstring,
+    attribute-defined-outside-init,
+    too-many-locals,
+    too-many-arguments,
+    too-many-statements,
+    raise-missing-from,
+    fixme,
+    no-else-break,
+"""

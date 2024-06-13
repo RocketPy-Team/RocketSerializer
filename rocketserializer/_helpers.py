@@ -46,7 +46,7 @@ def extract_ork_from_zip(zip_path: Path, extract_dir: Path) -> Path:
         return extract_dir / "rocket.ork"
     except BadZipFile:
         logger.warning(
-            'The file "%s" seems to be a direct .ork file and not a compressed archive.',
+            'The file "%s" seems to be a rocket.ork file and not a compressed archive.',
             zip_path.as_posix(),
         )
         return zip_path

@@ -120,8 +120,8 @@ class NotebookBuilder:
     def build_motor(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
         # start section and give comments
         text = "## Motor\n"
-        text += "Currently, only Solid Motors are supported by Rocket-Serializer\n"
-        text += "If you want to use a Liquid or Hybrid motor, please use rocketpy directly.\n"
+        text += "Currently, only Solid Motors are supported by Rocket-Serializer. If "
+        text += "you want to use a Liquid/Hybrid motor, please use rocketpy directly.\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
 
         thrust_source = self.parameters["motors"]["thrust_source"]
@@ -143,14 +143,16 @@ class NotebookBuilder:
             "    grains_center_of_mass_position="
             + f"{self.parameters['motors']['grains_center_of_mass_position']},\n"
         )
+        grain_outer_radius = self.parameters["motors"]["grain_outer_radius"]
+        grain_initial_height = self.parameters["motors"]["grain_initial_height"]
         text += f"    grain_number={self.parameters['motors']['grain_number']},\n"
         text += f"    grain_density={self.parameters['motors']['grain_density']},\n"
-        text += f"    grain_outer_radius={self.parameters['motors']['grain_outer_radius']},\n"
+        text += f"    grain_outer_radius={grain_outer_radius},\n"
         text += (
             "    grain_initial_inner_radius="
             + f"{self.parameters['motors']['grain_initial_inner_radius']},\n"
         )
-        text += f"    grain_initial_height={self.parameters['motors']['grain_initial_height']},\n"
+        text += f"    grain_initial_height={grain_initial_height},\n"
         text += (
             f"    grain_separation={self.parameters['motors']['grain_separation']},\n"
         )
@@ -182,7 +184,10 @@ class NotebookBuilder:
         text += (
             "Currently, only single stage rockets are supported by Rocket-Serializer\n"
         )
-        text += "We will start by defining the aerodynamic surfaces, and then build the rocket.\n"
+        text += (
+            "We will start by defining the aerodynamic surfaces, "
+            "and then build the rocket.\n"
+        )
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
 
         self.build_all_aerodynamic_surfaces(nb)
@@ -191,10 +196,11 @@ class NotebookBuilder:
         drag_curve = os.path.relpath(drag_curve, self.__output_folder)
 
         # define the Rocket
+        inertia_string = "[" + str(self.parameters["rocket"]["inertia"])[1:-1] + "]"
         text = "rocket = Rocket(\n"
         text += f"    radius={self.parameters['rocket']['radius']},\n"
         text += f"    mass={self.parameters['rocket']['mass']},\n"
-        text += f"    inertia={'[' + str(self.parameters['rocket']['inertia'])[1:-1] + ']'},\n"
+        text += f"    inertia={inertia_string},\n"
         text += f"    power_off_drag='{drag_curve}',\n"
         text += f"    power_on_drag='{drag_curve}',\n"
         text += (
@@ -319,26 +325,29 @@ class NotebookBuilder:
             text = "trapezoidal_fins = {}\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
             for i in range(len(self.parameters["trapezoidal_fins"])):
+
+                trapezoidal_fins_i = self.parameters["trapezoidal_fins"][str(i)]
+
+                number = trapezoidal_fins_i["number"]
+                tip_chord = trapezoidal_fins_i["tip_chord"]
+                root_chord = trapezoidal_fins_i["root_chord"]
+                span = trapezoidal_fins_i["span"]
+                cant_angle = trapezoidal_fins_i["cant_angle"]
+                sweep_length = trapezoidal_fins_i["sweep_length"]
+                sweep_angle = trapezoidal_fins_i["sweep_angle"]
+                radius = self.parameters["rocket"]["radius"]
+                name = trapezoidal_fins_i["name"]
+
                 text = f"trapezoidal_fins[{i}] = TrapezoidalFins(\n"
-                text += (
-                    f"    n={self.parameters['trapezoidal_fins'][str(i)]['number']},\n"
-                )
-                text += f"    root_chord={self.parameters['trapezoidal_fins'][str(i)]['root_chord']},\n"
-                text += f"    tip_chord={self.parameters['trapezoidal_fins'][str(i)]['tip_chord']},\n"
-                text += (
-                    f"    span={self.parameters['trapezoidal_fins'][str(i)]['span']},\n"
-                )
-                text += f"    cant_angle={self.parameters['trapezoidal_fins'][str(i)]['cant_angle']},\n"
-                text += (
-                    "    sweep_length="
-                    + f"{self.parameters['trapezoidal_fins'][str(i)]['sweep_length']},\n"
-                )
-                text += (
-                    "    sweep_angle="
-                    + f"{self.parameters['trapezoidal_fins'][str(i)]['sweep_angle']},\n"
-                )
-                text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"
-                text += f"    name='{self.parameters['trapezoidal_fins'][str(i)]['name']}',\n"
+                text += f"    n={number},\n"
+                text += f"    root_chord={root_chord},\n"
+                text += f"    tip_chord={tip_chord},\n"
+                text += f"    span={span},\n"
+                text += f"    cant_angle={cant_angle},\n"
+                text += f"    sweep_length= {sweep_length},\n"
+                text += f"    sweep_angle= {sweep_angle},\n"
+                text += f"    rocket_radius={radius},\n"
+                text += f"    name='{name}',\n"
                 text += ")\n\n"
                 nb["cells"].append(nbf.v4.new_code_cell(text))
             logger.info("[NOTEBOOK BUILDER] Trapezoidal fins created.")
@@ -352,17 +361,23 @@ class NotebookBuilder:
             text = "elliptical_fins = {}\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
             for i in range(len(self.parameters["elliptical_fins"])):
+
+                elliptical_fins_i = self.parameters["elliptical_fins"][str(i)]
+
+                number = elliptical_fins_i["number"]
+                root_chord = elliptical_fins_i["root_chord"]
+                span = elliptical_fins_i["span"]
+                rocket_radius = self.parameters["rocket"]["radius"]
+                cant_angle = elliptical_fins_i["cant_angle"]
+                name = elliptical_fins_i["name"]
+
                 text = f"elliptical_fins[{i}] = EllipticalFins(\n"
-                text += (
-                    f"    n={self.parameters['elliptical_fins'][str(i)]['number']},\n"
-                )
-                text += f"    root_chord={self.parameters['elliptical_fins'][str(i)]['root_chord']},\n"
-                text += (
-                    f"    span={self.parameters['elliptical_fins'][str(i)]['span']},\n"
-                )
-                text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"
-                text += f"    cant_angle={self.parameters['elliptical_fins'][str(i)]['cant_angle']},\n"
-                text += f"    name='{self.parameters['elliptical_fins'][str(i)]['name']}',\n"
+                text += f"    n={number},\n"
+                text += f"    root_chord={root_chord},\n"
+                text += f"    span={span},\n"
+                text += f"    rocket_radius={rocket_radius},\n"
+                text += f"    cant_angle={cant_angle},\n"
+                text += f"    name='{name}',\n"
                 text += ")\n\n"
                 nb["cells"].append(nbf.v4.new_code_cell(text))
             logger.info("[NOTEBOOK BUILDER] Elliptical fins created.")
@@ -373,7 +388,7 @@ class NotebookBuilder:
         try:
             assert fin_counter > 0
             logger.info(
-                f"[NOTEBOOK BUILDER] {fin_counter} fins were added to the rocket."
+                "[NOTEBOOK BUILDER] %s fins were added to the rocket.", fin_counter
             )
         except AssertionError:
             text = "No fins were added to the rocket. Please add at least one."
@@ -393,14 +408,21 @@ class NotebookBuilder:
         text = "tails = {}\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
         for i in range(len(self.parameters["tails"])):
+
+            tail_i = self.parameters["tails"][str(i)]
+
+            top_radius = tail_i["top_radius"]
+            bottom_radius = tail_i["bottom_radius"]
+            length = tail_i["length"]
+            rocket_radius = self.parameters["rocket"]["radius"]
+            name = tail_i["name"]
+
             text = f"tails[{i}] = Tail(\n"
-            text += (
-                f"    top_radius={self.parameters['tails'][str(i)]['top_radius']},\n"
-            )
-            text += f"    bottom_radius={self.parameters['tails'][str(i)]['bottom_radius']},\n"
-            text += f"    length={self.parameters['tails'][str(i)]['length']},\n"
-            text += f"    rocket_radius={self.parameters['rocket']['radius']},\n"
-            text += f"    name='{self.parameters['tails'][str(i)]['name']}',\n"
+            text += f"    top_radius={top_radius},\n"
+            text += f"    bottom_radius={bottom_radius},\n"
+            text += f"    length={length},\n"
+            text += f"    rocket_radius={rocket_radius},\n"
+            text += f"    name='{name}',\n"
             text += ")\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
 
