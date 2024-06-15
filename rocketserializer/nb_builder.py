@@ -80,7 +80,8 @@ class NotebookBuilder:
         # import classes
         text = (
             "from rocketpy import Environment, SolidMotor, Rocket, Flight, "
-            + "TrapezoidalFins, EllipticalFins, RailButtons, NoseCone, Tail\n"
+            + "TrapezoidalFins, EllipticalFins, RailButtons, NoseCone, Tail, " 
+            + "Parachute\n"
         )
         text += "import datetime\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
@@ -242,6 +243,7 @@ class NotebookBuilder:
         self.build_fins(nb)
         self.build_tails(nb)
         self.build_rail_buttons(nb)
+        self.build_parachute(nb)
         logger.info("[NOTEBOOK BUILDER] All aerodynamic surfaces created.")
         return nb
 
@@ -432,6 +434,53 @@ class NotebookBuilder:
 
     def build_rail_buttons(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
         logger.info("rail buttons not implemented yet")
+        return nb
+
+    def build_parachute(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
+        # add a markdown cell
+        text = "### Parachutes\n"
+        text += "As rocketpy allows for multiple parachutes, we will create a "
+        text += "dictionary with all the parachutes and then add them to the rocket\n"
+        nb["cells"].append(nbf.v4.new_markdown_cell(text))
+
+        # add a code cell
+        text = "parachutes = {}\n"
+        nb["cells"].append(nbf.v4.new_code_cell(text))
+        for i in range(len(self.parameters["parachutes"])):
+
+            parachute_i = self.parameters["parachutes"][str(i)]
+            cd_s = parachute_i["cd"]*parachute_i["area"]
+            deploy_event = parachute_i["deploy_event"]
+
+            # evaluating trigger
+            if deploy_event == "apogee":
+                trigger = "apogee"
+            elif deploy_event == "altitude":
+                trigger = float(parachute_i["deploy_altitude"])
+            else:
+                logger.warning("Invalid deploy event for parachute %d", i)
+                raise ValueError("Invalid deploy event for parachute %d", i)
+            # adding parameters
+            name = parachute_i["name"]
+            text = f"parachutes[{i}] = Parachute(\n"
+            text += f"    name='{name}',\n"
+            text += f"    cd_s={cd_s:.3f},\n"
+            # adding trigger
+            if isinstance(trigger, str):
+                text += f"    trigger='{trigger}',\n"
+            else:
+                text += f"    trigger={trigger:.3f},\n"
+
+            text += f"    sampling_rate=100, \n"
+            text += ")\n"
+            nb["cells"].append(nbf.v4.new_code_cell(text))
+        
+        text = "Adding parachutes to the rocket\n"
+        nb["cells"].append(nbf.v4.new_markdown_cell(text))
+        text = "rocket.parachutes = parachutes\n"
+        nb["cells"].append(nbf.v4.new_code_cell(text))
+
+        logger.info("[NOTEBOOK BUILDER] Parachutes created.")
         return nb
 
     def build_flight(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
