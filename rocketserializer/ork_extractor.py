@@ -18,7 +18,7 @@ from .components.transition import search_transitions
 logger = logging.getLogger(__name__)
 
 
-def ork_extractor(bs, filepath, output_folder, ork, eng):
+def ork_extractor(bs, filepath, output_folder, ork):
     """Generates the parameters.json file with the parameters for rocketpy
 
     Parameters
@@ -31,8 +31,6 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
         Path to the output folder.
     ork : orhelper
         An object representing the OpenRocket document.
-    eng : str
-        Engine file name.
     verbose : bool, optional
         Whether or not to print a message of successful execution, by default
         False.
@@ -113,7 +111,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     logger.info("Drag curve generated.")
 
     # get thrust curve
-    thrust_path = eng or generate_thrust_curve(
+    thrust_path = generate_thrust_curve(
         output_folder, datapoints, data_labels, time_vector
     )
     settings["motors"]["thrust_source"] = thrust_path
