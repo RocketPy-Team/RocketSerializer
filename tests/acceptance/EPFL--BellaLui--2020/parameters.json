@@ -96,6 +96,10 @@
         "time_to_apogee": 14.851,
         "flight_time": 92.782,
         "ground_hit_velocity": 26.142,
-        "launch_rod_velocity": 14.728
+        "launch_rod_velocity": 14.728,
+        "max_stability_margin": 4.8193,
+        "min_stability_margin": 0.85185,
+        "burnout_stability_margin": 3.1703,
+        "max_thrust": 1287.5
     }
 }
