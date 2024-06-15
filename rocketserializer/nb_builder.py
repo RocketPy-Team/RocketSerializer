@@ -459,6 +459,27 @@ class NotebookBuilder:
         logger.info("[NOTEBOOK BUILDER] Flight section created.")
         return nb
 
+    def build_compare_results(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
+        # add a markdown cell
+        text = "## Compare Results\n"
+        text += "We will now compare the results of the simulation with the "
+        text += "parameters used to create it. Let's go!\n"
+        nb["cells"].append(nbf.v4.new_markdown_cell(text))
+
+        # add a code cell
+        text = "### OpenRocket vs RocketPy Parameters\n"
+        time_to_apogee = self.parameters["stored_results"]["time_to_apogee"]
+
+        text += f"time_to_apogee_ork = {time_to_apogee}\n"
+        text += "time_to_apogee_rpy = flight.apogee_time\n"
+        text += r'print(f"Time to apogee (OpenRocket): {time_to_apogee_ork}")\n'
+        text += r'print("Time to apogee (RocketPy): {time_to_apogee_rpy}")\n'
+
+        nb["cells"].append(nbf.v4.new_code_cell(text))
+
+        logger.info("[NOTEBOOK BUILDER] Compare Results section created.")
+        return nb
+
     def save_notebook(self, nb: nbf.v4.new_notebook, destination: str) -> None:
         """Writes the .ipynb file to the destination folder. Also applies black
         formatting to the file to improve readability."""
