@@ -389,16 +389,14 @@ class NotebookBuilder:
             pass
         # free form fins
         # checking if fins were added
-        try:
-            assert fin_counter > 0
+        if fin_counter > 0:
             logger.info(
                 "[NOTEBOOK BUILDER] %s fins were added to the rocket.", fin_counter
             )
-        except AssertionError:
-            text = "No fins were added to the rocket. Please add at least one."
+        else:
+            text = "# No fins were added to the rocket. Check parameters.json."
             nb["cells"].append(nbf.v4.new_code_cell(text))
-            logger.warning("No fins were added to the rocket. Please add at least one.")
-            raise Warning("No fins were added to the rocket. Please add at least one.")
+            logger.warning("No fins were added to the rocket. Check parameters.json")
         return nb
 
     def build_tails(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
@@ -437,6 +435,13 @@ class NotebookBuilder:
         # add a markdown cell
         text = "### Rail Buttons\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
+
+        if not self.parameters["rail_buttons"]:
+            text = "# No rail buttons were added to the rocket."
+            nb["cells"].append(nbf.v4.new_code_cell(text))
+            logger.warning("No rail buttons were added to the rocket.")
+            return nb
+
         rail_button_i = self.parameters["rail_buttons"]
         upper_position = rail_button_i["upper_position"]
         lower_position = rail_button_i["lower_position"]
