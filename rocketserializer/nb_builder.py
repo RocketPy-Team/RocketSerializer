@@ -51,6 +51,7 @@ class NotebookBuilder:
         nb = self.build_motor(nb)
         nb = self.build_rocket(nb)
         nb = self.build_flight(nb)
+        nb = self.build_compare_results(nb)
         self.save_notebook(nb, destination)
         logger.info(
             "[NOTEBOOK BUILDER] Notebook successfully built! You can find it at: %s",
@@ -107,7 +108,7 @@ class NotebookBuilder:
         # add a code cell
         text = "tomorrow = datetime.date.today() + datetime.timedelta(days=1)\n"
         text += "env.set_date((tomorrow.year, tomorrow.month, tomorrow.day, 12))\n"
-        text += "env.set_atmospheric_model(type='Forecast', file='GFS')"
+        text += "# env.set_atmospheric_model(type='Forecast', file='GFS')"
         nb["cells"].append(nbf.v4.new_code_cell(text))
 
         # add a code cell
@@ -457,6 +458,201 @@ class NotebookBuilder:
         nb["cells"].append(nbf.v4.new_code_cell(text))
 
         logger.info("[NOTEBOOK BUILDER] Flight section created.")
+        return nb
+
+    def build_compare_results(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
+        # pylint: disable=line-too-long
+        # add a markdown cell
+        text = "## Compare Results\n"
+        text += "We will now compare the results of the simulation with the "
+        text += "parameters used to create it. Let's go!\n"
+        nb["cells"].append(nbf.v4.new_markdown_cell(text))
+
+        # add a code cell
+        text = "### OpenRocket vs RocketPy Parameters\n"
+        time_to_apogee = self.parameters["stored_results"]["time_to_apogee"]
+        # time to apogee
+        text += f"time_to_apogee_ork = {time_to_apogee}\n"
+        text += "time_to_apogee_rpy = flight.apogee_time\n"
+        text += r'print(f"Time to apogee (OpenRocket): {time_to_apogee_ork:.3f} s")'
+        text += "\n"
+        text += r'print(f"Time to apogee (RocketPy):   {time_to_apogee_rpy:.3f} s")'
+        text += "\n"
+        text += "apogee_difference = time_to_apogee_rpy - time_to_apogee_ork"
+        text += "\n"
+        text += "error = abs((apogee_difference)/time_to_apogee_rpy)*100"
+        text += "\n"
+        text += r'print(f"Time to apogee difference:   {error:.3f} %")'
+        text += "\n\n"
+
+        # Flight time
+        flight_time_ork = self.parameters["stored_results"]["flight_time"]
+        text += f"flight_time_ork = {flight_time_ork}\n"
+        text += "flight_time_rpy = flight.t_final\n"
+        text += r'print(f"Flight time (OpenRocket): {flight_time_ork:.3f} s")'
+        text += "\n"
+        text += r'print(f"Flight time (RocketPy):   {flight_time_rpy:.3f} s")'
+        text += "\n"
+        text += "flight_time_difference = flight_time_rpy - flight_time_ork\n"
+        text += (
+            "error_flight_time = abs((flight_time_difference)/flight_time_rpy)*100\n"
+        )
+        text += r'print(f"Flight time difference:   {error_flight_time:.3f} %")'
+        text += "\n\n"
+
+        # Ground hit velocity
+        ground_hit_velocity_ork = self.parameters["stored_results"][
+            "ground_hit_velocity"
+        ]
+        text += f"ground_hit_velocity_ork = {ground_hit_velocity_ork}\n"
+        text += "ground_hit_velocity_rpy = flight.impact_velocity\n"
+        text += r'print(f"Ground hit velocity (OpenRocket): {ground_hit_velocity_ork:.3f} m/s")'
+        text += "\n"
+        text += r'print(f"Ground hit velocity (RocketPy):   {ground_hit_velocity_rpy:.3f} m/s")'
+        text += "\n"
+        text += "ground_hit_velocity_difference = ground_hit_velocity_rpy - ground_hit_velocity_ork\n"
+        text += "error_ground_hit_velocity = abs((ground_hit_velocity_difference)/ground_hit_velocity_rpy)*100\n"
+        text += r'print(f"Ground hit velocity difference:   {error_ground_hit_velocity:.3f} %")'
+        text += "\n\n"
+
+        # Launch rod velocity
+        launch_rod_velocity_ork = self.parameters["stored_results"][
+            "launch_rod_velocity"
+        ]
+        text += f"launch_rod_velocity_ork = {launch_rod_velocity_ork}\n"
+        text += "launch_rod_velocity_rpy = flight.out_of_rail_velocity\n"
+        text += r'print(f"Launch rod velocity (OpenRocket): {launch_rod_velocity_ork:.3f} m/s")'
+        text += "\n"
+        text += r'print(f"Launch rod velocity (RocketPy):   {launch_rod_velocity_rpy:.3f} m/s")'
+        text += "\n"
+        text += "launch_rod_velocity_difference = launch_rod_velocity_rpy - launch_rod_velocity_ork\n"
+        text += "error_launch_rod_velocity = abs((launch_rod_velocity_difference)/launch_rod_velocity_rpy)*100\n"
+        text += r'print(f"Launch rod velocity difference:   {error_launch_rod_velocity:.3f} %")'
+        text += "\n\n"
+
+        # Max acceleration
+        max_acceleration_ork = self.parameters["stored_results"]["max_acceleration"]
+        text += f"max_acceleration_ork = {max_acceleration_ork}\n"
+        text += "max_acceleration_rpy = flight.max_acceleration\n"
+        text += (
+            r'print(f"Max acceleration (OpenRocket): {max_acceleration_ork:.3f} m/s²")'
+        )
+        text += "\n"
+        text += (
+            r'print(f"Max acceleration (RocketPy):   {max_acceleration_rpy:.3f} m/s²")'
+        )
+        text += "\n"
+        text += "max_acceleration_difference = max_acceleration_rpy - max_acceleration_ork\n"
+        text += "error_max_acceleration = abs((max_acceleration_difference)/max_acceleration_rpy)*100\n"
+        text += (
+            r'print(f"Max acceleration difference:   {error_max_acceleration:.3f} %")'
+        )
+        text += "\n\n"
+
+        # Max altitude
+        max_altitude_ork = self.parameters["stored_results"]["max_altitude"]
+        text += f"max_altitude_ork = {max_altitude_ork}\n"
+        text += "max_altitude_rpy = flight.apogee - flight.env.elevation\n"
+        text += r'print(f"Max altitude (OpenRocket): {max_altitude_ork:.3f} m")'
+        text += "\n"
+        text += r'print(f"Max altitude (RocketPy):   {max_altitude_rpy:.3f} m")'
+        text += "\n"
+        text += "max_altitude_difference = max_altitude_rpy - max_altitude_ork\n"
+        text += (
+            "error_max_altitude = abs((max_altitude_difference)/max_altitude_rpy)*100\n"
+        )
+        text += r'print(f"Max altitude difference:   {error_max_altitude:.3f} %")'
+        text += "\n\n"
+
+        # Max Mach
+        max_mach_ork = self.parameters["stored_results"]["max_mach"]
+        text += f"max_mach_ork = {max_mach_ork}\n"
+        text += "max_mach_rpy = flight.max_mach_number \n"
+        text += r'print(f"Max Mach (OpenRocket): {max_mach_ork:.3f}")'
+        text += "\n"
+        text += r'print(f"Max Mach (RocketPy):   {max_mach_rpy:.3f}")'
+        text += "\n"
+        text += "max_mach_difference = max_mach_rpy - max_mach_ork\n"
+        text += "error_max_mach = abs((max_mach_difference)/max_mach_rpy)*100\n"
+        text += r'print(f"Max Mach difference:   {error_max_mach:.3f} %")'
+        text += "\n\n"
+
+        # Max velocity
+        max_velocity_ork = self.parameters["stored_results"]["max_velocity"]
+        text += f"max_velocity_ork = {max_velocity_ork}\n"
+        text += "max_velocity_rpy = flight.max_speed\n"
+        text += r'print(f"Max velocity (OpenRocket): {max_velocity_ork:.3f} m/s")'
+        text += "\n"
+        text += r'print(f"Max velocity (RocketPy):   {max_velocity_rpy:.3f} m/s")'
+        text += "\n"
+        text += "max_velocity_difference = max_velocity_rpy - max_velocity_ork\n"
+        text += (
+            "error_max_velocity = abs((max_velocity_difference)/max_velocity_rpy)*100\n"
+        )
+        text += r'print(f"Max velocity difference:   {error_max_velocity:.3f} %")'
+        text += "\n\n"
+
+        # Max thrust
+        max_thrust_ork = self.parameters["stored_results"]["max_thrust"]
+        text += f"max_thrust_ork = {max_thrust_ork}\n"
+        text += "max_thrust_rpy = flight.rocket.motor.thrust.max\n"
+        text += r'print(f"Max thrust (OpenRocket): {max_thrust_ork:.3f} N")'
+        text += "\n"
+        text += r'print(f"Max thrust (RocketPy):   {max_thrust_rpy:.3f} N")'
+        text += "\n"
+        text += "max_thrust_difference = max_thrust_rpy - max_thrust_ork\n"
+        text += "error_max_thrust = abs((max_thrust_difference)/max_thrust_rpy)*100\n"
+        text += r'print(f"Max thrust difference:   {error_max_thrust:.3f} %")'
+        text += "\n\n"
+
+        # # Burnout stability margin
+        burnout_stability_margin_ork = self.parameters["stored_results"][
+            "burnout_stability_margin"
+        ]
+        text += f"burnout_stability_margin_ork = {burnout_stability_margin_ork}\n"
+        text += "burnout_stability_margin_rpy = flight.stability_margin(flight.rocket.motor.burn_out_time)\n"
+        text += r'print(f"Burnout stability margin (OpenRocket): {burnout_stability_margin_ork:.3f}")'
+        text += "\n"
+        text += r'print(f"Burnout stability margin (RocketPy):   {burnout_stability_margin_rpy:.3f}")'
+        text += "\n"
+        text += "burnout_stability_margin_difference = burnout_stability_margin_rpy - burnout_stability_margin_ork\n"
+        text += "error_burnout_stability_margin = abs((burnout_stability_margin_difference)/burnout_stability_margin_rpy)*100\n"
+        text += r'print(f"Burnout stability margin difference:   {error_burnout_stability_margin:.3f} %")'
+        text += "\n\n"
+
+        # # Max stability margin
+        max_stability_margin_ork = self.parameters["stored_results"][
+            "max_stability_margin"
+        ]
+        text += f"max_stability_margin_ork = {max_stability_margin_ork}\n"
+        text += "max_stability_margin_rpy = flight.max_stability_margin\n"
+        text += r'print(f"Max stability margin (OpenRocket): {max_stability_margin_ork:.3f}")'
+        text += "\n"
+        text += r'print(f"Max stability margin (RocketPy):   {max_stability_margin_rpy:.3f}")'
+        text += "\n"
+        text += "max_stability_margin_difference = max_stability_margin_rpy - max_stability_margin_ork\n"
+        text += "error_max_stability_margin = abs((max_stability_margin_difference)/max_stability_margin_rpy)*100\n"
+        text += r'print(f"Max stability margin difference:   {error_max_stability_margin:.3f} %")'
+        text += "\n\n"
+
+        # Min stability margin
+        min_stability_margin_ork = self.parameters["stored_results"][
+            "min_stability_margin"
+        ]
+        text += f"min_stability_margin_ork = {min_stability_margin_ork}\n"
+        text += "min_stability_margin_rpy = flight.min_stability_margin\n"
+        text += r'print(f"Min stability margin (OpenRocket): {min_stability_margin_ork:.3f}")'
+        text += "\n"
+        text += r'print(f"Min stability margin (RocketPy):   {min_stability_margin_rpy:.3f}")'
+        text += "\n"
+        text += "min_stability_margin_difference = min_stability_margin_rpy - min_stability_margin_ork\n"
+        text += "error_min_stability_margin = abs((min_stability_margin_difference)/min_stability_margin_rpy)*100\n"
+        text += r'print(f"Min stability margin difference:   {error_min_stability_margin:.3f} %")'
+        text += "\n\n"
+
+        nb["cells"].append(nbf.v4.new_code_cell(text))
+
+        logger.info("[NOTEBOOK BUILDER] Compare Results section created.")
         return nb
 
     def save_notebook(self, nb: nbf.v4.new_notebook, destination: str) -> None:
