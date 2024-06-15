@@ -76,4 +76,5 @@ disable = """
     raise-missing-from,
     fixme,
     no-else-break,
+    no-else-return,
 """
