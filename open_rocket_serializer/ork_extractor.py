@@ -89,7 +89,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     transitions = search_transitions(bs, elements, ork, rocket_radius)
     rail_buttons = search_rail_buttons(bs, elements)
     parachutes = search_parachutes(bs)
-    stored_results = search_stored_results(bs)
+    stored_results = search_stored_results(bs, datapoints, data_labels, time_vector, burnout_position)
 
     # save everything to a dictionary
     settings["id"] = id_info
