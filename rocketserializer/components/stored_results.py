@@ -124,4 +124,4 @@ def __get_parameter(datapoints, data_labels, time_vector, label, position):
         return parameter[position, 1]  # return the value at the specified position
     else:
         logger.error("Invalid position parameter")
-        return "Error in position parameter"
+        raise ValueError("Error in position parameter")
