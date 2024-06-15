@@ -66,13 +66,20 @@
         "radius": 0.078
     },
     "stored_results": {
+        "burnout_stability_margin": 3.1703,
+        "final_latitude": 0.49934,
+        "final_longitude": 0.0,
         "flight_time": 92.782,
         "ground_hit_velocity": 26.142,
         "launch_rod_velocity": 14.728,
         "max_acceleration": 122.07,
         "max_altitude": 1190.0,
         "max_mach": 0.5587,
+        "max_mach_number": 0.5587,
+        "max_stability_margin": 4.8193,
+        "max_thrust": 1287.5,
         "max_velocity": 189.56,
+        "min_stability_margin": 0.85185,
         "time_to_apogee": 14.851
     },
     "tails": {

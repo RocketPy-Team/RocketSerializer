@@ -90,29 +90,20 @@ def __get_parameter(datapoints, data_labels, time_vector, label, position):
     # This will keep rows where the second column is not NaN
     parameter = parameter[~np.isnan(parameter[:, 1])]
     
-    logger.info("parameters acquired successfully")
-    
     if type(position) is str:
-        if position == "last":
-            return parameter[-1, 1] # return the end point (final time, final value)
-        else:
-            pass
-        if position == "first":
-            return parameter[0, 1]
-        else:
-            pass
-        if position == "max":
-            return np.max(parameter[:, 1])
-        else:
-            pass
-        if position == "min":
-            return np.min(parameter[:, 1])
-        else:
-            pass
+        match position:
+            case "last":
+                return parameter[-1, 1]  # return the end point (final time, final value)
+            case "first":
+                return parameter[0, 1] # return the first point (initial time, initial value)
+            case "max":
+                return np.max(parameter[:, 1]) # return the maximum value
+            case "min":
+                return np.min(parameter[:, 1]) # return the minimum value
     else:
         pass
     if type(position) is np.int64:
-        return parameter[position, 1]
+        return parameter[position, 1] # return the value at the specified position
     else:
         logger.error("Invalid position parameter")
         return "Error in position parameter"
