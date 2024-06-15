@@ -227,6 +227,7 @@ class NotebookBuilder:
         nb["cells"].append(nbf.v4.new_code_cell(text))
 
         nb = self.add_parachutes_to_rocket(nb)
+        nb = self.build_rail_buttons(nb)
 
         text = "### Rocket Info\n"
         text += "rocket.all_info()\n"
@@ -243,7 +244,6 @@ class NotebookBuilder:
         self.build_nosecones(nb)
         self.build_fins(nb)
         self.build_tails(nb)
-        self.build_rail_buttons(nb)
         self.build_parachute(nb)
         logger.info("[NOTEBOOK BUILDER] All aerodynamic surfaces created.")
         return nb
@@ -434,7 +434,21 @@ class NotebookBuilder:
         return nb
 
     def build_rail_buttons(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
-        logger.info("rail buttons not implemented yet")
+        # add a markdown cell
+        text = "### Rail Buttons\n"
+        nb["cells"].append(nbf.v4.new_markdown_cell(text))
+        rail_button_i = self.parameters["rail_buttons"]
+        upper_position = rail_button_i["upper_position"]
+        lower_position = rail_button_i["lower_position"]
+        ang_position = rail_button_i["angular_position"]
+        text = "rail_buttons = rocket.set_rail_buttons(\n"
+        text += f"   upper_button_position={upper_position:.3f},\n"
+        text += f"   lower_button_position={lower_position:.3f},\n"
+        text += f"   angular_position={ang_position:.3f},\n"
+        text += ")\n"
+        nb["cells"].append(nbf.v4.new_code_cell(text))
+
+        logger.info("[NOTEBOOK BUILDER] Rail Buttons created.")
         return nb
 
     def build_parachute(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
@@ -535,6 +549,7 @@ class NotebookBuilder:
         text += "error = abs((apogee_difference)/time_to_apogee_rpy)*100"
         text += "\n"
         text += r'print(f"Time to apogee difference:   {error:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Flight time
@@ -550,10 +565,11 @@ class NotebookBuilder:
             "error_flight_time = abs((flight_time_difference)/flight_time_rpy)*100\n"
         )
         text += r'print(f"Flight time difference:   {error_flight_time:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Ground hit velocity
-        ground_hit_velocity_ork = self.parameters["stored_results"][
+        ground_hit_velocity_ork = -self.parameters["stored_results"][
             "ground_hit_velocity"
         ]
         text += f"ground_hit_velocity_ork = {ground_hit_velocity_ork}\n"
@@ -565,6 +581,7 @@ class NotebookBuilder:
         text += "ground_hit_velocity_difference = ground_hit_velocity_rpy - ground_hit_velocity_ork\n"
         text += "error_ground_hit_velocity = abs((ground_hit_velocity_difference)/ground_hit_velocity_rpy)*100\n"
         text += r'print(f"Ground hit velocity difference:   {error_ground_hit_velocity:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Launch rod velocity
@@ -580,6 +597,7 @@ class NotebookBuilder:
         text += "launch_rod_velocity_difference = launch_rod_velocity_rpy - launch_rod_velocity_ork\n"
         text += "error_launch_rod_velocity = abs((launch_rod_velocity_difference)/launch_rod_velocity_rpy)*100\n"
         text += r'print(f"Launch rod velocity difference:   {error_launch_rod_velocity:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Max acceleration
@@ -599,6 +617,7 @@ class NotebookBuilder:
         text += (
             r'print(f"Max acceleration difference:   {error_max_acceleration:.3f} %")'
         )
+        text += "\nprint()"
         text += "\n\n"
 
         # Max altitude
@@ -614,6 +633,7 @@ class NotebookBuilder:
             "error_max_altitude = abs((max_altitude_difference)/max_altitude_rpy)*100\n"
         )
         text += r'print(f"Max altitude difference:   {error_max_altitude:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Max Mach
@@ -627,6 +647,7 @@ class NotebookBuilder:
         text += "max_mach_difference = max_mach_rpy - max_mach_ork\n"
         text += "error_max_mach = abs((max_mach_difference)/max_mach_rpy)*100\n"
         text += r'print(f"Max Mach difference:   {error_max_mach:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Max velocity
@@ -642,6 +663,7 @@ class NotebookBuilder:
             "error_max_velocity = abs((max_velocity_difference)/max_velocity_rpy)*100\n"
         )
         text += r'print(f"Max velocity difference:   {error_max_velocity:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Max thrust
@@ -655,6 +677,7 @@ class NotebookBuilder:
         text += "max_thrust_difference = max_thrust_rpy - max_thrust_ork\n"
         text += "error_max_thrust = abs((max_thrust_difference)/max_thrust_rpy)*100\n"
         text += r'print(f"Max thrust difference:   {error_max_thrust:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # # Burnout stability margin
@@ -670,6 +693,7 @@ class NotebookBuilder:
         text += "burnout_stability_margin_difference = burnout_stability_margin_rpy - burnout_stability_margin_ork\n"
         text += "error_burnout_stability_margin = abs((burnout_stability_margin_difference)/burnout_stability_margin_rpy)*100\n"
         text += r'print(f"Burnout stability margin difference:   {error_burnout_stability_margin:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # # Max stability margin
@@ -685,6 +709,7 @@ class NotebookBuilder:
         text += "max_stability_margin_difference = max_stability_margin_rpy - max_stability_margin_ork\n"
         text += "error_max_stability_margin = abs((max_stability_margin_difference)/max_stability_margin_rpy)*100\n"
         text += r'print(f"Max stability margin difference:   {error_max_stability_margin:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         # Min stability margin
@@ -700,6 +725,7 @@ class NotebookBuilder:
         text += "min_stability_margin_difference = min_stability_margin_rpy - min_stability_margin_ork\n"
         text += "error_min_stability_margin = abs((min_stability_margin_difference)/min_stability_margin_rpy)*100\n"
         text += r'print(f"Min stability margin difference:   {error_min_stability_margin:.3f} %")'
+        text += "\nprint()"
         text += "\n\n"
 
         nb["cells"].append(nbf.v4.new_code_cell(text))
