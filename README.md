@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./static/LogoWhiteonTransparentBG-ByRocketeersForRocketeers.png">
+  <source media="(prefers-color-scheme: light)" srcset="./static/LogoBlackonTransparentBG-ByRocketeersForRocketeers.png">
+  <img alt="RocketPy Logo" src="https://raw.githubusercontent.com/RocketPy-Team/RocketPy/master/docs/static/RocketPy_Logo_black.png">
+</picture>
+
 <br>
 
 [![Documentation Status](https://readthedocs.org/projects/rocketpyalpha/badge/?version=latest)](https://docs.rocketpy.org/en/latest/?badge=latest)
