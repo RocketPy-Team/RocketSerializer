@@ -226,7 +226,8 @@ class NotebookBuilder:
         )
         nb["cells"].append(nbf.v4.new_code_cell(text))
 
-        # add a code cell
+        nb = self.add_parachutes_to_rocket(nb)
+
         text = "### Rocket Info\n"
         text += "rocket.all_info()\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
@@ -475,9 +476,11 @@ class NotebookBuilder:
             text += ")\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
 
+    def add_parachutes_to_rocket(self, nb: nbf.v4.new_notebook) -> nbf.v4.new_notebook:
+
         text = "Adding parachutes to the rocket\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
-        text = "rocket.parachutes = parachutes\n"
+        text = "rocket.parachutes = list(parachutes.values())\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
 
         logger.info("[NOTEBOOK BUILDER] Parachutes created.")
