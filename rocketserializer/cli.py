@@ -211,7 +211,8 @@ def ork2notebook(filepath, output, ork_jar=None, encoding="utf-8", verbose=False
     the .ipynb file.
     """
     if not output:
-        output = os.path.dirname(filepath)
+        filepath = Path(filepath)
+        output = filepath.parent
         logger.warning(
             "[ork2notebook] Output folder not specified. Using '%s' instead.",
             Path(output).as_posix(),
