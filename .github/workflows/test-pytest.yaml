@@ -10,7 +10,7 @@ on:
       - "requirements*"
 
 jobs:
-  run_pytest:
+  pytest:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -35,6 +35,12 @@ jobs:
       - name: Install dev dependencies
         run: |
           pip install -r requirements-dev.txt
-      # - name: Run pytest
-      #   run: |
-      #     pytest
+      - name: Run unit tests
+        run: |
+          pytest -k "unit"
+      - name: Run integration tests
+        run: |
+          pytest -k "integration"
+      - name: Run acceptance tests
+        run: |
+          pytest -k "acceptance"
