@@ -27,18 +27,16 @@ def search_trapezoidal_fins(bs, elements):
     """
     settings = {}
     fins = bs.findAll("trapezoidfinset")
-    logger.info(f"A total of {len(fins)} trapezoidal fin sets were detected")
+    logger.info("A total of %d trapezoidal fin sets were detected", len(fins))
 
     if len(fins) == 0:
-        logger.info(
-            f"Since no trapezoidal fins were detected, returning empty dictionary"
-        )
+        logger.info("No trapezoidal fins were detected, returning empty dictionary")
         return settings
 
     for idx, fin in enumerate(fins):
         logger.info(
-            "Starting collecting the settings for the trapezoidal fin set number "
-            + f"'{idx}'"
+            "Starting collecting the settings for the trapezoidal fin set number '%d'",
+            idx,
         )
         label = fin.find("name").text
         try:
@@ -50,27 +48,26 @@ def search_trapezoidal_fins(bs, elements):
                 return None
 
             element = get_element_by_name(label)
-            logger.info(f"Found the element '{label}' in the elements dictionary.")
+            logger.info("Found the element '%s' in the elements dictionary.", label)
         except KeyError:
             message = (
-                f"Couldn't find the element '{label}' in the elements dictionary."
-                + "in the elements dictionary. It is possible that the "
-                + "process_elements_position() function got an error."
+                f"Couldn't find the element '{label}' in the elements dictionary. It is"
+                " possible that the process_elements_position() function got an error."
             )
             logger.error(message)
             raise KeyError(message)
 
         n_fin = int(fin.find("fincount").text)
-        logger.info(f"Number of fins retrieved: {n_fin}")
+        logger.info("Number of fins retrieved: %d", n_fin)
 
         root_chord = float(fin.find("rootchord").text)
-        logger.info(f"Root chord retrieved: {root_chord}")
+        logger.info("Root chord retrieved: %f", root_chord)
 
         tip_chord = float(fin.find("tipchord").text)
-        logger.info(f"Tip chord retrieved: {tip_chord}")
+        logger.info("Tip chord retrieved: %f", tip_chord)
 
         span = float(fin.find("height").text)
-        logger.info(f"Span retrieved: {span}")
+        logger.info("Span retrieved: %f", span)
 
         sweep_length = (
             float(fin.find("sweeplength").text) if fin.find("sweeplength") else None
@@ -78,13 +75,15 @@ def search_trapezoidal_fins(bs, elements):
         sweep_angle = (
             float(fin.find("sweepangle").text) if fin.find("sweepangle") else None
         )
-        logger.info(f"Sweep angle and length retrieved: {sweep_length}")
+        logger.info(
+            "Sweep length and angle retrieved: %s, %s", sweep_length, sweep_angle
+        )
 
         cant_angle = float(fin.find("cant").text)
-        logger.info(f"Cant angle retrieved: {cant_angle}")
+        logger.info("Cant angle retrieved: %f", cant_angle)
 
         section = fin.find("crosssection").text
-        logger.info(f"Crosssection format retrieved")
+        logger.info("Crosssection format retrieved")
 
         fin_settings = {
             "name": label,
@@ -102,10 +101,12 @@ def search_trapezoidal_fins(bs, elements):
         settings[idx] = fin_settings
 
         logger.info(
-            f"Trapezoidal fin set number '{idx}' was defined:\n"
-            + _dict_to_string(fin_settings, indent=23)
+            "Trapezoidal fin set number '%d' was defined:\n%s",
+            idx,
+            _dict_to_string(fin_settings, indent=23),
         )
-    logger.info(f"Finished collecting all the trapezoidal fins.")
+
+    logger.info("Finished collecting all the trapezoidal fins.")
     return settings
 
 
@@ -131,18 +132,18 @@ def search_elliptical_fins(bs, elements):
     """
     settings = {}
     fins = bs.findAll("ellipticalfinset")
-    logger.info(f"A total of {len(fins)} elliptical fin sets were detected")
+    logger.info("A total of %d elliptical fin sets were detected", len(fins))
 
     if len(fins) == 0:
         logger.info(
-            f"Since no elliptical fins were detected, returning empty dictionary"
+            "Since no elliptical fins were detected, returning empty dictionary"
         )
         return settings
 
     for idx, fin in enumerate(fins):
         logger.info(
-            "Starting collecting the settings for the elliptical fin set number "
-            + f"'{idx}'"
+            "Starting collecting the settings for the elliptical fin set number '%d'",
+            idx,
         )
         label = fin.find("name").text
         try:
@@ -154,30 +155,29 @@ def search_elliptical_fins(bs, elements):
                 return None
 
             element = get_element_by_name(label)
-            logger.info(f"Found the element '{label}' in the elements dictionary.")
+            logger.info("Found the element '%s' in the elements dictionary.", label)
         except KeyError:
             message = (
-                f"Couldn't find the element '{label}' in the elements dictionary."
-                + "It is possible that the "
-                + "process_elements_position() function got an error."
+                f"Couldn't find the element '{label}' in the elements dictionary. It is"
+                " possible that the process_elements_position() function got an error."
             )
             logger.error(message)
             raise KeyError(message)
 
         n_fin = int(fin.find("fincount").text)
-        logger.info(f"Number of fins retrieved: {n_fin}")
+        logger.info("Number of fins retrieved: %d", n_fin)
 
         root_chord = float(fin.find("rootchord").text)
-        logger.info(f"Root chord retrieved: {root_chord}")
+        logger.info("Root chord retrieved: %f", root_chord)
 
         span = float(fin.find("height").text)
-        logger.info(f"Span retrieved: {span}")
+        logger.info("Span retrieved: %f", span)
 
         cant_angle = float(fin.find("cant").text)
-        logger.info(f"Cant angle retrieved: {cant_angle}")
+        logger.info("Cant angle retrieved: %f", cant_angle)
 
         section = fin.find("crosssection").text
-        logger.info(f"Crosssection format retrieved")
+        logger.info("Crosssection format retrieved")
 
         fin_settings = {
             "name": label,
@@ -192,14 +192,16 @@ def search_elliptical_fins(bs, elements):
         settings[idx] = fin_settings
 
         logger.info(
-            f"Elliptical fin set number '{idx}' was defined:\n"
-            + _dict_to_string(fin_settings, indent=23)
+            "Elliptical fin set number '%d' was defined:\n%s",
+            idx,
+            _dict_to_string(fin_settings, indent=23),
         )
-    logger.info(f"Finished collecting all the elliptical fins.")
+
+    logger.info("Finished collecting all the elliptical fins.")
     return settings
 
 
-def search_free_form_fins(bs, elements):
+def search_free_form_fins(bs, elements):  # pylint: disable=unused-argument
     return {}
 
 

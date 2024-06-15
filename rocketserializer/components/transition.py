@@ -1,13 +1,11 @@
 import logging
 
-import yaml
-
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
 
 
-def search_transitions(bs, elements, ork, rocket_radius):
+def search_transitions(bs, elements, ork):
     """Search for the transitions in the bs and return the settings as a dict.
 
     Parameters
@@ -18,8 +16,6 @@ def search_transitions(bs, elements, ork, rocket_radius):
         Dictionary with the elements of the rocket.
     ork : orhelper
         orhelper object of the open rocket file.
-    rocket_radius : float
-        The radius of the rocket.
 
     Returns
     -------
@@ -31,7 +27,7 @@ def search_transitions(bs, elements, ork, rocket_radius):
     """
     settings = {}
     transitions = bs.findAll("transition")
-    logger.info(f"A total of {len(transitions)} transitions were found")
+    logger.info("A total of %d transitions were found", len(transitions))
 
     transitions_ork = [
         ele
@@ -40,10 +36,10 @@ def search_transitions(bs, elements, ork, rocket_radius):
     ]  # TODO: only works for a single stage rocket.
 
     for idx, transition in enumerate(transitions):
-        logger.info(f"Starting to collect the settings of the transition number {idx}")
+        logger.info("Starting to collect the settings of the transition number %d", idx)
 
         label = transition.find("name").text
-        logger.info(f"Collected the name of the transition number {idx}")
+        logger.info("Collected the name of the transition number %d", idx)
 
         transition_ork = transitions_ork[idx]
         top_radius = float(transition_ork.getForeRadius())
@@ -53,11 +49,12 @@ def search_transitions(bs, elements, ork, rocket_radius):
             else float(transition.find("aftradius").text)
         )
         length = float(transition.find("length").text)
-        logger.info(f"Collected the dimensions of the transition number {idx}")
+        logger.info("Collected the dimensions of the transition number %d", idx)
 
         def get_position(name, length):
             count = 0
             lower_name = name.lower()
+            position = None
             for element in elements.values():
                 if (
                     element["name"].lower() == lower_name
@@ -70,6 +67,12 @@ def search_transitions(bs, elements, ork, rocket_radius):
                     "Multiple transitions with the same name and length, "
                     "using the last one found."
                 )
+            elif count == 0:
+                logger.error(
+                    "No element with the name %s and length %f was found",
+                    name,
+                    length,
+                )
             return position
 
         transition_setting = {
@@ -81,9 +84,10 @@ def search_transitions(bs, elements, ork, rocket_radius):
         }
         settings[idx] = transition_setting
         logger.info(
-            f"The transition number {idx} was defined with the following settings:\n"
-            + _dict_to_string(transition_setting, indent=23)
+            "The transition number %d was defined with the following settings:\n%s",
+            idx,
+            _dict_to_string(transition_setting, indent=23),
         )
 
-    logger.info(f"All the {len(transitions)} transition settings were defined")
+    logger.info("All the %d transition settings were defined", len(transitions))
     return settings

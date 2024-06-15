@@ -1,7 +1,4 @@
 import logging
-import pickle
-
-import yaml
 
 from .._helpers import _dict_to_string
 
@@ -43,7 +40,9 @@ def search_stored_results(bs):
 
     for key, value in name_map.items():
         settings[key] = float(sim_data.get(value, 0))
-        logger.info(f"Retrieved the '{key}' value from the .ork file: {settings[key]}")
+        logger.info(
+            "Retrieved the '%s' value from the .ork file: %s", key, settings[key]
+        )
 
     logger.info(
         "The flight data was successfully retrieved:\n%s",
