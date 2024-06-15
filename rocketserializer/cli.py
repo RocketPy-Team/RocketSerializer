@@ -210,6 +210,12 @@ def ork2notebook(filepath, output, ork_jar=None, encoding="utf-8", verbose=False
     parameters.json file and then uses the `NotebookBuilder` class to generate
     the .ipynb file.
     """
+    if not output:
+        output = os.path.dirname(filepath)
+        logger.warning(
+            "[ork2notebook] Output folder not specified. Using '%s' instead.",
+            Path(output).as_posix(),
+        )
     ork2json(
         [
             "--filepath",
@@ -223,7 +229,8 @@ def ork2notebook(filepath, output, ork_jar=None, encoding="utf-8", verbose=False
             "--verbose",
             verbose,
         ],
-        standalone_mode=True,
+        standalone_mode=False,
     )
+
     instance = NotebookBuilder(parameters_json=os.path.join(output, "parameters.json"))
     instance.build(destination=output)
