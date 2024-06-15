@@ -17,7 +17,7 @@ can use the data to create your RocketPy simulation.
 
 ## Example
 
-![Example GIF](./static/demo.gif)
+<img src="./static/demo.gif" width="100%" />
 
 ## Installation
 
