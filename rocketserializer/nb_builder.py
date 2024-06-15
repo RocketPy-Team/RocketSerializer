@@ -80,7 +80,7 @@ class NotebookBuilder:
         # import classes
         text = (
             "from rocketpy import Environment, SolidMotor, Rocket, Flight, "
-            + "TrapezoidalFins, EllipticalFins, RailButtons, NoseCone, Tail, " 
+            + "TrapezoidalFins, EllipticalFins, RailButtons, NoseCone, Tail, "
             + "Parachute\n"
         )
         text += "import datetime\n"
@@ -449,7 +449,7 @@ class NotebookBuilder:
         for i in range(len(self.parameters["parachutes"])):
 
             parachute_i = self.parameters["parachutes"][str(i)]
-            cd_s = parachute_i["cd"]*parachute_i["area"]
+            cd_s = parachute_i["cd"] * parachute_i["area"]
             deploy_event = parachute_i["deploy_event"]
 
             # evaluating trigger
@@ -459,7 +459,7 @@ class NotebookBuilder:
                 trigger = float(parachute_i["deploy_altitude"])
             else:
                 logger.warning("Invalid deploy event for parachute %d", i)
-                raise ValueError("Invalid deploy event for parachute %d", i)
+                raise ValueError(f"Invalid deploy event for parachute {i}")
             # adding parameters
             name = parachute_i["name"]
             text = f"parachutes[{i}] = Parachute(\n"
@@ -471,10 +471,10 @@ class NotebookBuilder:
             else:
                 text += f"    trigger={trigger:.3f},\n"
 
-            text += f"    sampling_rate=100, \n"
+            text += "    sampling_rate=100, \n"
             text += ")\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
-        
+
         text = "Adding parachutes to the rocket\n"
         nb["cells"].append(nbf.v4.new_markdown_cell(text))
         text = "rocket.parachutes = parachutes\n"
