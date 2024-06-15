@@ -10,7 +10,7 @@ packages = { find = { where = ["."], include = ["rocketserializer*"] } }
 
 [project]
 name = "rocketserializer"
-version = "0.1.0"
+version = "0.2.0"
 dynamic = ["dependencies"]
 requires-python = ">= 3.8"
 description = "Easily convert your OpenRocket files into RocketPy simulations."
