@@ -191,7 +191,7 @@ def ork2json(
 
         settings = ork_extractor(
             bs=bs,
-            filepath=str(filepath),
+            filepath=filepath,
             output_folder=output,
             ork=ork,
             eng=eng,

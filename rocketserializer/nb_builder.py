@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from pathlib import Path
 
 import nbformat as nbf
 
@@ -12,7 +13,7 @@ class NotebookBuilder:
     using rocketpy simulation on it
     """
 
-    def __init__(self, parameters_json: str) -> None:
+    def __init__(self, parameters_json: Path) -> None:
         """read the file and process the dictionary do not build anything yet"""
         self.parameters_json = parameters_json
         self.trapezoidal_fins_check = False

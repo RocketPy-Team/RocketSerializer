@@ -1,25 +1,20 @@
 import logging
 
+from bs4 import BeautifulSoup
+
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
 
 
-def search_stored_results(bs):
+def search_stored_results(bs: BeautifulSoup) -> dict:
     """Search for the stored simulation results in the bs and return the
     settings as a dict.
-
-    Parameters
-    ----------
-    bs : BeautifulSoup
-        BeautifulSoup object of the .ork file.
 
     Returns
     -------
     settings : dict
-        A dict containing the settings for the launch conditions. The keys are:
-        "maxaltitude", "maxvelocity", "maxacceleration", "maxmach", "timetoapogee",
-        "flighttime", "groundhitvelocity" and "launchrodvelocity".
+        A dict containing the settings for the launch conditions.
     """
     settings = {}
 

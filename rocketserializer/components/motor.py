@@ -1,40 +1,28 @@
 import logging
 import os
 from pathlib import Path
+from typing import Union
 
 import numpy as np
+from bs4 import BeautifulSoup
 
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
 
 
-def search_motor(bs, datapoints, data_labels):
+def search_motor(
+    bs: BeautifulSoup, datapoints: list[float], data_labels: list[str]
+) -> dict:
     """Search for the motor properties in the .ork file. The only property that
     is not included is the thrust curve, which is generated in the
     generate_thrust_curve function. Only rocketpy.SolidMotor class would be able
     to use the information from this function to create a motor object.
 
-    Parameters
-    ----------
-    bs : bs4.BeautifulSoup
-        The BeautifulSoup object of the .ork file.
-    datapoints : list
-        The datapoints from the .ork file.
-    data_labels : list
-        The labels of the datapoints.
-    time_vector : list
-        The time vector of the simulation.
-
     Returns
     -------
     settings : dict
-        Dictionary with the motor properties. The keys are: "burn_time",
-        "grain_density", "grain_initial_inner_radius", "grain_outer_radius",
-        "grain_initial_height", "nozzle_radius", "throat_radius", "dry_mass",
-        "dry_inertia", "center_of_dry_mass", "grains_center_of_mass_position",
-        "grain_number", "grain_separation", "nozzle_position" and
-        "coordinate_system_orientation".
+        Dictionary with the motor properties.
     """
     settings = {}
 
@@ -94,7 +82,12 @@ def search_motor(bs, datapoints, data_labels):
     return settings
 
 
-def generate_thrust_curve(folder_path, datapoints, data_labels, time_vector):
+def generate_thrust_curve(
+    folder_path: Union[str, Path],
+    datapoints: list[float],
+    data_labels: list[str],
+    time_vector: list[float],
+) -> str:
     """Generate the thrust curve from the .ork file.
 
     Parameters
@@ -145,15 +138,10 @@ def generate_thrust_curve(folder_path, datapoints, data_labels, time_vector):
     return source_name
 
 
-def __get_motor_mass(datapoints, data_labels):
-    """Get the motor mass from the .ork file.
-
-    Parameters
-    ----------
-    datapoints : list
-        List of datapoints from the .ork file.
-    data_labels : list
-        List of labels for the datapoints.
+def __get_motor_mass(
+    datapoints: list[float], data_labels: list[str]
+) -> tuple[float, float, int]:
+    """Get the motor mass from the datapoints saved in the .ork file.
 
     Returns
     -------

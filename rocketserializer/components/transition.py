@@ -1,29 +1,23 @@
 import logging
 
+from bs4 import BeautifulSoup
+
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
 
 
-def search_transitions(bs, elements, ork):
-    """Search for the transitions in the bs and return the settings as a dict.
-
-    Parameters
-    ----------
-    bs : bs4.BeautifulSoup
-        The BeautifulSoup object of the .ork file.
-    elements : dict
-        Dictionary with the elements of the rocket.
-    ork : orhelper
-        orhelper object of the open rocket file.
+def search_transitions(
+    bs: BeautifulSoup,
+    elements: dict,
+    ork: "net.sr.openrocket.document.OpenRocketDocument",
+) -> dict:
+    """Search for the transitions in the bs and return the settings as a dict
 
     Returns
     -------
     settings : dict
-        Dictionary with the settings for the transitions. The keys are integers
-        and the values are dicts containing the settings for each transition.
-        The keys of the transition dicts are: "name", "top_radius",
-        "bottom_radius", "length", "position".
+        Dictionary with the settings for the transitions.
     """
     settings = {}
     transitions = bs.findAll("transition")

@@ -1,27 +1,20 @@
 import logging
 
 import numpy as np
+from bs4 import BeautifulSoup
 
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
 
 
-def search_parachutes(bs):
+def search_parachutes(bs: BeautifulSoup) -> dict:
     """Search for the parachutes in the bs and return the settings as a dict.
-
-    Parameters
-    ----------
-    bs : bs4.BeautifulSoup
-        The BeautifulSoup object of the .ork file.
 
     Returns
     -------
     settings : dict
-        A dict containing the settings for the parachutes. The keys are integers
-        and the values are dicts containing the settings for each parachute.
-        The keys of the parachute dicts are: "name", "cd", "cds", "area",
-        "deploy_event", "deploy_delay", "deploy_altitude".
+        A dict containing the settings for the parachutes.
     """
     settings = {}
 

@@ -1,18 +1,15 @@
 import logging
 
+from bs4 import BeautifulSoup
+
 from .._helpers import _dict_to_string
 
 logger = logging.getLogger(__name__)
 
 
-def search_launch_conditions(bs):
+def search_launch_conditions(bs: BeautifulSoup) -> dict:
     """Searches the launch conditions in the bs object. Returns a dict with the
     settings.
-
-    Parameters
-    ----------
-    bs : BeautifulSoup
-        The BeautifulSoup object of the open rocket file.
 
     Returns
     -------

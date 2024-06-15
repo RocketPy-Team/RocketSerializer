@@ -1,9 +1,11 @@
 import logging
 
+from bs4 import BeautifulSoup
+
 logger = logging.getLogger(__name__)
 
 
-def search_rail_buttons(bs, elements: dict) -> dict:
+def search_rail_buttons(bs: BeautifulSoup, elements: dict) -> dict:
 
     lugs_elements = []
     for value in elements.values():
