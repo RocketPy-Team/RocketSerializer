@@ -1,4 +1,4 @@
-from open_rocket_serializer.cli import ork2json
+from rocketserializer.cli import ork2json
 
 # NOTE: Only works if you comment the decorators in the ork2json function.
 # NOTE: use this to run the python debugger

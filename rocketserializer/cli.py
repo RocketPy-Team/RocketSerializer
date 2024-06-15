@@ -5,12 +5,9 @@ from pathlib import Path
 
 import click
 import orhelper
-from bs4 import BeautifulSoup
-from orhelper import OrLogLevel
-
-from open_rocket_serializer.nb_builder import NotebookBuilder
 
 from ._helpers import extract_ork_from_zip, parse_ork_file
+from .nb_builder import NotebookBuilder
 from .ork_extractor import ork_extractor
 
 logging.basicConfig(
@@ -22,7 +19,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# define the logger handler for the console (useful for the command line interface)
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -44,13 +40,13 @@ def cli():
     To easily use the library, you can use the command line interface. For
     example, to generate a .json file from a .ork file, you can use the
     following command:
-    >>> serializer ork2json("rocket.ork", "rocket", "motor.eng")
+    >>> ork2json("rocket.ork", "rocket", "motor.eng")
 
     If you want to use the library with Python, you can import the library and
     use the functions directly. For example, to generate a .json file from a
     .ork file, you can use the following code:
 
-    >>> from open_rocket_serializer import ork2json
+    >>> from rocketserializer import ork2json
     >>> ork2json("rocket.ork", "rocket", "motor.eng")
 
     If you want to convert a .ork file to a .py file, you can use the following
@@ -109,6 +105,10 @@ def ork2json(
     ork_jar : str, optional
         The path to the OpenRocket .jar file. If unspecified, the .jar file
         will be searched in the current directory.
+    encoding : str, optional
+        The encoding of the .json file. Default is 'utf-8'.
+    verbose : bool, optional
+        If True, the log level will be set to DEBUG. Default is False.
 
     Raises
     ------
@@ -116,10 +116,6 @@ def ork2json(
         In case the .ork file does not contain the simulation data.
     ValueError
         In case the .ork file is not in English.
-
-    Examples
-    --------
-    >>> serializer ork2json("rocket.ork", "rocket", "motor.eng")
     """
     log_level = logging.DEBUG if verbose else logging.WARNING
     logger.setLevel(log_level)
@@ -127,14 +123,17 @@ def ork2json(
     filepath = Path(filepath)
 
     if not filepath.exists():
-        error = "[ork2json] The .ork file or zip archive does not exist. Please specify a valid path."
+        error = (
+            "[ork2json] The .ork file or zip archive does not exist. "
+            "Please specify a valid path."
+        )
         logger.error(error)
         raise FileNotFoundError(error)
 
     if filepath.suffix.lower() == ".ork":
         extract_dir = filepath.parent
         filepath = extract_ork_from_zip(filepath, extract_dir)
-        logger.info(f"[ork2json] Extracted .ork file to: '{filepath.as_posix()}'")
+        logger.info("[ork2json] Extracted .ork file to: %s", filepath.as_posix())
 
     bs, datapoints = parse_ork_file(filepath)
 
@@ -162,19 +161,20 @@ def ork2json(
         ]
         if len(ork_jar) == 0:
             raise ValueError(
-                "[ork2json] It was impossible to find the OpenRocket .jar file in the current directory.\n"
-                + "Please specify the path to the .jar file."
+                "[ork2json] It was not possible to find the OpenRocket .jar file in "
+                "the current directory. Please specify the path to the .jar file."
             )
         ork_jar = ork_jar[0]
         logger.info(
-            f"[ork2json] Found OpenRocket .jar file: '{Path(ork_jar).as_posix()}'"
+            "[ork2json] Found OpenRocket .jar file: '%s'", Path(ork_jar).as_posix()
         )
 
     if not output:
         # get the same folder as the .ork file
         output = os.path.dirname(filepath)
         logger.warning(
-            f"[ork2json] Output folder not specified. Using '{Path(output).as_posix()}' instead."
+            "[ork2json] Output folder not specified. Using '%s' instead.",
+            Path(output).as_posix(),
         )
 
     # orhelper options are: OFF, ERROR, WARN, INFO, DEBUG, TRACE and ALL
@@ -204,43 +204,13 @@ def ork2json(
                 json.dumps(settings, indent=4, sort_keys=True, ensure_ascii=False)
             )
             logger.info(
-                f"[ork2json] The file 'parameters.json' was saved to: '{Path(output).as_posix()}'"
+                "[ork2json] The file 'parameters.json' was saved to: '%s'",
+                Path(output).as_posix(),
             )
             logger.info(
-                f"[ork2json] Operation completed successfully. You can now use the 'parameters.json' file to run a simulation."
+                "[ork2json] Operation completed successfully. You can now use "
+                "the 'parameters.json' file to run a simulation."
             )
-
-
-@cli.command("ork2py")
-@click.option("--filepath", type=str, required=True)
-@click.option("--output", type=str, required=False)
-@click.option("--eng", type=str, default=None, required=False)
-@click.option("--ork_jar", type=str, default=None, required=False)
-def ork2py(
-    filepath,
-    output,
-    eng=None,
-    ork_jar=None,
-):
-    """Generates a .py file with rocketpy from the .ork file.
-
-    Parameters
-    ----------
-    filepath : _type_
-        _description_
-    output : _type_
-        _description_
-    eng : _type_, optional
-        _description_, by default None
-    ork_jar : _type_, optional
-        _description_, by default None
-
-    Returns
-    -------
-    _type_
-        _description_
-    """
-    get_dict = ork2json(filepath, output, eng, ork_jar)
 
 
 @cli.command("ork2ipynb")
@@ -249,6 +219,26 @@ def ork2py(
 @click.option("--eng", type=str, default=None, required=False)
 @click.option("--ork_jar", type=str, default=None, required=False)
 def ork2ipynb(filepath, output, eng=None, ork_jar=None):
-    ork2json(filepath, output, eng, ork_jar)
-    instance = NotebookBuilder(parameters_json=output + "/parameters.json")
+    """Generates a .ipynb file from the .ork file.
+
+    Notes
+    -----
+    Under the hood, this function uses the `ork2json` function to generate the
+    parameters.json file and then uses the `NotebookBuilder` class to generate
+    the .ipynb file.
+    """
+    ork2json(
+        [
+            "--filepath",
+            filepath,
+            "--output",
+            output,
+            "--eng",
+            eng,
+            "--ork_jar",
+            ork_jar,
+        ],
+        standalone_mode=True,
+    )
+    instance = NotebookBuilder(parameters_json=os.path.join(output, "parameters.json"))
     instance.build(destination=output)

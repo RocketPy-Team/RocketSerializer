@@ -1,5 +1,4 @@
 import logging
-from pathlib import Path
 
 from ._helpers import _dict_to_string
 from .components.drag_curve import save_drag_curve
@@ -65,7 +64,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     logger.info("Environment parameters retrieved.")
 
     rocket, motor_position = search_rocket(
-        bs, datapoints, data_labels, ork, burnout_position
+        bs, datapoints, data_labels, burnout_position
     )
     motors["position"] = motor_position
     logger.info("Rocket parameters retrieved.")
@@ -86,7 +85,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     nosecones = search_nosecone(bs, elements, rocket_radius)
     trapezoidal_fins = search_trapezoidal_fins(bs, elements)
     elliptical_fins = search_elliptical_fins(bs, elements)
-    transitions = search_transitions(bs, elements, ork, rocket_radius)
+    transitions = search_transitions(bs, elements, ork)
     rail_buttons = search_rail_buttons(bs, elements)
     parachutes = search_parachutes(bs)
     stored_results = search_stored_results(bs, datapoints, data_labels, time_vector, burnout_position)
@@ -119,7 +118,7 @@ def ork_extractor(bs, filepath, output_folder, ork, eng):
     logger.info("Thrust curve generated.")
 
     logger.info(
-        "Extraction complete. A dictionary with all the parameters was generated and returned."
+        "Extraction completed. A dictionary with all the parameters was generated."
     )
     logger.info(
         "Dictionary with the parameters:\n%s", _dict_to_string(settings, indent=23)

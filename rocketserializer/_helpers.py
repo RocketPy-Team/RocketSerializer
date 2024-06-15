@@ -46,7 +46,7 @@ def extract_ork_from_zip(zip_path: Path, extract_dir: Path) -> Path:
         return extract_dir / "rocket.ork"
     except BadZipFile:
         logger.warning(
-            'The file "%s" seems to be a direct .ork file and not a compressed archive.',
+            'The file "%s" seems to be a rocket.ork file and not a compressed archive.',
             zip_path.as_posix(),
         )
         return zip_path
@@ -112,7 +112,7 @@ def _dict_to_string(dictionary, indent=0):
 
     Examples
     --------
-    >>> from open_rocket_serializer._helpers import _dict_to_string
+    >>> from rocketserializer._helpers import _dict_to_string
     >>> _dict_to_string({"a": 1, "b": {"c": 2}})
     " a: 1\n b: \n     c: 2\n"
     """

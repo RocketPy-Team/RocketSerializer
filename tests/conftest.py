@@ -5,7 +5,7 @@ import orhelper
 import pytest
 from bs4 import BeautifulSoup
 
-from open_rocket_serializer import ork_extractor
+from rocketserializer import ork_extractor
 
 
 def get_settings(filepath, output, ork):

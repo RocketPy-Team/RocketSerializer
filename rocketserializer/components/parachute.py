@@ -1,7 +1,6 @@
 import logging
 
 import numpy as np
-import yaml
 
 from .._helpers import _dict_to_string
 
@@ -27,10 +26,10 @@ def search_parachutes(bs):
     settings = {}
 
     chutes = bs.findAll("parachute")
-    logger.info(f"A total of {len(chutes)} parachutes were detected")
+    logger.info("A total of %d parachutes were detected", len(chutes))
 
     for idx, chute in enumerate(chutes):
-        logger.info(f"Starting to collect the settings of the parachute number {idx}")
+        logger.info("Starting to collect the settings of the parachute number %d", idx)
         name = chute.find("name").text
 
         # parachute settings
@@ -38,7 +37,7 @@ def search_parachutes(bs):
         cd = search_cd_chute_if_auto(chute) if cd == "auto" else cd
         area = np.pi * float(chute.find("diameter").text) ** 2 / 4
         cds = cd * area
-        logger.info(f"Parachute '{name}' has a drag coefficient of {cd}")
+        logger.info("Parachute '%s' has a drag coefficient of %f", name, cd)
 
         # deployment settings
         deploy_event = chute.find("deployevent").text
@@ -48,22 +47,23 @@ def search_parachutes(bs):
             if deploy_event == "altitude"
             else None
         )
-        logger.info(f"Parachute '{name}' will deploy at {deploy_event}")
+        logger.info("Parachute '%s' will deploy at %s", name, deploy_event)
 
         setting = {
-            f"name": name,
-            f"cd": cd,
-            f"cds": cds,
-            f"area": area,
-            f"deploy_event": deploy_event,
-            f"deploy_delay": deploy_delay,
-            f"deploy_altitude": deploy_altitude,
+            "name": name,
+            "cd": cd,
+            "cds": cds,
+            "area": area,
+            "deploy_event": deploy_event,
+            "deploy_delay": deploy_delay,
+            "deploy_altitude": deploy_altitude,
         }
         settings[idx] = setting
 
         logger.info(
-            f"The Parachute number {idx} had its settings defined:\n"
-            + _dict_to_string(setting, indent=23)
+            "The Parachute number %d had its settings defined:\n%s",
+            idx,
+            _dict_to_string(setting, indent=23),
         )
     logger.info("All parachutes settings were collected")
     return settings
@@ -81,6 +81,6 @@ def search_cd_chute_if_auto(bs):
 
     # simply return 1.0
     logger.warning(
-        f"cd auto: the cd is set to 1.0 for parachute {bs.find('name').text}"
+        "cd auto: the cd is set to 1.0 for parachute %s", bs.find("name").text
     )
     return 1.0
