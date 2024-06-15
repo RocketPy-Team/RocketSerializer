@@ -29,17 +29,17 @@ logger.addHandler(console)
 @click.group()
 @click.version_option()
 def cli():
-    """Rocket files Serializer.
-    This library has as objective to convert .ork file into parameters
-    that rocketpy is able to use for simulating the rocket. It will be generated
-    a .json file which you can use with a template simulation to execute the
-    simulation for your rocket.
+    """RocketSerializer.
+    This library has as objective to convert .ork files into parameters.json, so
+    that they can be used in rocketpy simulations. It also provides the option
+    to convert the parameters.json file into a .ipynb file, so that the user can
+    run the simulation using Jupyter Notebooks.
 
     Examples
     --------
     To easily use the library, you can use the command line interface. For
     example, to generate a .json file from a .ork file, you can use the
-    following command:
+    following command on your terminal:
     >>> ork2json("rocket.ork", "rocket", "motor.eng")
 
     If you want to use the library with Python, you can import the library and
@@ -47,16 +47,12 @@ def cli():
     .ork file, you can use the following code:
 
     >>> from rocketserializer import ork2json
-    >>> ork2json("rocket.ork", "rocket", "motor.eng")
+    >>> ork2json([ "--filepath", "rocket.ork", "--eng", "motor.eng"])
 
-    If you want to convert a .ork file to a .py file, you can use the following
-    command:
+    If you want to convert a .ork file to a Jupyter Notebook, you can use the
+    following command on your terminal:
 
-    >>> serializer ork2py("rocket.ork", "rocket", "motor.eng")
-
-    Finally, if you want to convert a .ork file to a .ipynb file, you can use:
-
-    >>> serializer ork2ipynb("rocket.ork", "rocket", "motor.eng")
+    >>> ork2notebook("rocket.ork", "rocket", "motor.eng")
     """
 
 
@@ -68,13 +64,6 @@ def cli():
     "--output", type=click.Path(), required=False, help="The path to the output folder."
 )
 @click.option(
-    "--eng",
-    type=str,
-    default=None,
-    required=False,
-    help="The path to the .eng file, if necessary.",
-)
-@click.option(
     "--ork_jar",
     type=click.Path(),
     default=None,
@@ -83,9 +72,7 @@ def cli():
 )
 @click.option("--encoding", type=str, default="utf-8", required=False)
 @click.option("--verbose", type=bool, default=False, required=False)
-def ork2json(
-    filepath, output=None, eng=None, ork_jar=None, encoding="utf-8", verbose=False
-):
+def ork2json(filepath, output=None, ork_jar=None, encoding="utf-8", verbose=False):
     """Generates a .json file from the .ork file.
     The .json file will be generated in the output folder using the information
     of the .ork file. It is possible to specify the .eng file to extract the
@@ -98,10 +85,6 @@ def ork2json(
         The path to the .ork file.
     output : str
         The path to the output folder.
-    eng : str, optional
-        The path to the .eng file. If unspecified, the thrust curve will be
-        extracted from the .ork file. If specified, the thrust curve will be
-        extracted from the .eng file.
     ork_jar : str, optional
         The path to the OpenRocket .jar file. If unspecified, the .jar file
         will be searched in the current directory.
@@ -194,7 +177,6 @@ def ork2json(
             filepath=str(filepath),
             output_folder=output,
             ork=ork,
-            eng=eng,
         )
 
         with open(
@@ -213,12 +195,13 @@ def ork2json(
             )
 
 
-@cli.command("ork2ipynb")
+@cli.command("ork2notebook")
 @click.option("--filepath", type=str, required=True)
 @click.option("--output", type=str, required=False)
-@click.option("--eng", type=str, default=None, required=False)
 @click.option("--ork_jar", type=str, default=None, required=False)
-def ork2ipynb(filepath, output, eng=None, ork_jar=None):
+@click.option("--encoding", type=str, default="utf-8", required=False)
+@click.option("--verbose", type=bool, default=False, required=False)
+def ork2notebook(filepath, output, ork_jar=None, encoding="utf-8", verbose=False):
     """Generates a .ipynb file from the .ork file.
 
     Notes
@@ -227,18 +210,27 @@ def ork2ipynb(filepath, output, eng=None, ork_jar=None):
     parameters.json file and then uses the `NotebookBuilder` class to generate
     the .ipynb file.
     """
+    if not output:
+        output = os.path.dirname(filepath)
+        logger.warning(
+            "[ork2notebook] Output folder not specified. Using '%s' instead.",
+            Path(output).as_posix(),
+        )
     ork2json(
         [
             "--filepath",
             filepath,
             "--output",
             output,
-            "--eng",
-            eng,
             "--ork_jar",
             ork_jar,
+            "--encoding",
+            encoding,
+            "--verbose",
+            verbose,
         ],
-        standalone_mode=True,
+        standalone_mode=False,
     )
+
     instance = NotebookBuilder(parameters_json=os.path.join(output, "parameters.json"))
     instance.build(destination=output)
