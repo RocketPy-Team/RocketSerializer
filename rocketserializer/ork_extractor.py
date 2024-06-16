@@ -22,14 +22,22 @@ from .components.transition import search_transitions
 logger = logging.getLogger(__name__)
 
 
-def ork_extractor(
-    bs: BeautifulSoup,
-    filepath: Path,
-    output_folder: Union[str, Path],
-    ork: "net.sr.openrocket.document.OpenRocketDocument",
-    eng: Union[str, Path],
-) -> dict:
-    """Generates the parameters.json file with the parameters for rocketpy.
+def ork_extractor(bs, filepath, output_folder, ork):
+    """Generates the parameters.json file with the parameters for rocketpy
+
+    Parameters
+    ----------
+    bs : BeautifulSoup
+        BeautifulSoup object of the .ork file.
+    filepath : str
+        Path to the .ork file.
+    output_folder : str
+        Path to the output folder.
+    ork : orhelper
+        An object representing the OpenRocket document.
+    verbose : bool, optional
+        Whether or not to print a message of successful execution, by default
+        False.
 
     Returns
     -------
@@ -81,7 +89,9 @@ def ork_extractor(
     transitions = search_transitions(bs, elements, ork)
     rail_buttons = search_rail_buttons(bs, elements)
     parachutes = search_parachutes(bs)
-    stored_results = search_stored_results(bs)
+    stored_results = search_stored_results(
+        bs, datapoints, data_labels, time_vector, burnout_position
+    )
 
     # save everything to a dictionary
     settings["id"] = id_info
@@ -104,7 +114,7 @@ def ork_extractor(
     logger.info("Drag curve generated.")
 
     # get thrust curve
-    thrust_path = eng or generate_thrust_curve(
+    thrust_path = generate_thrust_curve(
         output_folder, datapoints, data_labels, time_vector
     )
     settings["motors"]["thrust_source"] = thrust_path

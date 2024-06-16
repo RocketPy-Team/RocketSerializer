@@ -10,7 +10,7 @@ packages = { find = { where = ["."], include = ["rocketserializer*"] } }
 
 [project]
 name = "rocketserializer"
-version = "0.1.0"
+version = "0.2.0"
 dynamic = ["dependencies"]
 requires-python = ">= 3.8"
 description = "Easily convert your OpenRocket files into RocketPy simulations."
@@ -46,7 +46,7 @@ classifiers = [
 
 [project.scripts]
 ork2json = "rocketserializer.cli:ork2json"
-ork2ipynb = "rocketserializer.cli:ork2ipynb"
+ork2notebook = "rocketserializer.cli:ork2notebook"
 
 
 [project.urls]
@@ -76,4 +76,5 @@ disable = """
     raise-missing-from,
     fixme,
     no-else-break,
+    no-else-return,
 """

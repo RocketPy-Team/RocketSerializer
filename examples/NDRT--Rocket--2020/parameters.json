@@ -1,4 +1,5 @@
 {
+    "elliptical_fins": {},
     "environment": {
         "base_pressure": null,
         "base_temperature": null,
@@ -84,13 +85,17 @@
         "radius": 0.1016
     },
     "stored_results": {
+        "burnout_stability_margin": 3.7288,
         "flight_time": 86.725,
         "ground_hit_velocity": 4.7426,
         "launch_rod_velocity": 17.993,
         "max_acceleration": 67.386,
         "max_altitude": 1085.9,
         "max_mach": 0.42789,
+        "max_stability_margin": 3.7685,
+        "max_thrust": 1785.0,
         "max_velocity": 145.01,
+        "min_stability_margin": 1.2489,
         "time_to_apogee": 15.761
     },
     "tails": {

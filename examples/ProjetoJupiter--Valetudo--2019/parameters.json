@@ -1,4 +1,5 @@
 {
+    "elliptical_fins": {},
     "environment": {
         "base_pressure": 94311.0,
         "base_temperature": 300.76,
@@ -41,7 +42,7 @@
         "nozzle_radius": 0.01605,
         "position": 2.052896709219859,
         "throat_radius": 0.0107,
-        "thrust_source": "examples\\ProjetoJupiter--Valetudo--2019\\thrust_source.csv"
+        "thrust_source": "examples/ProjetoJupiter--Valetudo--2019/thrust_source.csv"
     },
     "nosecones": {
         "base_radius": 0.04045000000000001,
@@ -71,7 +72,7 @@
     "rocket": {
         "center_of_mass_without_propellant": 1.4023,
         "coordinate_system_orientation": "nose_to_tail",
-        "drag_curve": "examples\\ProjetoJupiter--Valetudo--2019\\drag_curve.csv",
+        "drag_curve": "examples/ProjetoJupiter--Valetudo--2019/drag_curve.csv",
         "inertia": [
             0.01467,
             0.01467,
@@ -81,13 +82,17 @@
         "radius": 0.04045000000000001
     },
     "stored_results": {
+        "burnout_stability_margin": 2.4363,
         "flight_time": 64.161,
         "ground_hit_velocity": 18.146,
         "launch_rod_velocity": 26.397,
         "max_acceleration": 108.52,
         "max_altitude": 882.42,
         "max_mach": 0.36177,
+        "max_stability_margin": 3.2714,
+        "max_thrust": 1067.7,
         "max_velocity": 125.47,
+        "min_stability_margin": 0.0,
         "time_to_apogee": 14.65
     },
     "tails": {},
