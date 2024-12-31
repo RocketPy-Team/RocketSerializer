@@ -1,0 +1,41 @@
+{
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "cSpell.words": [
+        "aftradius",
+        "crosssection",
+        "databranch",
+        "datapoint",
+        "datapoints",
+        "fincount",
+        "flightdata",
+        "flighttime",
+        "freeformfinset",
+        "geodeticmethod",
+        "groundhitvelocity",
+        "launchaltitude",
+        "launchlatitude",
+        "launchlongitude",
+        "launchrodvelocity",
+        "maxacceleration",
+        "maxaltitude",
+        "maxmach",
+        "maxvelocity",
+        "motormount",
+        "orhelper",
+        "rocketserializer",
+        "rootchord",
+        "shapeparameter",
+        "sweepangle",
+        "sweeplength",
+        "timetoapogee",
+        "tipchord",
+        "trapezoidfinset",
+        "tubefinset",
+        "windaverage",
+        "windturbulence"
+    ]
+}
