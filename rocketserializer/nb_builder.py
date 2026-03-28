@@ -329,7 +329,6 @@ class NotebookBuilder:
             text = "trapezoidal_fins = {}\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
             for i in range(len(self.parameters["trapezoidal_fins"])):
-
                 trapezoidal_fins_i = self.parameters["trapezoidal_fins"][str(i)]
 
                 number = trapezoidal_fins_i["number"]
@@ -365,7 +364,6 @@ class NotebookBuilder:
             text = "elliptical_fins = {}\n"
             nb["cells"].append(nbf.v4.new_code_cell(text))
             for i in range(len(self.parameters["elliptical_fins"])):
-
                 elliptical_fins_i = self.parameters["elliptical_fins"][str(i)]
 
                 number = elliptical_fins_i["number"]
@@ -410,7 +408,6 @@ class NotebookBuilder:
         text = "tails = {}\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
         for i in range(len(self.parameters["tails"])):
-
             tail_i = self.parameters["tails"][str(i)]
 
             top_radius = tail_i["top_radius"]
@@ -467,7 +464,6 @@ class NotebookBuilder:
         text = "parachutes = {}\n"
         nb["cells"].append(nbf.v4.new_code_cell(text))
         for i in range(len(self.parameters["parachutes"])):
-
             parachute_i = self.parameters["parachutes"][str(i)]
             cd_s = parachute_i["cd"] * parachute_i["area"]
             deploy_event = parachute_i["deploy_event"]

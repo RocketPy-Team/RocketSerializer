@@ -11,7 +11,7 @@ ruff-lint:
 
 pylint:
 	@echo Running pylint check...
-	@pylint .
+	@pylint examples/ rocketserializer/ tests/
 	@echo Pylint check completed.
 
 lint: ruff-lint pylint

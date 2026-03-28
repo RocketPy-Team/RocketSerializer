@@ -16,7 +16,7 @@ import pytest
 )
 def test_ork_extractor(expected_results_file, fixture, request):
     # load the expected results
-    with open(expected_results_file, "r") as f:
+    with open(expected_results_file, "r", encoding="utf-8") as f:
         expected_results = json.load(f)
 
     # get the settings from the fixture

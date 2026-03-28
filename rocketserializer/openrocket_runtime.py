@@ -106,7 +106,11 @@ def ensure_java_compatibility(jar_path: Path):
     default_jvm_major = None
     try:
         default_jvm_major = _extract_java_major(jpype.getDefaultJVMPath())
-    except Exception:
+    except (
+        jpype.JVMNotFoundException,
+        jpype.JVMNotSupportedException,
+        OSError,
+    ):
         default_jvm_major = None
 
     if default_jvm_major and default_jvm_major >= required_major:
@@ -156,7 +160,7 @@ class OpenRocketSession:
             legacy = jpype.JPackage("net").sf.openrocket
             _ = legacy.startup.Application
             return legacy, legacy
-        except Exception:
+        except (AttributeError, TypeError, RuntimeError):
             modern = jpype.JPackage("info").openrocket
             return modern.core, modern.swing
 
@@ -168,10 +172,10 @@ class OpenRocketSession:
             loader = field.get(gui_module)
             field.setAccessible(False)
             loader.blockUntilLoaded()
-        except Exception:
+        except (AttributeError, TypeError, RuntimeError, jpype.JException):
             # New OpenRocket versions can change internals; loading still works
             # without explicitly waiting in most cases.
-            return
+            pass
 
     def __enter__(self):
         ensure_java_compatibility(self.jar_path)
@@ -222,7 +226,7 @@ class OpenRocketSession:
                 try:
                     for window in jpype.java.awt.Window.getWindows():
                         window.dispose()
-                except Exception:
+                except (AttributeError, TypeError, RuntimeError, jpype.JException):
                     pass
                 jpype.shutdownJVM()
         finally:
