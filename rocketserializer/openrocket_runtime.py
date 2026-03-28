@@ -187,11 +187,18 @@ class OpenRocketSession:
             self.jar_path.as_posix(),
         )
 
-        jpype.startJVM(
-            jvm_path,
-            "-ea",
-            f"-Djava.class.path={self.jar_path.as_posix()}",
-        )
+        if jpype.isJVMStarted():
+            logger.warning(
+                "JVM is already running; skipping startJVM. "
+                "Ensure the active JVM has '%s' on its classpath.",
+                self.jar_path.as_posix(),
+            )
+        else:
+            jpype.startJVM(
+                jvm_path,
+                "-ea",
+                f"-Djava.class.path={self.jar_path.as_posix()}",
+            )
 
         self.openrocket, swing = self._resolve_packages()
 
@@ -228,7 +235,11 @@ class OpenRocketSession:
                         window.dispose()
                 except (AttributeError, TypeError, RuntimeError, jpype.JException):
                     pass
-                jpype.shutdownJVM()
+                # Do not call shutdownJVM() here: JPype <1.5 cannot restart the
+                # JVM in the same process, so shutting it down automatically would
+                # break any subsequent OpenRocketSession (e.g. in notebooks or
+                # programmatic use). The JVM is cleaned up by JPype's atexit hook
+                # when the process exits.
         finally:
             self.started = False
 

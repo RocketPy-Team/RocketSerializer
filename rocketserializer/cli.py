@@ -158,9 +158,8 @@ def ork2json(filepath, output=None, ork_jar=None, encoding="utf-8", verbose=Fals
         )
 
     with OpenRocketSession(ork_jar, log_level="OFF") as instance:
-        # create the output folder if it does not exist
-        if os.path.exists(output) is False:
-            os.mkdir(output)
+        # create the output folder (including parents) if it does not exist
+        Path(output).mkdir(parents=True, exist_ok=True)
 
         ork = instance.load_doc(str(filepath))
 
