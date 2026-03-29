@@ -1,0 +1,169 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "wgs84",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 90.0,
+        "rail_length": 1.0
+    },
+    "id": {
+        "comment": "",
+        "designer": "Anonymous",
+        "filepath": "examples/Anonymous--Gamma/rocket.ork",
+        "rocket_name": "Gamma"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1204.8417446438018,
+        "grain_initial_height": 0.548,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.274,
+        "nozzle_radius": 0.036750000000000005,
+        "position": 2.2127279518072287,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\Anonymous--Gamma\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.075,
+        "kind": "Von Karman",
+        "length": 0.2755,
+        "name": "nosecone",
+        "position": 0.06949
+    },
+    "parachutes": {
+        "0": {
+            "area": 0.07068583470577035,
+            "cd": 1.0,
+            "cds": 0.07068583470577035,
+            "deploy_altitude": 400.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Parafoil"
+        },
+        "1": {
+            "area": 0.10997588048455226,
+            "cd": 1.2,
+            "cds": 0.13197105658146271,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "PLD drogue"
+        },
+        "2": {
+            "area": 0.3999443483401391,
+            "cd": 0.78,
+            "cds": 0.3119565917053085,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "LNC drogue"
+        },
+        "3": {
+            "area": 5.500067696575214,
+            "cd": 0.85,
+            "cds": 4.675057542088932,
+            "deploy_altitude": 350.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "LNC main"
+        }
+    },
+    "rail_buttons": {
+        "angular_position": 0.0,
+        "distance": 1.4360000000000004,
+        "lower_position": 3.4889900000000003,
+        "name": "Launch Rail Pin 1",
+        "upper_position": 2.05299
+    },
+    "rocket": {
+        "center_of_mass_without_propellant": 1.4557,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Gamma\\drag_curve.csv",
+        "inertia": [
+            0.040851,
+            0.040851,
+            9.7111
+        ],
+        "mass": 17.163,
+        "radius": 0.075
+    },
+    "stored_results": {
+        "burnout_stability_margin": 2.0391,
+        "flight_time": 303.29,
+        "ground_hit_velocity": 11.358,
+        "launch_rod_velocity": 11.846,
+        "max_acceleration": 80.861,
+        "max_altitude": 3597.8,
+        "max_mach": 0.92543,
+        "max_stability_margin": 2.1356,
+        "max_thrust": 1825.0,
+        "max_velocity": 312.07,
+        "min_stability_margin": 0.12019,
+        "time_to_apogee": 26.707
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.003,
+            "length": 0.0048,
+            "name": "Pitot Nosecone",
+            "position": 0.0,
+            "top_radius": 0.00125
+        },
+        "1": {
+            "bottom_radius": 0.012509999999999999,
+            "length": 0.02675,
+            "name": "Pitot BaseBody",
+            "position": 0.04274,
+            "top_radius": 0.003
+        },
+        "2": {
+            "bottom_radius": 0.075,
+            "length": 0.2755,
+            "name": "Nosecone",
+            "position": 0.06949,
+            "top_radius": 0.012509999999999999
+        },
+        "3": {
+            "bottom_radius": 0.061,
+            "length": 0.07,
+            "name": "BoatTail",
+            "position": 2.41699,
+            "top_radius": 0.075
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Fins",
+            "number": 3,
+            "position": 2.06699,
+            "root_chord": 0.34,
+            "section": "square",
+            "span": 0.15,
+            "sweep_angle": null,
+            "sweep_length": 0.2351115076955524,
+            "tip_chord": 0.1
+        }
+    }
+}

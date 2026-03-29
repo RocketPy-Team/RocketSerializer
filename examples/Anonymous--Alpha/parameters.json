@@ -1,0 +1,130 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 100.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.38,
+        "longitude": -8.3,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 84.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": "",
+        "designer": "Anonymous",
+        "filepath": "examples/Anonymous--Alpha/rocket.ork",
+        "rocket_name": "Alpha"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 849.8975843558206,
+        "grain_initial_height": 1.0,
+        "grain_initial_inner_radius": 0.03375,
+        "grain_number": 1,
+        "grain_outer_radius": 0.0675,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.5,
+        "nozzle_radius": 0.050625,
+        "position": 2.964161021593775,
+        "throat_radius": 0.03375,
+        "thrust_source": "examples\\Anonymous--Alpha\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0765,
+        "kind": "Von Karman",
+        "length": 0.45,
+        "name": "Nose Cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 9.62112750161874,
+            "cd": 1.5,
+            "cds": 14.431691252428111,
+            "deploy_altitude": 450.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main Parachute"
+        },
+        "1": {
+            "area": 0.22902210444669593,
+            "cd": 3.5,
+            "cds": 0.8015773655634357,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue Parachute"
+        }
+    },
+    "rail_buttons": {
+        "angular_position": 0.0,
+        "distance": 1.5,
+        "lower_position": 3.7849999999999997,
+        "name": "Rail Button",
+        "upper_position": 2.2849999999999997
+    },
+    "rocket": {
+        "center_of_mass_without_propellant": 1.991,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Alpha\\drag_curve.csv",
+        "inertia": [
+            0.05,
+            0.05,
+            21.074
+        ],
+        "mass": 23.279,
+        "radius": 0.0765
+    },
+    "stored_results": {
+        "burnout_stability_margin": 4.224,
+        "flight_time": 242.0,
+        "ground_hit_velocity": 4.972,
+        "launch_rod_velocity": 48.31,
+        "max_acceleration": 130.822,
+        "max_altitude": 3487.703,
+        "max_mach": 0.933,
+        "max_stability_margin": 4.495,
+        "max_thrust": 3994.489,
+        "max_velocity": 315.04,
+        "min_stability_margin": 1.886,
+        "time_to_apogee": 25.896
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.06,
+            "length": 0.07,
+            "name": "Tailcone",
+            "position": 3.465,
+            "top_radius": 0.0765
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Trapezoidal fin set",
+            "number": 4,
+            "position": 3.2449999999999997,
+            "root_chord": 0.26999999999999996,
+            "section": "airfoil",
+            "span": 0.1400000000000001,
+            "sweep_angle": null,
+            "sweep_length": 0.13000000000000003,
+            "tip_chord": 0.09
+        }
+    }
+}
