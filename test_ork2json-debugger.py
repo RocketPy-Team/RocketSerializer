@@ -4,6 +4,11 @@ from rocketserializer.cli import ork2json
 # NOTE: use this to run the python debugger
 # NOTE: restart the jupyter kernel if needed, so JVEM can restart
 
-ork2json(
-    "examples/databank/Team24/rocket.ork",
-)
+if __name__ == "__main__":
+    ork2json(
+        [
+            "--filepath",
+            "examples/databank/Team24/rocket.ork",
+        ],
+        standalone_mode=False,
+    )

@@ -38,7 +38,8 @@ pip install rocketserializer
 ### Java
 
 You need Java to be installed on your system to use `rocketserializer`.
-We recommend downloading Java 17, which is required to run OpenRocket-23.09.
+We recommend downloading Java 17, which is required to run recent OpenRocket
+JARs (for example OpenRocket-24.12).
 
 https://www.oracle.com/java/technologies/downloads/
 
@@ -47,7 +48,7 @@ https://www.oracle.com/java/technologies/downloads/
 You also need to download the OpenRocket JAR file. You can download it from the
 following link:
 
-https://openrocket.info/downloads.html?vers=23.09#content-JAR
+https://openrocket.info/downloads.html
 
 Each version of OpenRocket has its own jar file, and it is important to use the
 correct java version to run the jar file.
@@ -61,7 +62,7 @@ will be automatically installed:
 - click>=8.0.0
 - lxml
 - numpy
-- orhelper==0.1.3
+- jpype1<1.5
 - pyyaml
 - rocketpy>=1.1.0
 - nbformat>=5.2.0
@@ -89,7 +90,7 @@ The options are the following:
 
 - `--filepath`: The .ork file to be serialized.
 - `--output` : Path to the output folder. If not set, the output will be saved in the same folder as the `filepath`.
-- `--ork_jar` : Specify the path to the OpenRocket jar file. If not set, the library will try to find the jar file in the current directory.
+- `--ork_jar` : Specify the path to the OpenRocket jar file. If not set, the library will use the newest `OpenRocket*.jar` found in the current directory.
 - `--encoding` : The encoding of the .ork file. By default, it is set to `utf-8`.
 - `--verbose` : If you want to see the progress of the serialization, set this option to True. By default, it is set to False.
 
@@ -139,4 +140,4 @@ The 3 main ways of contributing to this project are:
     - If you allow us to use and share your .ork file, we can add it to the test suite.
 3. **Developing new features and fixing bugs thorough pull requests on GitHub.**
     - If you want to develop new features, you are more than welcome to do so.
-    - Please reach out to the maintainers to discuss the new feature before starting the development. 
+    - Please reach out to the maintainers to discuss the new feature before starting the development.

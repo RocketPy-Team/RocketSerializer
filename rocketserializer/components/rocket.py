@@ -51,8 +51,8 @@ def search_rocket(bs, datapoints, data_labels, burnout_position):
 
 def get_rocket_radius(bs):
     # We want to take the maximum radius of the rocket
-    tubes = bs.findAll("bodytube")
-    noses = bs.findAll("nosecone")
+    tubes = bs.find_all("bodytube")
+    noses = bs.find_all("nosecone")
 
     tubes_radius = [i.find("radius").text for i in tubes]
     noses_radius = [i.find("aftradius").text for i in noses]

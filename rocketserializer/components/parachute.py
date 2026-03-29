@@ -25,7 +25,7 @@ def search_parachutes(bs):
     """
     settings = {}
 
-    chutes = bs.findAll("parachute")
+    chutes = bs.find_all("parachute")
     logger.info("A total of %d parachutes were detected", len(chutes))
 
     for idx, chute in enumerate(chutes):

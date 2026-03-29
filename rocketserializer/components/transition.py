@@ -26,7 +26,7 @@ def search_transitions(bs, elements, ork):
         "bottom_radius", "length", "position".
     """
     settings = {}
-    transitions = bs.findAll("transition")
+    transitions = bs.find_all("transition")
     logger.info("A total of %d transitions were found", len(transitions))
 
     transitions_ork = [

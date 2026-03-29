@@ -4,10 +4,10 @@ import os
 from pathlib import Path
 
 import click
-import orhelper
 
 from ._helpers import extract_ork_from_zip, parse_ork_file
 from .nb_builder import NotebookBuilder
+from .openrocket_runtime import OpenRocketSession, select_latest_openrocket_jar
 from .ork_extractor import ork_extractor
 
 logging.basicConfig(
@@ -138,18 +138,15 @@ def ork2json(filepath, output=None, ork_jar=None, encoding="utf-8", verbose=Fals
         raise ValueError(message)
 
     if not ork_jar:
-        # get any .jar file in the current directory that starts with "OpenRocket"
-        ork_jar = [
-            f for f in os.listdir() if f.startswith("OpenRocket") and f.endswith(".jar")
-        ]
-        if len(ork_jar) == 0:
-            raise ValueError(
-                "[ork2json] It was not possible to find the OpenRocket .jar file in "
-                "the current directory. Please specify the path to the .jar file."
-            )
-        ork_jar = ork_jar[0]
-        logger.info(
-            "[ork2json] Found OpenRocket .jar file: '%s'", Path(ork_jar).as_posix()
+        ork_jar = select_latest_openrocket_jar(Path.cwd())
+        logger.info("[ork2json] Found OpenRocket .jar file: '%s'", ork_jar.as_posix())
+    else:
+        ork_jar = Path(ork_jar)
+
+    if not ork_jar.exists():
+        raise FileNotFoundError(
+            "[ork2json] The specified OpenRocket .jar file does not exist: "
+            f"'{ork_jar.as_posix()}'"
         )
 
     if not output:
@@ -160,17 +157,11 @@ def ork2json(filepath, output=None, ork_jar=None, encoding="utf-8", verbose=Fals
             Path(output).as_posix(),
         )
 
-    # orhelper options are: OFF, ERROR, WARN, INFO, DEBUG, TRACE and ALL
-    # log_level = "OFF" if verbose else "OFF"
-    # TODO: even if the log level is set to OFF, the orhelper still prints msgs
+    with OpenRocketSession(ork_jar, log_level="OFF") as instance:
+        # create the output folder (including parents) if it does not exist
+        Path(output).mkdir(parents=True, exist_ok=True)
 
-    with orhelper.OpenRocketInstance(ork_jar, log_level="OFF") as instance:
-        # create the output folder if it does not exist
-        if os.path.exists(output) is False:
-            os.mkdir(output)
-
-        orh = orhelper.Helper(instance)
-        ork = orh.load_doc(str(filepath))
+        ork = instance.load_doc(str(filepath))
 
         settings = ork_extractor(
             bs=bs,
@@ -217,21 +208,20 @@ def ork2notebook(filepath, output, ork_jar=None, encoding="utf-8", verbose=False
             "[ork2notebook] Output folder not specified. Using '%s' instead.",
             Path(output).as_posix(),
         )
-    ork2json(
-        [
-            "--filepath",
-            filepath,
-            "--output",
-            output,
-            "--ork_jar",
-            ork_jar,
-            "--encoding",
-            encoding,
-            "--verbose",
-            verbose,
-        ],
-        standalone_mode=False,
-    )
+    args = [
+        "--filepath",
+        str(filepath),
+        "--output",
+        str(output),
+        "--encoding",
+        str(encoding),
+        "--verbose",
+        str(verbose),
+    ]
+    if ork_jar:
+        args.extend(["--ork_jar", str(ork_jar)])
+
+    ork2json(args, standalone_mode=False)
 
     instance = NotebookBuilder(parameters_json=os.path.join(output, "parameters.json"))
     instance.build(destination=output)

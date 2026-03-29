@@ -47,6 +47,6 @@ if __name__ == "__main__":
     for file in ork_files:
         try:
             destroy_the_bank(file)
-        except Exception as e:
+        except Exception:
             # Log any unexpected exceptions
             logging.exception(f"An unexpected error occurred in file: {file}")

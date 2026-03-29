@@ -26,7 +26,7 @@ def search_trapezoidal_fins(bs, elements):
         "sweep_length", "sweep_angle", "cant_angle", "section".
     """
     settings = {}
-    fins = bs.findAll("trapezoidfinset")
+    fins = bs.find_all("trapezoidfinset")
     logger.info("A total of %d trapezoidal fin sets were detected", len(fins))
 
     if len(fins) == 0:
@@ -131,7 +131,7 @@ def search_elliptical_fins(bs, elements):
         "section".
     """
     settings = {}
-    fins = bs.findAll("ellipticalfinset")
+    fins = bs.find_all("ellipticalfinset")
     logger.info("A total of %d elliptical fin sets were detected", len(fins))
 
     if len(fins) == 0:

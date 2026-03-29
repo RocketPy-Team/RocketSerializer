@@ -144,7 +144,7 @@ def __init_vectors(bs):
     time_vector : list
         The time vector.
     """
-    datapoints = bs.findAll("datapoint")
+    datapoints = bs.find_all("datapoint")
     data_labels = bs.find("databranch").attrs["types"].split(",")
 
     time_vector = [float(datapoint.text.split(",")[0]) for datapoint in datapoints]

@@ -1,13 +1,20 @@
-lint: isort black
+format:
+	@ruff check --select I --fix
+	@ruff format .
+	@echo Ruff formatting completed.
 
-isort:
-	isort .
 
-black:
-	black .
+ruff-lint:
+	@echo Running ruff check...
+	@ruff check
+	@echo Ruff linter check completed.
 
 pylint:
-	pylint rocketserializer/ --output="pylint_report.txt"
+	@echo Running pylint check...
+	@pylint examples/ rocketserializer/ tests/
+	@echo Pylint check completed.
+
+lint: ruff-lint pylint
 
 tests:
 	pytest
@@ -18,3 +25,7 @@ tests:
 
 # tests-integration:
 
+install:
+	pip install -r requirements.in
+	pip install -r requirements-dev.txt
+	pip install -e .
