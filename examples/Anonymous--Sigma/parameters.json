@@ -1,0 +1,116 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 160.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.39,
+        "longitude": -8.288963888888889,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 84.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": "3 Screws",
+        "designer": null,
+        "filepath": "examples/Anonymous--Sigma/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1231.6403036332008,
+        "grain_initial_height": 0.702,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.351,
+        "nozzle_radius": 0.036750000000000005,
+        "position": 2.3713239828255985,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\Anonymous--Sigma\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0768,
+        "kind": "ogive",
+        "length": 0.3,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 0.16402962102739368,
+            "cd": 1.55,
+            "cds": 0.2542459125924602,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drag chute"
+        },
+        "1": {
+            "area": 2.624473936438299,
+            "cd": 2.2,
+            "cds": 5.7738426601642585,
+            "deploy_altitude": 457.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main Chute"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 1.5832,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Sigma\\drag_curve.csv",
+        "inertia": [
+            0.22429,
+            0.22429,
+            12.157
+        ],
+        "mass": 17.891,
+        "radius": 0.077
+    },
+    "stored_results": {
+        "burnout_stability_margin": 3.474,
+        "flight_time": 169.44,
+        "ground_hit_velocity": 6.9452,
+        "launch_rod_velocity": 37.083,
+        "max_acceleration": 66.283,
+        "max_altitude": 3338.9,
+        "max_mach": 0.73959,
+        "max_stability_margin": 3.5787,
+        "max_thrust": 1721.8,
+        "max_velocity": 247.38,
+        "min_stability_margin": 2.1133,
+        "time_to_apogee": 26.501
+    },
+    "tails": {},
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Trapezoidal fin set",
+            "number": 3,
+            "position": 2.306,
+            "root_chord": 0.2,
+            "section": "square",
+            "span": 0.27,
+            "sweep_angle": null,
+            "sweep_length": 0.12,
+            "tip_chord": 0.2
+        }
+    }
+}

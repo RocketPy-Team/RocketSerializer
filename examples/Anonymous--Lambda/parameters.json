@@ -1,0 +1,138 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 85.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": "CoM obtained from Solidworks (updated with irl measurements)",
+        "designer": null,
+        "filepath": "examples/Anonymous--Lambda/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1607.4360047194796,
+        "grain_initial_height": 1.239,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.6195,
+        "nozzle_radius": 0.036750000000000005,
+        "position": 2.215732155853377,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\Anonymous--Lambda\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.078,
+        "kind": "ogive",
+        "length": 0.56,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 4.669816127362538,
+            "cd": 2.2,
+            "cds": 10.273595480197585,
+            "deploy_altitude": 450.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main"
+        },
+        "1": {
+            "area": 0.09931466590310954,
+            "cd": 1.6,
+            "cds": 0.15890346544497527,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 1.4906,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Lambda\\drag_curve.csv",
+        "inertia": [
+            0.0084849,
+            0.0084849,
+            41.426
+        ],
+        "mass": 23.061,
+        "radius": 0.078
+    },
+    "stored_results": {
+        "burnout_stability_margin": 3.8829,
+        "flight_time": 256.77,
+        "ground_hit_velocity": 5.9361,
+        "launch_rod_velocity": 53.915,
+        "max_acceleration": 140.59,
+        "max_altitude": 9187.9,
+        "max_mach": 1.716,
+        "max_stability_margin": 4.8613,
+        "max_thrust": 4695.7,
+        "max_velocity": 571.93,
+        "min_stability_margin": 1.8119,
+        "time_to_apogee": 40.191
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.076,
+            "length": 0.0169,
+            "name": "AV bay cap forward - transition",
+            "position": 1.2074999999999998,
+            "top_radius": 0.078
+        },
+        "1": {
+            "bottom_radius": 0.078,
+            "length": 0.006360000000000004,
+            "name": "AV bay cap aft - transition",
+            "position": 1.4853999999999998,
+            "top_radius": 0.076
+        },
+        "2": {
+            "bottom_radius": 0.051,
+            "length": 0.161,
+            "name": "Aft cone",
+            "position": 2.7225999999999995,
+            "top_radius": 0.078
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Fins",
+            "number": 4,
+            "position": 2.5225999999999993,
+            "root_chord": 0.21,
+            "section": "rounded",
+            "span": 0.15,
+            "sweep_angle": null,
+            "sweep_length": 0.25,
+            "tip_chord": 0.12000000000000004
+        }
+    }
+}

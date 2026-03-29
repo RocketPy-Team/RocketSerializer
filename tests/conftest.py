@@ -22,6 +22,20 @@ EXAMPLES = {
     "beta": "examples/Anonymous--Beta",
     "gamma": "examples/Anonymous--Gamma",
     "delta": "examples/Anonymous--Delta",
+    "epsilon": "examples/Anonymous--Epsilon",
+    "zeta": "examples/Anonymous--Zeta",
+    "eta": "examples/Anonymous--Eta",
+    "theta": "examples/Anonymous--Theta",
+    "iota": "examples/Anonymous--Iota",
+    "kappa": "examples/Anonymous--Kappa",
+    "lambda": "examples/Anonymous--Lambda",
+    "mu": "examples/Anonymous--Mu",
+    "nu": "examples/Anonymous--Nu",
+    "xi": "examples/Anonymous--Xi",
+    "omicron": "examples/Anonymous--Omicron",
+    "pi": "examples/Anonymous--Pi",
+    "rho": "examples/Anonymous--Rho",
+    "sigma": "examples/Anonymous--Sigma",
 }
 
 
@@ -93,3 +107,73 @@ def gamma_settings():
 @pytest.fixture()
 def delta_settings():
     return _cached_settings["delta"]
+
+
+@pytest.fixture()
+def epsilon_settings():
+    return _cached_settings["epsilon"]
+
+
+@pytest.fixture()
+def zeta_settings():
+    return _cached_settings["zeta"]
+
+
+@pytest.fixture()
+def eta_settings():
+    return _cached_settings["eta"]
+
+
+@pytest.fixture()
+def theta_settings():
+    return _cached_settings["theta"]
+
+
+@pytest.fixture()
+def iota_settings():
+    return _cached_settings["iota"]
+
+
+@pytest.fixture()
+def kappa_settings():
+    return _cached_settings["kappa"]
+
+
+@pytest.fixture()
+def lambda_settings():
+    return _cached_settings["lambda"]
+
+
+@pytest.fixture()
+def mu_settings():
+    return _cached_settings["mu"]
+
+
+@pytest.fixture()
+def nu_settings():
+    return _cached_settings["nu"]
+
+
+@pytest.fixture()
+def xi_settings():
+    return _cached_settings["xi"]
+
+
+@pytest.fixture()
+def omicron_settings():
+    return _cached_settings["omicron"]
+
+
+@pytest.fixture()
+def pi_settings():
+    return _cached_settings["pi"]
+
+
+@pytest.fixture()
+def rho_settings():
+    return _cached_settings["rho"]
+
+
+@pytest.fixture()
+def sigma_settings():
+    return _cached_settings["sigma"]

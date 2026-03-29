@@ -1,0 +1,116 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 160.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.389,
+        "longitude": -8.29,
+        "wind_average": 8.7,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 84.0,
+        "rail_length": 9.0
+    },
+    "id": {
+        "comment": "Linear density; 4,7 g/cm",
+        "designer": null,
+        "filepath": "examples/Anonymous--Rho/rocket.ork",
+        "rocket_name": "ASTRA"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1256.1543428576313,
+        "grain_initial_height": 0.486,
+        "grain_initial_inner_radius": 0.01875,
+        "grain_number": 1,
+        "grain_outer_radius": 0.0375,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.243,
+        "nozzle_radius": 0.028124999999999997,
+        "position": 2.0723478368356,
+        "throat_radius": 0.01875,
+        "thrust_source": "examples\\Anonymous--Rho\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.047,
+        "kind": "Von Karman",
+        "length": 0.27,
+        "name": "Nose Cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 2.6302199094017147,
+            "cd": 0.0,
+            "cds": 0.0,
+            "deploy_altitude": 450.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main Parachute"
+        },
+        "1": {
+            "area": 0.40715040790523715,
+            "cd": 0.0,
+            "cds": 0.0,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue Parachute (17)"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 1.4546,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Rho\\drag_curve.csv",
+        "inertia": [
+            0.035532,
+            0.035532,
+            6.5479
+        ],
+        "mass": 9.8765,
+        "radius": 0.047
+    },
+    "stored_results": {
+        "burnout_stability_margin": 4.7724,
+        "flight_time": 48.495,
+        "ground_hit_velocity": 247.2,
+        "launch_rod_velocity": 45.879,
+        "max_acceleration": 125.17,
+        "max_altitude": 3036.4,
+        "max_mach": 0.96925,
+        "max_stability_margin": 4.9984,
+        "max_thrust": 1540.1,
+        "max_velocity": 325.43,
+        "min_stability_margin": 1.3648,
+        "time_to_apogee": 23.591
+    },
+    "tails": {},
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Aletas trapezoidales",
+            "number": 4,
+            "position": 2.5949999999999993,
+            "root_chord": 0.2,
+            "section": "airfoil",
+            "span": 0.115,
+            "sweep_angle": null,
+            "sweep_length": 0.11499999999999999,
+            "tip_chord": 0.085
+        }
+    }
+}

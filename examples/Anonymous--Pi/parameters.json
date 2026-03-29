@@ -1,0 +1,124 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 8.6,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 84.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": null,
+        "designer": null,
+        "filepath": "examples/Anonymous--Pi/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1539.2480085426268,
+        "grain_initial_height": 0.55,
+        "grain_initial_inner_radius": 0.03,
+        "grain_number": 1,
+        "grain_outer_radius": 0.06,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.275,
+        "nozzle_radius": 0.045,
+        "position": 1.5849835204010587,
+        "throat_radius": 0.03,
+        "thrust_source": "examples\\Anonymous--Pi\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.07675,
+        "kind": "power",
+        "length": 0.35000000000000003,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 0.29186350796015864,
+            "cd": 1.5,
+            "cds": 0.437795261940238,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue"
+        },
+        "1": {
+            "area": 3.575327972511944,
+            "cd": 2.2,
+            "cds": 7.865721539526278,
+            "deploy_altitude": 400.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 0.97442,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Pi\\drag_curve.csv",
+        "inertia": [
+            0.049903,
+            0.049903,
+            3.7259
+        ],
+        "mass": 14.667,
+        "radius": 0.07675
+    },
+    "stored_results": {
+        "burnout_stability_margin": 3.2244,
+        "flight_time": 210.52,
+        "ground_hit_velocity": 5.3398,
+        "launch_rod_velocity": 37.7,
+        "max_acceleration": 82.767,
+        "max_altitude": 3180.7,
+        "max_mach": 0.97467,
+        "max_stability_margin": 3.7594,
+        "max_thrust": 1797.9,
+        "max_velocity": 326.3,
+        "min_stability_margin": 1.2013,
+        "time_to_apogee": 25.231
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.05,
+            "length": 0.14,
+            "name": "Transition",
+            "position": 1.8600000000000003,
+            "top_radius": 0.07675
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Trapezoidal fin set",
+            "number": 4,
+            "position": 2.335,
+            "root_chord": 0.125,
+            "section": "square",
+            "span": 0.16,
+            "sweep_angle": null,
+            "sweep_length": 0.12499999999999999,
+            "tip_chord": 0.125
+        }
+    }
+}

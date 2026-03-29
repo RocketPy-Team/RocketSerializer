@@ -1,0 +1,105 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 220.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.2,
+        "longitude": 8.01,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 86.0,
+        "rail_length": 10.0
+    },
+    "id": {
+        "comment": null,
+        "designer": null,
+        "filepath": "examples/Anonymous--Omicron/rocket.ork",
+        "rocket_name": "Rakete"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1281.9918132369212,
+        "grain_initial_height": 1.293,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.6465,
+        "nozzle_radius": 0.036750000000000005,
+        "position": 3.340879889102156,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\Anonymous--Omicron\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0895,
+        "kind": "Von Karman",
+        "length": 0.745,
+        "name": "Nose Cone",
+        "position": 0.0
+    },
+    "parachutes": {},
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 2.2091,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Omicron\\drag_curve.csv",
+        "inertia": [
+            0.34261,
+            0.34261,
+            83.941
+        ],
+        "mass": 51.551,
+        "radius": 0.0895
+    },
+    "stored_results": {
+        "burnout_stability_margin": 3.1738,
+        "flight_time": 52.951,
+        "ground_hit_velocity": 208.57,
+        "launch_rod_velocity": 35.792,
+        "max_acceleration": 72.411,
+        "max_altitude": 3118.2,
+        "max_mach": 0.77642,
+        "max_stability_margin": 3.1773,
+        "max_thrust": 4768.1,
+        "max_velocity": 261.69,
+        "min_stability_margin": 1.2799,
+        "time_to_apogee": 26.101
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.075,
+            "length": 0.106,
+            "name": "Übergang",
+            "position": 3.9670000000000005,
+            "top_radius": 0.0895
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Fin set",
+            "number": 4,
+            "position": 3.3080000000000003,
+            "root_chord": 0.625,
+            "section": "rounded",
+            "span": 0.147,
+            "sweep_angle": null,
+            "sweep_length": 0.239,
+            "tip_chord": 0.354
+        }
+    }
+}

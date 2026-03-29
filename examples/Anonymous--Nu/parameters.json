@@ -1,0 +1,128 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 90.0,
+        "rail_length": 4.0
+    },
+    "id": {
+        "comment": null,
+        "designer": "PoliWRocket",
+        "filepath": "examples/Anonymous--Nu/rocket.ork",
+        "rocket_name": "R4v2"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 390.4150693129696,
+        "grain_initial_height": 1.842,
+        "grain_initial_inner_radius": 0.03,
+        "grain_number": 1,
+        "grain_outer_radius": 0.06,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.921,
+        "nozzle_radius": 0.045,
+        "position": 3.083229016393442,
+        "throat_radius": 0.03,
+        "thrust_source": "examples\\Anonymous--Nu\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0765,
+        "kind": "lvhaack",
+        "length": 0.508,
+        "name": "Nose Cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 1.1309733552923256,
+            "cd": 1.0,
+            "cds": 1.1309733552923256,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Pilot Parachute"
+        },
+        "1": {
+            "area": 19.634954084936208,
+            "cd": 1.0,
+            "cds": 19.634954084936208,
+            "deploy_altitude": 400.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main Parachute"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 2.1565,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Nu\\drag_curve.csv",
+        "inertia": [
+            0.15095,
+            0.15095,
+            77.457
+        ],
+        "mass": 30.254,
+        "radius": 0.0765
+    },
+    "stored_results": {
+        "burnout_stability_margin": 3.9663,
+        "flight_time": 211.23,
+        "ground_hit_velocity": 5.3997,
+        "launch_rod_velocity": 22.181,
+        "max_acceleration": 62.377,
+        "max_altitude": 3225.2,
+        "max_mach": 0.71344,
+        "max_stability_margin": 4.2872,
+        "max_thrust": 2602.4,
+        "max_velocity": 240.56,
+        "min_stability_margin": 0.92141,
+        "time_to_apogee": 26.961
+    },
+    "tails": {},
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Canard Fins",
+            "number": 4,
+            "position": 1.867,
+            "root_chord": 0.13,
+            "section": "rounded",
+            "span": 0.055,
+            "sweep_angle": null,
+            "sweep_length": 0.055,
+            "tip_chord": 0.06
+        },
+        "1": {
+            "cant_angle": 0.0,
+            "name": "Fins",
+            "number": 4,
+            "position": 4.386,
+            "root_chord": 0.23,
+            "section": "rounded",
+            "span": 0.12,
+            "sweep_angle": null,
+            "sweep_length": 0.12,
+            "tip_chord": 0.11
+        }
+    }
+}
