@@ -130,10 +130,35 @@ def ork2json(filepath, output=None, ork_jar=None, encoding="utf-8", verbose=Fals
 
     data_labels = bs.find("databranch").attrs["types"].split(",")
     if "CG location" not in data_labels:
-        message = (
-            "[ork2json] The file must contain the simulation data.\n"
-            + "Open the .ork file and run the simulation first."
-        )
+        # Check if the file is in a non-English language
+        # TODO: search if there is a better method to detect the .ork file language
+        non_english_indicators = {
+            "Position vom CG": "German",
+            "Position du CG": "French",
+            "Posición del CG": "Spanish",
+            "Posizione CG": "Italian",
+        }
+        detected_lang = None
+        for indicator, lang in non_english_indicators.items():
+            if indicator in data_labels:
+                detected_lang = lang
+                break
+
+        if detected_lang:
+            message = (
+                f"[ork2json] The .ork file appears to be saved in {detected_lang}.\n"
+                "RocketSerializer only supports .ork files saved in English.\n"
+                "Please open the file in OpenRocket, change the language to "
+                "English (Edit > Preferences > General > Language), and save again."
+            )
+        else:
+            message = (
+                "[ork2json] The .ork file does not contain 'CG location' in the "
+                "simulation data labels.\nThis usually means the file is saved in "
+                "a non-English language or the simulation was not run.\n"
+                "Please ensure the file is saved in English and contains "
+                "simulation data."
+            )
         logger.error(message)
         raise ValueError(message)
 
