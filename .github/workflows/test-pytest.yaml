@@ -21,6 +21,11 @@ jobs:
       PYTHON: ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -35,6 +40,6 @@ jobs:
       - name: Install dev dependencies
         run: |
           pip install -r requirements-dev.txt
-      # - name: Run pytest
-      #   run: |
-      #     pytest
+      - name: Run pytest
+        run: |
+          pytest tests/ -v --timeout=120
