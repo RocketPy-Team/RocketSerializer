@@ -76,7 +76,7 @@ def parse_ork_file(ork_path: Path):
     try:
         with open(ork_path, encoding="utf-8") as file:
             bs = BeautifulSoup(file, features="xml")
-            datapoints = bs.findAll("datapoint")
+            datapoints = bs.find_all("datapoint")
             logger.info(
                 "Successfully parsed .ork file at '%s' with %d datapoints",
                 ork_path.as_posix(),

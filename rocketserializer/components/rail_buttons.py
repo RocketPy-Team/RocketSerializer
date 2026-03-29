@@ -23,7 +23,7 @@ def search_rail_buttons(bs, elements: dict) -> dict:
     name = str(lugs_elements[0]["name"])
 
     angular_position = 0.0
-    lugs = bs.findAll("launchlug")
+    lugs = bs.find_all("launchlug")
     for lug in lugs:
         if lug.find("name").text == name:
             angular_position = float(lug.find("radialdirection").text)
