@@ -116,7 +116,9 @@ def __get_parameter(datapoints, data_labels, time_vector, label, position):
             return np.max(parameter[:, 1])
         elif position == "min":
             return np.min(parameter[:, 1])
-    elif isinstance(position, (int, np.integer)):
+        logger.error("Invalid position string parameter: %s", position)
+        raise ValueError("Error in position parameter")
+    if isinstance(position, (int, np.integer)):
         # Clamp position to valid range since NaN filtering may shrink the array
         clamped = min(position, len(parameter) - 1)
         if clamped != position:
@@ -127,8 +129,6 @@ def __get_parameter(datapoints, data_labels, time_vector, label, position):
                 clamped,
             )
         return parameter[clamped, 1]
-    else:
-        logger.error(
-            "Invalid position parameter: %s (type: %s)", position, type(position)
-        )
-        raise ValueError("Error in position parameter")
+
+    logger.error("Invalid position parameter: %s (type: %s)", position, type(position))
+    raise ValueError("Error in position parameter")

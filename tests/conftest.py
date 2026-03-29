@@ -25,13 +25,13 @@ EXAMPLES = {
 }
 
 
-def get_settings(ork_filepath, output_dir, ork_document):
-    bs, _ = parse_ork_file(ork_filepath)
-    output_dir.mkdir(parents=True, exist_ok=True)
+def get_settings(ork_path, output_path, ork_document):
+    bs, _ = parse_ork_file(ork_path)
+    output_path.mkdir(parents=True, exist_ok=True)
     settings = ork_extractor(
         bs=bs,
-        filepath=str(ork_filepath),
-        output_folder=str(output_dir),
+        filepath=str(ork_path),
+        output_folder=str(output_path),
         ork=ork_document,
     )
     return settings
