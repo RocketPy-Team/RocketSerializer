@@ -109,19 +109,26 @@ def __get_parameter(datapoints, data_labels, time_vector, label, position):
 
     if isinstance(position, str):
         if position == "last":
-            # return the end point (final time, final value)
             return parameter[-1, 1]
         elif position == "first":
-            # return the first point (initial time, initial value)
             return parameter[0, 1]
         elif position == "max":
-            return np.max(parameter[:, 1])  # return the maximum value
+            return np.max(parameter[:, 1])
         elif position == "min":
-            return np.min(parameter[:, 1])  # return the minimum value
+            return np.min(parameter[:, 1])
+    elif isinstance(position, (int, np.integer)):
+        # Clamp position to valid range since NaN filtering may shrink the array
+        clamped = min(position, len(parameter) - 1)
+        if clamped != position:
+            logger.warning(
+                "Position %d out of bounds (array size %d), clamped to %d",
+                position,
+                len(parameter),
+                clamped,
+            )
+        return parameter[clamped, 1]
     else:
-        pass
-    if isinstance(position, np.int64):
-        return parameter[position, 1]  # return the value at the specified position
-    else:
-        logger.error("Invalid position parameter")
+        logger.error(
+            "Invalid position parameter: %s (type: %s)", position, type(position)
+        )
         raise ValueError("Error in position parameter")
