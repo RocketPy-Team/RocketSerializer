@@ -1,0 +1,146 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 160.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.0,
+        "longitude": -82.0,
+        "wind_average": 8.7,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 85.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": "",
+        "designer": "Anonymous",
+        "filepath": "examples/Anonymous--Beta/rocket.ork",
+        "rocket_name": "Beta"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 3288.5315557860276,
+        "grain_initial_height": 0.321,
+        "grain_initial_inner_radius": 0.0135,
+        "grain_number": 1,
+        "grain_outer_radius": 0.027,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.1605,
+        "nozzle_radius": 0.02025,
+        "position": 2.038542604576808,
+        "throat_radius": 0.0135,
+        "thrust_source": "examples\\Anonymous--Beta\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0508,
+        "kind": "Von Karman",
+        "length": 0.511,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 0.5026548245743669,
+            "cd": 1.0,
+            "cds": 0.5026548245743669,
+            "deploy_altitude": 450.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main"
+        },
+        "1": {
+            "area": 0.07068583470577035,
+            "cd": 1.0,
+            "cds": 0.07068583470577035,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Parachute"
+        },
+        "2": {
+            "area": 0.5026548245743669,
+            "cd": 1.0,
+            "cds": 0.5026548245743669,
+            "deploy_altitude": 450.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Parachute"
+        },
+        "3": {
+            "area": 0.07068583470577035,
+            "cd": 1.0,
+            "cds": 0.07068583470577035,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 0.92276,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Beta\\drag_curve.csv",
+        "inertia": [
+            0.012064,
+            0.012064,
+            1.2632
+        ],
+        "mass": 4.8422,
+        "radius": 0.0508
+    },
+    "stored_results": {
+        "burnout_stability_margin": 2.6153,
+        "flight_time": 109.39,
+        "ground_hit_velocity": 13.089,
+        "launch_rod_velocity": 33.948,
+        "max_acceleration": 89.104,
+        "max_altitude": 2424.3,
+        "max_mach": 0.80244,
+        "max_stability_margin": 3.4771,
+        "max_thrust": 688.97,
+        "max_velocity": 263.21,
+        "min_stability_margin": 1.6809,
+        "time_to_apogee": 24.82
+    },
+    "tails": {},
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Trapezoidal fin set",
+            "number": 4,
+            "position": 2.9109999999999996,
+            "root_chord": 0.18,
+            "section": "square",
+            "span": 0.12512,
+            "sweep_angle": null,
+            "sweep_length": 0.17500000000000002,
+            "tip_chord": 0.1
+        },
+        "1": {
+            "cant_angle": 0.0,
+            "name": "Trapezoidal fin set",
+            "number": 4,
+            "position": 2.9109999999999996,
+            "root_chord": 0.18,
+            "section": "square",
+            "span": 0.154,
+            "sweep_angle": null,
+            "sweep_length": 0.165,
+            "tip_chord": 0.08
+        }
+    }
+}

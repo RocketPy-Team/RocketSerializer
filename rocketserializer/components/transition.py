@@ -5,6 +5,17 @@ from .._helpers import _dict_to_string
 logger = logging.getLogger(__name__)
 
 
+def _find_transitions_recursive(component):
+    """Recursively find all Transition components in the OpenRocket model."""
+    results = []
+    if component.getClass().getSimpleName() == "Transition":
+        results.append(component)
+    for i in range(component.getChildCount()):
+        child = component.getChild(i)
+        results.extend(_find_transitions_recursive(child))
+    return results
+
+
 def search_transitions(bs, elements, ork):
     """Search for the transitions in the bs and return the settings as a dict.
 
@@ -29,11 +40,16 @@ def search_transitions(bs, elements, ork):
     transitions = bs.find_all("transition")
     logger.info("A total of %d transitions were found", len(transitions))
 
-    transitions_ork = [
-        ele
-        for ele in ork.getRocket().getChild(0).getChildren()
-        if ele.getClass().getSimpleName() == "Transition"
-    ]  # TODO: only works for a single stage rocket.
+    # Recursively search for Transition components in the Java model
+    transitions_ork = _find_transitions_recursive(ork.getRocket())
+
+    if len(transitions_ork) != len(transitions):
+        logger.warning(
+            "Mismatch between BS4 transitions (%d) and Java transitions (%d). "
+            "Will match by name.",
+            len(transitions),
+            len(transitions_ork),
+        )
 
     for idx, transition in enumerate(transitions):
         logger.info("Starting to collect the settings of the transition number %d", idx)
@@ -41,8 +57,26 @@ def search_transitions(bs, elements, ork):
         label = transition.find("name").text
         logger.info("Collected the name of the transition number %d", idx)
 
-        transition_ork = transitions_ork[idx]
-        top_radius = float(transition_ork.getForeRadius())
+        # Try to find matching Java transition by name or index
+        transition_ork = None
+        for t_ork in transitions_ork:
+            if str(t_ork.getName()) == label:
+                transition_ork = t_ork
+                break
+        if transition_ork is None and idx < len(transitions_ork):
+            transition_ork = transitions_ork[idx]
+
+        if transition_ork is not None:
+            top_radius = float(transition_ork.getForeRadius())
+        else:
+            logger.warning(
+                "Could not find Java transition for '%s', using foreradius from XML.",
+                label,
+            )
+            fore_tag = transition.find("foreradius")
+            fore_text = fore_tag.text if fore_tag else "0"
+            top_radius = 0.0 if "auto" in fore_text else float(fore_text)
+
         bottom_radius = (
             transition.find("aftradius").text
             if "auto" in transition.find("aftradius").text

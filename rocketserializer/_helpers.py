@@ -76,7 +76,10 @@ def parse_ork_file(ork_path: Path):
     try:
         with open(ork_path, encoding="utf-8") as file:
             bs = BeautifulSoup(file, features="xml")
-            datapoints = bs.find_all("datapoint")
+            # Use only the first databranch to avoid mixing data from
+            # different simulation branches (e.g. recovery events)
+            first_branch = bs.find("databranch")
+            datapoints = first_branch.find_all("datapoint") if first_branch else []
             logger.info(
                 "Successfully parsed .ork file at '%s' with %d datapoints",
                 ork_path.as_posix(),

@@ -144,8 +144,11 @@ def __init_vectors(bs):
     time_vector : list
         The time vector.
     """
-    datapoints = bs.find_all("datapoint")
-    data_labels = bs.find("databranch").attrs["types"].split(",")
+    # Use only the first databranch (main flight data), not secondary branches
+    # which may have different numbers of columns (e.g. recovery events)
+    first_branch = bs.find("databranch")
+    datapoints = first_branch.find_all("datapoint")
+    data_labels = first_branch.attrs["types"].split(",")
 
     time_vector = [float(datapoint.text.split(",")[0]) for datapoint in datapoints]
     start_pos = 0

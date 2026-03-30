@@ -1,0 +1,109 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 4.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 85.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": "Need to add 30 cm here possibly ??????",
+        "designer": null,
+        "filepath": "examples/Anonymous--Kappa/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 921.7627781991176,
+        "grain_initial_height": 1.5,
+        "grain_initial_inner_radius": 0.0265,
+        "grain_number": 1,
+        "grain_outer_radius": 0.053,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.75,
+        "nozzle_radius": 0.03975,
+        "position": 3.5241285214730618,
+        "throat_radius": 0.0265,
+        "thrust_source": "examples\\Anonymous--Kappa\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.078,
+        "kind": "ogive",
+        "length": 0.457,
+        "name": "Nose Cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 29.186350796015873,
+            "cd": 0.97,
+            "cds": 28.310760272135397,
+            "deploy_altitude": 500.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main Chute"
+        },
+        "1": {
+            "area": 0.6561184841095747,
+            "cd": 0.97,
+            "cds": 0.6364349295862874,
+            "deploy_altitude": null,
+            "deploy_delay": 4.0,
+            "deploy_event": "apogee",
+            "name": "Drogue Chute"
+        }
+    },
+    "rail_buttons": {
+        "angular_position": -90.0,
+        "distance": 1.4880000000000004,
+        "lower_position": 3.9300000000000006,
+        "name": "Upper Launch lug",
+        "upper_position": 2.442
+    },
+    "rocket": {
+        "center_of_mass_without_propellant": 2.7576,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Kappa\\drag_curve.csv",
+        "inertia": [
+            0.14741,
+            0.14741,
+            126.0
+        ],
+        "mass": 42.924,
+        "radius": 0.078
+    },
+    "stored_results": {
+        "burnout_stability_margin": 4.7501,
+        "flight_time": 188.5,
+        "ground_hit_velocity": 4.8188,
+        "launch_rod_velocity": 35.964,
+        "max_acceleration": 56.239,
+        "max_altitude": 2685.0,
+        "max_mach": 0.58021,
+        "max_stability_margin": 4.9574,
+        "max_thrust": 3404.3,
+        "max_velocity": 193.67,
+        "min_stability_margin": 1.8021,
+        "time_to_apogee": 26.544
+    },
+    "tails": {},
+    "trapezoidal_fins": {}
+}

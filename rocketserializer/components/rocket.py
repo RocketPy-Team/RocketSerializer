@@ -53,16 +53,31 @@ def get_rocket_radius(bs):
     # We want to take the maximum radius of the rocket
     tubes = bs.find_all("bodytube")
     noses = bs.find_all("nosecone")
+    transitions = bs.find_all("transition")
 
-    tubes_radius = [i.find("radius").text for i in tubes]
-    noses_radius = [i.find("aftradius").text for i in noses]
+    tubes_radius = [i.find("radius").text for i in tubes if i.find("radius")]
+    noses_radius = [i.find("aftradius").text for i in noses if i.find("aftradius")]
 
-    all_radius = tubes_radius + noses_radius
+    # Also collect radii from transitions (foreradius and aftradius)
+    transition_radius = []
+    for t in transitions:
+        fore = t.find("foreradius")
+        aft = t.find("aftradius")
+        if fore:
+            transition_radius.append(fore.text)
+        if aft:
+            transition_radius.append(aft.text)
+
+    all_radius = tubes_radius + noses_radius + transition_radius
 
     # We need to convert to float, but removing the "auto" string first
     all_radius = [i.replace("auto ", "") for i in all_radius]
     all_radius = [i for i in all_radius if i != "auto"]
     all_radius = [float(i) for i in all_radius]
+
+    if not all_radius:
+        logger.warning("No radius found for the rocket. Defaulting to 0.")
+        return 0.0
 
     rocket_radius = max(all_radius)
     logger.info("The maximum radius of the rocket is: %f", rocket_radius)

@@ -11,57 +11,169 @@ from rocketserializer.openrocket_runtime import (
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
+# All example rockets to test (name -> relative path from ROOT_DIR)
+EXAMPLES = {
+    "valetudo": "examples/ProjetoJupiter--Valetudo--2019",
+    "ndrt": "examples/NDRT--Rocket--2020",
+    "epfl": "examples/EPFL--BellaLui--2020",
+    "wert": "examples/WERT--Prometheus--2022",
+    "elliptical_fins": "examples/rocket_with_elliptical_fins",
+    "alpha": "examples/Anonymous--Alpha",
+    "beta": "examples/Anonymous--Beta",
+    "gamma": "examples/Anonymous--Gamma",
+    "delta": "examples/Anonymous--Delta",
+    "epsilon": "examples/Anonymous--Epsilon",
+    "zeta": "examples/Anonymous--Zeta",
+    "eta": "examples/Anonymous--Eta",
+    "theta": "examples/Anonymous--Theta",
+    "iota": "examples/Anonymous--Iota",
+    "kappa": "examples/Anonymous--Kappa",
+    "lambda": "examples/Anonymous--Lambda",
+    "mu": "examples/Anonymous--Mu",
+    "nu": "examples/Anonymous--Nu",
+    "xi": "examples/Anonymous--Xi",
+    "omicron": "examples/Anonymous--Omicron",
+    "pi": "examples/Anonymous--Pi",
+    "rho": "examples/Anonymous--Rho",
+    "sigma": "examples/Anonymous--Sigma",
+}
 
-def get_settings(ork_filepath, output_dir, ork_document):
-    bs, _ = parse_ork_file(ork_filepath)
 
-    output_dir.mkdir(parents=True, exist_ok=True)
-
+def get_settings(ork_path, output_path, ork_document):
+    bs, _ = parse_ork_file(ork_path)
+    output_path.mkdir(parents=True, exist_ok=True)
     settings = ork_extractor(
         bs=bs,
-        filepath=str(ork_filepath),
-        output_folder=str(output_dir),
+        filepath=str(ork_path),
+        output_folder=str(output_path),
         ork=ork_document,
     )
     return settings
 
 
+# Pre-compute all settings at import time using a single OpenRocket session
+_cached_settings = {}
+
 with OpenRocketSession(select_latest_openrocket_jar(ROOT_DIR), "OFF") as session:
-    # Valetudo 2019
-    valetudo_filepath = (
-        ROOT_DIR / "examples" / "ProjetoJupiter--Valetudo--2019" / "rocket.ork"
-    )
-    valetudo_filepath = extract_ork_from_zip(
-        valetudo_filepath, valetudo_filepath.parent
-    )
-    valetudo_output_dir = (
-        ROOT_DIR / "tests" / "acceptance" / "ProjetoJupiter--Valetudo--2019"
-    )
-    valetudo_doc = session.load_doc(str(valetudo_filepath))
-    settings1 = get_settings(valetudo_filepath, valetudo_output_dir, valetudo_doc)
+    for name, rel_path in EXAMPLES.items():
+        ork_filepath = ROOT_DIR / rel_path / "rocket.ork"
+        ork_filepath = extract_ork_from_zip(ork_filepath, ork_filepath.parent)
+        output_dir = ROOT_DIR / "tests" / "acceptance" / Path(rel_path).name
+        ork_doc = session.load_doc(str(ork_filepath))
+        _cached_settings[name] = get_settings(ork_filepath, output_dir, ork_doc)
 
-    @pytest.fixture()
-    def valetudo_settings():
-        return settings1
 
-    # NDRT 2020
-    ndrt_filepath = ROOT_DIR / "examples" / "NDRT--Rocket--2020" / "rocket.ork"
-    ndrt_filepath = extract_ork_from_zip(ndrt_filepath, ndrt_filepath.parent)
-    ndrt_output_dir = ROOT_DIR / "tests" / "acceptance" / "NDRT--Rocket--2020"
-    ndrt_doc = session.load_doc(str(ndrt_filepath))
-    settings2 = get_settings(ndrt_filepath, ndrt_output_dir, ndrt_doc)
+# Create fixtures for each example
+@pytest.fixture()
+def valetudo_settings():
+    return _cached_settings["valetudo"]
 
-    @pytest.fixture()
-    def ndrt_settings():
-        return settings2
 
-    # Bella Lui 2020
-    epfl_filepath = ROOT_DIR / "examples" / "EPFL--BellaLui--2020" / "rocket.ork"
-    epfl_filepath = extract_ork_from_zip(epfl_filepath, epfl_filepath.parent)
-    epfl_output_dir = ROOT_DIR / "tests" / "acceptance" / "EPFL--BellaLui--2020"
-    epfl_doc = session.load_doc(str(epfl_filepath))
-    settings3 = get_settings(epfl_filepath, epfl_output_dir, epfl_doc)
+@pytest.fixture()
+def ndrt_settings():
+    return _cached_settings["ndrt"]
 
-    @pytest.fixture()
-    def epfl_settings():
-        return settings3
+
+@pytest.fixture()
+def epfl_settings():
+    return _cached_settings["epfl"]
+
+
+@pytest.fixture()
+def wert_settings():
+    return _cached_settings["wert"]
+
+
+@pytest.fixture()
+def elliptical_fins_settings():
+    return _cached_settings["elliptical_fins"]
+
+
+@pytest.fixture()
+def alpha_settings():
+    return _cached_settings["alpha"]
+
+
+@pytest.fixture()
+def beta_settings():
+    return _cached_settings["beta"]
+
+
+@pytest.fixture()
+def gamma_settings():
+    return _cached_settings["gamma"]
+
+
+@pytest.fixture()
+def delta_settings():
+    return _cached_settings["delta"]
+
+
+@pytest.fixture()
+def epsilon_settings():
+    return _cached_settings["epsilon"]
+
+
+@pytest.fixture()
+def zeta_settings():
+    return _cached_settings["zeta"]
+
+
+@pytest.fixture()
+def eta_settings():
+    return _cached_settings["eta"]
+
+
+@pytest.fixture()
+def theta_settings():
+    return _cached_settings["theta"]
+
+
+@pytest.fixture()
+def iota_settings():
+    return _cached_settings["iota"]
+
+
+@pytest.fixture()
+def kappa_settings():
+    return _cached_settings["kappa"]
+
+
+@pytest.fixture()
+def lambda_settings():
+    return _cached_settings["lambda"]
+
+
+@pytest.fixture()
+def mu_settings():
+    return _cached_settings["mu"]
+
+
+@pytest.fixture()
+def nu_settings():
+    return _cached_settings["nu"]
+
+
+@pytest.fixture()
+def xi_settings():
+    return _cached_settings["xi"]
+
+
+@pytest.fixture()
+def omicron_settings():
+    return _cached_settings["omicron"]
+
+
+@pytest.fixture()
+def pi_settings():
+    return _cached_settings["pi"]
+
+
+@pytest.fixture()
+def rho_settings():
+    return _cached_settings["rho"]
+
+
+@pytest.fixture()
+def sigma_settings():
+    return _cached_settings["sigma"]

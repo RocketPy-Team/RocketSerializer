@@ -2,4 +2,5 @@ pylint
 mypy
 pytest==7.4.0
 pytest-coverage
+pytest-timeout
 ruff

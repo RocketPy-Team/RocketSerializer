@@ -1,0 +1,130 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 160.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.431,
+        "longitude": -8.3012,
+        "wind_average": 8.7,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 84.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": null,
+        "designer": null,
+        "filepath": "examples/Anonymous--Zeta/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1607.4360047194796,
+        "grain_initial_height": 1.239,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.6195,
+        "nozzle_radius": 0.036750000000000005,
+        "position": 2.5503824709328127,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\Anonymous--Zeta\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.051500000000000004,
+        "kind": "Von Karman",
+        "length": 0.5,
+        "name": "S.1 Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 0.656692892910357,
+            "cd": 0.97,
+            "cds": 0.6369921061230464,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "R.1 Drogue chute"
+        },
+        "1": {
+            "area": 2.626771571641428,
+            "cd": 2.2,
+            "cds": 5.7788974576111425,
+            "deploy_altitude": 450.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "R.2 Main Parachute"
+        }
+    },
+    "rail_buttons": {
+        "angular_position": 45.0,
+        "distance": 1.3050000000000006,
+        "lower_position": 3.49,
+        "name": "S.4.3 Launch lug",
+        "upper_position": 2.1849999999999996
+    },
+    "rocket": {
+        "center_of_mass_without_propellant": 1.7723,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Zeta\\drag_curve.csv",
+        "inertia": [
+            0.035926,
+            0.035926,
+            11.635
+        ],
+        "mass": 16.069,
+        "radius": 0.051500000000000004
+    },
+    "stored_results": {
+        "burnout_stability_margin": 7.4105,
+        "flight_time": 448.01,
+        "ground_hit_velocity": 6.3684,
+        "launch_rod_velocity": 61.292,
+        "max_acceleration": 177.97,
+        "max_altitude": 9199.3,
+        "max_mach": 2.086,
+        "max_stability_margin": 7.7141,
+        "max_thrust": 4696.3,
+        "max_velocity": 691.72,
+        "min_stability_margin": 0.38457,
+        "time_to_apogee": 37.677
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.0375,
+            "length": 0.045,
+            "name": "P.1.6 Tail cone",
+            "position": 3.17,
+            "top_radius": 0.051500000000000004
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "S.5.2 Fins",
+            "number": 4,
+            "position": 2.9699999999999998,
+            "root_chord": 0.37,
+            "section": "airfoil",
+            "span": 0.095,
+            "sweep_angle": null,
+            "sweep_length": 0.22935028842544403,
+            "tip_chord": 0.07
+        }
+    }
+}

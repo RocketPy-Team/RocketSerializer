@@ -1,0 +1,124 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 28.61,
+        "longitude": -80.6,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 85.0,
+        "rail_length": 9.0
+    },
+    "id": {
+        "comment": null,
+        "designer": null,
+        "filepath": "examples/Anonymous--Xi/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1481.3178341175428,
+        "grain_initial_height": 1.239,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.6195,
+        "nozzle_radius": 0.036750000000000005,
+        "position": 2.4504448425310605,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\Anonymous--Xi\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0508,
+        "kind": "power",
+        "length": 0.51,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 0.44178646691106466,
+            "cd": 1.0,
+            "cds": 0.44178646691106466,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Booster Drogue"
+        },
+        "1": {
+            "area": 3.141592653589793,
+            "cd": 1.0,
+            "cds": 3.141592653589793,
+            "deploy_altitude": 200.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Booster Main"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": 1.7444,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Xi\\drag_curve.csv",
+        "inertia": [
+            0.029124,
+            0.029124,
+            12.171
+        ],
+        "mass": 18.298,
+        "radius": 0.0508
+    },
+    "stored_results": {
+        "burnout_stability_margin": 6.7583,
+        "flight_time": 308.61,
+        "ground_hit_velocity": 9.1523,
+        "launch_rod_velocity": 40.033,
+        "max_acceleration": 102.02,
+        "max_altitude": 9015.7,
+        "max_mach": 1.4307,
+        "max_stability_margin": 7.2341,
+        "max_thrust": 3184.9,
+        "max_velocity": 471.56,
+        "min_stability_margin": 2.1863,
+        "time_to_apogee": 41.821
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.046,
+            "length": 0.065,
+            "name": "Boattail",
+            "position": 3.0700000000000003,
+            "top_radius": 0.0508
+        }
+    },
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Trapezoidal fin set",
+            "number": 4,
+            "position": 2.7700000000000005,
+            "root_chord": 0.2999999999999998,
+            "section": "airfoil",
+            "span": 0.09,
+            "sweep_angle": null,
+            "sweep_length": 0.215,
+            "tip_chord": 0.05999999999999995
+        }
+    }
+}

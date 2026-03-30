@@ -1,0 +1,141 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 0.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.25,
+        "longitude": -8.1,
+        "wind_average": 2.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 90.0,
+        "rail_length": 12.0
+    },
+    "id": {
+        "comment": "",
+        "designer": "Anonymous",
+        "filepath": "examples/Anonymous--Delta/rocket.ork",
+        "rocket_name": "Delta"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 2401.238607919904,
+        "grain_initial_height": 1.239,
+        "grain_initial_inner_radius": 0.0245,
+        "grain_number": 1,
+        "grain_outer_radius": 0.049,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.6195,
+        "nozzle_radius": 0.036750000000000005,
+        "position": NaN,
+        "throat_radius": 0.0245,
+        "thrust_source": "examples\\Anonymous--Delta\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0,
+        "kind": "ogive",
+        "length": 0.0,
+        "name": ".",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 0.6561184841095747,
+            "cd": 0.97,
+            "cds": 0.6364349295862874,
+            "deploy_altitude": null,
+            "deploy_delay": 322.0,
+            "deploy_event": "launch",
+            "name": "Drogue Parachute"
+        },
+        "1": {
+            "area": 0.6561184841095747,
+            "cd": 0.97,
+            "cds": 0.6364349295862874,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue Parachute"
+        },
+        "2": {
+            "area": 10.520879637606859,
+            "cd": 0.97,
+            "cds": 10.205253248478654,
+            "deploy_altitude": null,
+            "deploy_delay": 322.0,
+            "deploy_event": "launch",
+            "name": "Main Parachute"
+        }
+    },
+    "rail_buttons": {},
+    "rocket": {
+        "center_of_mass_without_propellant": NaN,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Delta\\drag_curve.csv",
+        "inertia": [
+            NaN,
+            NaN,
+            NaN
+        ],
+        "mass": 0.403,
+        "radius": 0.0575
+    },
+    "stored_results": {
+        "burnout_stability_margin": 3.913,
+        "flight_time": 697.53,
+        "ground_hit_velocity": 2.255,
+        "launch_rod_velocity": 55.806,
+        "max_acceleration": 146.086,
+        "max_altitude": 9364.904,
+        "max_mach": 1.764,
+        "max_stability_margin": 6.089,
+        "max_thrust": 4695.7,
+        "max_velocity": 587.755,
+        "min_stability_margin": 0.148,
+        "time_to_apogee": 40.368
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": "auto 0.025",
+            "length": 0.0698,
+            "name": "Nose tip",
+            "position": 0.005,
+            "top_radius": 0.005
+        },
+        "1": {
+            "bottom_radius": 0.0535,
+            "length": 0.38,
+            "name": "Nose Cone",
+            "position": 0.0748,
+            "top_radius": 0.0125
+        },
+        "2": {
+            "bottom_radius": 0.0575,
+            "length": 0.06500000000000002,
+            "name": "Fin Can Transition",
+            "position": 2.9268,
+            "top_radius": 0.0535
+        },
+        "3": {
+            "bottom_radius": 0.05,
+            "length": 0.04,
+            "name": "Boat Tail",
+            "position": 3.2697999999999996,
+            "top_radius": 0.0575
+        }
+    },
+    "trapezoidal_fins": {}
+}

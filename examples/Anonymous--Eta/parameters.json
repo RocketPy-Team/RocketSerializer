@@ -1,0 +1,122 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 108.0,
+        "geodetic_method": "spherical",
+        "latitude": 39.14,
+        "longitude": -8.0,
+        "wind_average": 9.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 90.0,
+        "inclination": 90.0,
+        "rail_length": 5.2
+    },
+    "id": {
+        "comment": null,
+        "designer": null,
+        "filepath": "examples/Anonymous--Eta/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 1337.9247403342165,
+        "grain_initial_height": 0.954,
+        "grain_initial_inner_radius": 0.025,
+        "grain_number": 1,
+        "grain_outer_radius": 0.05,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.477,
+        "nozzle_radius": 0.037500000000000006,
+        "position": 2.2692550472137247,
+        "throat_radius": 0.025,
+        "thrust_source": "examples\\Anonymous--Eta\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.0745,
+        "kind": "Von Karman",
+        "length": 0.3,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 3.8013271108436504,
+            "cd": 2.2,
+            "cds": 8.362919643856031,
+            "deploy_altitude": 500.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Main Parachute (ropes & case)"
+        },
+        "1": {
+            "area": 0.38484510006474976,
+            "cd": 2.2,
+            "cds": 0.8466592201424495,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue Parachute (ropes & case)"
+        }
+    },
+    "rail_buttons": {
+        "angular_position": 0.0,
+        "distance": 1.5035000000000003,
+        "lower_position": 2.9560000000000004,
+        "name": "Launch lug",
+        "upper_position": 1.4525000000000001
+    },
+    "rocket": {
+        "center_of_mass_without_propellant": 1.458,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Eta\\drag_curve.csv",
+        "inertia": [
+            0.13516,
+            0.13516,
+            12.776
+        ],
+        "mass": 23.118,
+        "radius": 0.0745
+    },
+    "stored_results": {
+        "burnout_stability_margin": 5.1525,
+        "flight_time": 212.56,
+        "ground_hit_velocity": 6.4295,
+        "launch_rod_velocity": 29.314,
+        "max_acceleration": 127.14,
+        "max_altitude": 3041.0,
+        "max_mach": 0.9285,
+        "max_stability_margin": 5.2527,
+        "max_thrust": 3749.5,
+        "max_velocity": 312.41,
+        "min_stability_margin": 1.4702,
+        "time_to_apogee": 24.116
+    },
+    "tails": {},
+    "trapezoidal_fins": {
+        "0": {
+            "cant_angle": 0.0,
+            "name": "Trapezoidal fin set",
+            "number": 3,
+            "position": 4.0120000000000005,
+            "root_chord": 0.23,
+            "section": "rounded",
+            "span": 0.185,
+            "sweep_angle": null,
+            "sweep_length": 0.1353995318795994,
+            "tip_chord": 0.11
+        }
+    }
+}

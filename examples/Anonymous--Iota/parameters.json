@@ -1,0 +1,117 @@
+{
+    "elliptical_fins": {},
+    "environment": {
+        "base_pressure": null,
+        "base_temperature": null,
+        "date": null,
+        "elevation": 160.0,
+        "geodetic_method": "wgs84",
+        "latitude": 39.3897,
+        "longitude": -8.29,
+        "wind_average": 5.0,
+        "wind_turbulence": 0.1
+    },
+    "flight": {
+        "heading": 133.0,
+        "inclination": 84.0,
+        "rail_length": 6.0
+    },
+    "id": {
+        "comment": "",
+        "designer": null,
+        "filepath": "examples/Anonymous--Iota/rocket.ork",
+        "rocket_name": "Rocket"
+    },
+    "motors": {
+        "center_of_dry_mass_position": 0,
+        "coordinate_system_orientation": "nozzle_to_combustion_chamber",
+        "dry_inertia": [
+            0,
+            0,
+            0
+        ],
+        "dry_mass": 0,
+        "grain_density": 914.7016991399263,
+        "grain_initial_height": 1.436,
+        "grain_initial_inner_radius": 0.015,
+        "grain_number": 1,
+        "grain_outer_radius": 0.03,
+        "grain_separation": 0,
+        "grains_center_of_mass_position": 0,
+        "nozzle_position": -0.718,
+        "nozzle_radius": 0.0225,
+        "position": 1.3621814003590653,
+        "throat_radius": 0.015,
+        "thrust_source": "examples\\Anonymous--Iota\\thrust_source.csv"
+    },
+    "nosecones": {
+        "base_radius": 0.061500000000000006,
+        "kind": "lvhaack",
+        "length": 0.4,
+        "name": "Nose cone",
+        "position": 0.0
+    },
+    "parachutes": {
+        "0": {
+            "area": 1.539380400258999,
+            "cd": 2.2,
+            "cds": 3.386636880569798,
+            "deploy_altitude": 700.0,
+            "deploy_delay": 0.0,
+            "deploy_event": "altitude",
+            "name": "Parachute"
+        },
+        "1": {
+            "area": 9.62112750161874,
+            "cd": 2.2,
+            "cds": 21.166480503561232,
+            "deploy_altitude": null,
+            "deploy_delay": 0.0,
+            "deploy_event": "apogee",
+            "name": "Drogue"
+        }
+    },
+    "rail_buttons": {
+        "angular_position": 45.0,
+        "distance": 0.75,
+        "lower_position": 1.85,
+        "name": "Launch lug",
+        "upper_position": 1.1
+    },
+    "rocket": {
+        "center_of_mass_without_propellant": 1.108,
+        "coordinate_system_orientation": "nose_to_tail",
+        "drag_curve": "examples\\Anonymous--Iota\\drag_curve.csv",
+        "inertia": [
+            0.0091756,
+            0.0091756,
+            3.1389
+        ],
+        "mass": 9.811,
+        "radius": 0.061500000000000006
+    },
+    "stored_results": {
+        "burnout_stability_margin": 4.1137,
+        "flight_time": 1038.1,
+        "ground_hit_velocity": 2.6456,
+        "launch_rod_velocity": 22.827,
+        "max_acceleration": 45.554,
+        "max_altitude": 2917.6,
+        "max_mach": 0.83843,
+        "max_stability_margin": 4.3371,
+        "max_thrust": 657.85,
+        "max_velocity": 279.92,
+        "min_stability_margin": 2.3036,
+        "time_to_apogee": 25.389
+    },
+    "tails": {
+        "0": {
+            "bottom_radius": 0.0275,
+            "length": 0.25999999999999995,
+            "name": "Transition",
+            "position": 1.75,
+            "top_radius": 0.061500000000000006
+        }
+    },
+    "trapezoidal_fins": {}
+}
