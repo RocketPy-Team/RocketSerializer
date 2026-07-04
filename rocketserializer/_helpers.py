@@ -88,14 +88,14 @@ def parse_ork_file(ork_path: Path):
             return bs, datapoints
     except UnicodeDecodeError as exc:
         error_msg = (
-            "The .ork file is not in UTF-8."
+            "The .ork file is not in UTF-8. "
             + "Please open the .ork file in a text editor and save it as UTF-8."
         )
         logger.error(error_msg)
-        raise UnicodeDecodeError(error_msg) from exc
+        raise ValueError(error_msg) from exc
     except Exception as e:
         logger.error("Error while parsing the file '%s': %s", ork_path.as_posix(), e)
-        raise e
+        raise
 
 
 def _dict_to_string(dictionary, indent=0):
