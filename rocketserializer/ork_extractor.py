@@ -45,6 +45,13 @@ def ork_extractor(bs, filepath, output_folder, ork):
     """
     settings = {}
 
+    def _safe_search(func, default_ret, *args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logger.error("Error extracting %s: %s", func.__name__, e, exc_info=True)
+            return default_ret
+
     # Initialize some important vectors
     datapoints, data_labels, time_vector = __init_vectors(bs)
     logger.info("Initialized data vectors from the ORK file.")
@@ -58,35 +65,42 @@ def ork_extractor(bs, filepath, output_folder, ork):
     id_info = search_id_info(bs, filepath)
     logger.info("Metadata parameters retrieved.")
 
-    environment = search_environment(bs)
+    environment = _safe_search(search_environment, {}, bs)
     logger.info("Environment parameters retrieved.")
 
-    rocket, motor_position = search_rocket(
+    rocket_data = _safe_search(
+        search_rocket,
+        ({"center_of_mass_without_propellant": 0, "mass": 0, "radius": 0}, 0),
         bs, datapoints, data_labels, burnout_position
     )
+    rocket, motor_position = rocket_data
     motors["position"] = motor_position
     logger.info("Rocket parameters retrieved.")
 
-    flight = search_launch_conditions(bs)
+    flight = _safe_search(search_launch_conditions, {}, bs)
     logger.info("Flight conditions retrieved.")
 
     # process different elements of the rocket
-    center_of_dry_mass = rocket["center_of_mass_without_propellant"]
-    rocket_mass = rocket["mass"]
-    rocket_radius = rocket["radius"]
+    center_of_dry_mass = rocket.get("center_of_mass_without_propellant", 0)
+    rocket_mass = rocket.get("mass", 0)
+    rocket_radius = rocket.get("radius", 0)
 
-    elements = process_elements_position(
+    elements = _safe_search(
+        process_elements_position,
+        {},
         ork.getRocket(), {}, center_of_dry_mass, rocket_mass, top_position=0
     )
     logger.info("The elements are:\n%s", _dict_to_string(elements, indent=23))
 
-    nosecones = search_nosecone(bs, elements, rocket_radius)
-    trapezoidal_fins = search_trapezoidal_fins(bs, elements)
-    elliptical_fins = search_elliptical_fins(bs, elements)
-    transitions = search_transitions(bs, elements, ork)
-    rail_buttons = search_rail_buttons(bs, elements)
-    parachutes = search_parachutes(bs)
-    stored_results = search_stored_results(
+    nosecones = _safe_search(search_nosecone, [], bs, elements, rocket_radius)
+    trapezoidal_fins = _safe_search(search_trapezoidal_fins, [], bs, elements)
+    elliptical_fins = _safe_search(search_elliptical_fins, [], bs, elements)
+    transitions = _safe_search(search_transitions, [], bs, elements, ork)
+    rail_buttons = _safe_search(search_rail_buttons, [], bs, elements)
+    parachutes = _safe_search(search_parachutes, [], bs)
+    stored_results = _safe_search(
+        search_stored_results,
+        {},
         bs, datapoints, data_labels, time_vector, burnout_position
     )
 
