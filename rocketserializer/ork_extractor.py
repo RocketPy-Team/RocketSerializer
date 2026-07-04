@@ -152,12 +152,13 @@ def __init_vectors(bs):
 
     time_vector = [float(datapoint.text.split(",")[0]) for datapoint in datapoints]
     start_pos = 0
-    final_pos = len(time_vector) - 1
+    final_pos = len(time_vector)
 
     # Get the start position, the ignition time.
     for idx, position in enumerate(time_vector):
         if position == 0:
             start_pos = idx
+            break
 
     # Filter the datapoints to get only the ones after the ignition.
     datapoints = datapoints[start_pos:final_pos]
