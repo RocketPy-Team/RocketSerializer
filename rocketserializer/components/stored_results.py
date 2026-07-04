@@ -101,8 +101,7 @@ def __get_parameter(datapoints, data_labels, time_vector, label, position):
     parameter = np.array([time_vector, parameter]).T
     # sort by time
     parameter = parameter[parameter[:, 0].argsort()]
-    # clip the curve to remove negative values
-    parameter[parameter[:, 1] < 0, 1] = 0
+    # do not clip negative values, as stability margin can be negative
     # Assuming parameter is a NumPy array and 'NaN' values are represented as np.nan
     # This will keep rows where the second column is not NaN
     parameter = parameter[~np.isnan(parameter[:, 1])]
