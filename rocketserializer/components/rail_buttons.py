@@ -25,8 +25,8 @@ def search_rail_buttons(bs, elements: dict) -> dict:
     angular_position = 0.0
     lugs = bs.find_all("launchlug")
     for lug in lugs:
-        if lug.find("name").text == name:
-            angular_position = float(lug.find("radialdirection").text)
+        if getattr(lug.find("name"), "text", "") == name:
+            angular_position = float(getattr(lug.find("radialdirection"), "text", "0"))
             break
 
     return {

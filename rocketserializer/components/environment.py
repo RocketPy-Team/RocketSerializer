@@ -23,18 +23,18 @@ def search_environment(bs):
     """
     settings = {}
 
-    latitude = float(bs.find("launchlatitude").text)
-    longitude = float(bs.find("launchlongitude").text)
-    elevation = float(bs.find("launchaltitude").text)
-    wind_average = float(bs.find("windaverage").text)
-    wind_turbulence = float(bs.find("windturbulence").text)
-    geodetic_method = bs.find("geodeticmethod").text
+    latitude = float(getattr(bs.find("launchlatitude"), "text", "0"))
+    longitude = float(getattr(bs.find("launchlongitude"), "text", "0"))
+    elevation = float(getattr(bs.find("launchaltitude"), "text", "0"))
+    wind_average = float(getattr(bs.find("windaverage"), "text", "0"))
+    wind_turbulence = float(getattr(bs.find("windturbulence"), "text", "0"))
+    geodetic_method = getattr(bs.find("geodeticmethod"), "text", "")
     logger.info(
         "Collected first environment settings: latitude, "
         + "longitude, elevation, wind_average, wind_turbulence, geodetic_method"
     )
     try:
-        base_temperature = float(bs.find("basetemperature").text)
+        base_temperature = float(getattr(bs.find("basetemperature"), "text", "0"))
         logger.info(
             "The base temperature was found in the .ork file. It is %f °C.",
             base_temperature,
@@ -46,7 +46,7 @@ def search_environment(bs):
         )
         base_temperature = None
     try:
-        base_pressure = float(bs.find("basepressure").text)
+        base_pressure = float(getattr(bs.find("basepressure"), "text", "0"))
         logger.info(
             "The base pressure was found in the .ork file. It is %f Pa.",
             base_pressure,

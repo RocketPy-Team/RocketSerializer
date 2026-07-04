@@ -39,8 +39,8 @@ def search_motor(bs, datapoints, data_labels):
     settings = {}
 
     # retrieve motor geometry
-    motor_length = float(bs.find("motormount").find("length").text)
-    motor_radius = float(bs.find("motormount").find("diameter").text) / 2
+    motor_length = float(bs.find(getattr("motormount").find("length"), "text", ""))
+    motor_radius = float(bs.find(getattr("motormount").find("diameter"), "text", "")) / 2
     logger.info("Collected motor geometry: motor length and motor radius.")
 
     # get motor mass properties

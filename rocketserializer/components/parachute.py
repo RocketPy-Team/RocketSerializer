@@ -30,20 +30,20 @@ def search_parachutes(bs):
 
     for idx, chute in enumerate(chutes):
         logger.info("Starting to collect the settings of the parachute number %d", idx)
-        name = chute.find("name").text
+        name = getattr(chute.find("name"), "text", "")
 
         # parachute settings
-        cd = "auto" if "auto" in chute.find("cd").text else float(chute.find("cd").text)
+        cd = "auto" if "auto" in getattr(chute.find("cd"), "text", "") else float(getattr(chute.find("cd"), "text", "0"))
         cd = search_cd_chute_if_auto(chute) if cd == "auto" else cd
-        area = np.pi * float(chute.find("diameter").text) ** 2 / 4
+        area = np.pi * float(getattr(chute.find("diameter"), "text", "0")) ** 2 / 4
         cds = cd * area
         logger.info("Parachute '%s' has a drag coefficient of %f", name, cd)
 
         # deployment settings
-        deploy_event = chute.find("deployevent").text
-        deploy_delay = float(chute.find("deploydelay").text)
+        deploy_event = getattr(chute.find("deployevent"), "text", "")
+        deploy_delay = float(getattr(chute.find("deploydelay"), "text", "0"))
         deploy_altitude = (
-            float(chute.find("deployaltitude").text)
+            float(getattr(chute.find("deployaltitude"), "text", "0"))
             if deploy_event == "altitude"
             else None
         )
@@ -81,6 +81,6 @@ def search_cd_chute_if_auto(bs):
 
     # simply return 1.0
     logger.warning(
-        "cd auto: the cd is set to 1.0 for parachute %s", bs.find("name").text
+        "cd auto: the cd is set to 1.0 for parachute %s", getattr(bs.find("name"), "text", "")
     )
     return 1.0

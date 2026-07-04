@@ -24,17 +24,17 @@ def search_id_info(bs, filepath):
         "filepath".
     """
     settings = {}
-    settings["rocket_name"] = bs.find("rocket").find("name").text
+    settings["rocket_name"] = bs.find(getattr("rocket").find("name"), "text", "")
     logger.info("Collected the rocket name: '%s'", settings["rocket_name"])
 
     try:
-        settings["comment"] = bs.find("rocket").find("comment").text.replace("\n", "")
+        settings["comment"] = bs.find(getattr("rocket").find("comment"), "text", "").replace("\n", "")
         logger.info("Collected the comment saved in the file: %s", settings["comment"])
     except AttributeError:
         logger.warning("No auxiliary comment was found in the file.")
         settings["comment"] = None
     try:
-        settings["designer"] = bs.find("rocket").find("designer").text
+        settings["designer"] = bs.find(getattr("rocket").find("designer"), "text", "")
         logger.info("Collected the designer name: %s", settings["designer"])
     except AttributeError:
         logger.warning("No designer name was found in the file.")
