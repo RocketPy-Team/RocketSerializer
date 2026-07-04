@@ -45,7 +45,6 @@ def search_motor(bs, datapoints, data_labels):
 
     # get motor mass properties
     total_propellant_mass, motor_dry_mass, _ = __get_motor_mass(datapoints, data_labels)
-    motor_dry_mass = 0  # If NOTE: dry inertia is 0, this should ALWAYS be 0 too.
     center_of_dry_mass = 0
     dry_inertia = (0, 0, 0)  # impossible to retrieve from .ork file
 
@@ -183,6 +182,8 @@ def __get_motor_mass(datapoints, data_labels):
         prop_mass_vector = motor_mass - motor_dry_mass
         prop_mass_vector = list(prop_mass_vector)
         logger.info("The motor dry mass is %.3f kg.", motor_dry_mass)
+    else:
+        raise ValueError("Neither 'Propellant mass' nor 'Motor mass' found in data_labels.")
 
     normalize = np.array(prop_mass_vector)
     normalize = normalize - normalize[np.argmin(normalize)]
