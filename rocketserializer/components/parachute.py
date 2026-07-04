@@ -70,17 +70,9 @@ def search_parachutes(bs):
 
 
 def search_cd_chute_if_auto(bs):
-    # if the parachute cd is st to "auto", then look for the cd in the next tag
-    # return float(
-    #     next(
-    #         filter(lambda x: x.text.replace(".", "").isnumeric(), bs.findAll("cd"))
-    #     ).text
-    # )
-
-    # TODO: for the future, we need to check if the ork object has a drag coefficient
-
-    # simply return 1.0
+    # if the parachute cd is set to "auto", OpenRocket defaults to 0.75 (flat) or 1.5 (dome).
+    # Since we cannot easily deduce the type, 0.75 is the most common standard parachute CD in OR.
     logger.warning(
-        "cd auto: the cd is set to 1.0 for parachute %s", getattr(bs.find("name"), "text", "")
+        "cd auto: the cd is set to 0.75 for parachute %s", getattr(bs.find("name"), "text", "Unknown")
     )
-    return 1.0
+    return 0.75
