@@ -153,9 +153,9 @@ class OpenRocketSession(orhelper.OpenRocketInstance):
             )
 
         # Get the default JVM path early so we can pass it
-        jvm_path = jpype.getDefaultJVMPath()
         # Initialize the base class with kwargs to bypass auto-discovery
-        super().__init__(jar=str(self.jar_path), jvm=str(jvm_path), loglevel=log_level)
+        super().__init__(jar_path=str(self.jar_path), log_level=log_level)
+        self.jar_path = Path(self.jar_path)  # orhelper may overwrite it as str
         self.openrocket = None
         # for newest orhelper support
         self.openrocket_core = None
@@ -182,7 +182,9 @@ class OpenRocketSession(orhelper.OpenRocketInstance):
             pass
 
     def __enter__(self):
-        ensure_java_compatibility(self.jar_path)
+        # We need to guarantee that the right Java is used for the jar
+        # before starting JVM
+        ensure_java_compatibility(Path(self.jar_path))
 
         jvm_path = jpype.getDefaultJVMPath()
         logger.info(
