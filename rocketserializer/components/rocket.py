@@ -55,8 +55,12 @@ def get_rocket_radius(bs):
     noses = bs.find_all("nosecone")
     transitions = bs.find_all("transition")
 
-    tubes_radius = [getattr(i.find("radius"), "text", "") for i in tubes if i.find("radius")]
-    noses_radius = [getattr(i.find("aftradius"), "text", "") for i in noses if i.find("aftradius")]
+    tubes_radius = [
+        getattr(i.find("radius"), "text", "") for i in tubes if i.find("radius")
+    ]
+    noses_radius = [
+        getattr(i.find("aftradius"), "text", "") for i in noses if i.find("aftradius")
+    ]
 
     # Also collect radii from transitions (foreradius and aftradius)
     transition_radius = []

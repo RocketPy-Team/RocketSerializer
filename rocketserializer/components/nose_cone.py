@@ -31,7 +31,8 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
     if not nosecone:
         nosecones = list(
             filter(
-                lambda x: getattr(x.find("name"), "text", "") == "Nosecone", bs.find_all("transition")
+                lambda x: getattr(x.find("name"), "text", "") == "Nosecone",
+                bs.find_all("transition"),
             )
         )
         if len(nosecones) == 0:

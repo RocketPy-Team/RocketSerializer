@@ -33,7 +33,11 @@ def search_parachutes(bs):
         name = getattr(chute.find("name"), "text", "")
 
         # parachute settings
-        cd = "auto" if "auto" in getattr(chute.find("cd"), "text", "") else float(getattr(chute.find("cd"), "text", "0"))
+        cd = (
+            "auto"
+            if "auto" in getattr(chute.find("cd"), "text", "")
+            else float(getattr(chute.find("cd"), "text", "0"))
+        )
         cd = search_cd_chute_if_auto(chute) if cd == "auto" else cd
         area = np.pi * float(getattr(chute.find("diameter"), "text", "0")) ** 2 / 4
         cds = cd * area
@@ -70,9 +74,11 @@ def search_parachutes(bs):
 
 
 def search_cd_chute_if_auto(bs):
-    # if the parachute cd is set to "auto", OpenRocket defaults to 0.75 (flat) or 1.5 (dome).
-    # Since we cannot easily deduce the type, 0.75 is the most common standard parachute CD in OR.
+    # if the parachute cd is set to "auto", OpenRocket defaults to 0.75 (flat)
+    # or 1.5 (dome). Since we cannot easily deduce the type, 0.75 is the
+    # most common standard parachute CD in OR.
     logger.warning(
-        "cd auto: the cd is set to 0.75 for parachute %s", getattr(bs.find("name"), "text", "Unknown")
+        "cd auto: the cd is set to 0.75 for parachute %s",
+        getattr(bs.find("name"), "text", "Unknown"),
     )
     return 0.75

@@ -39,8 +39,14 @@ def search_motor(bs, datapoints, data_labels):
     settings = {}
 
     # retrieve motor geometry
-    motor_length = float(bs.find(getattr("motormount").find("length"), "text", ""))
-    motor_radius = float(bs.find(getattr("motormount").find("diameter"), "text", "")) / 2
+    motormount = bs.find("motormount")
+    if motormount is not None:
+        motor_length = float(getattr(motormount.find("length"), "text", "") or "0")
+        diam = getattr(motormount.find("diameter"), "text", "") or "0"
+        motor_radius = float(diam) / 2
+    else:
+        motor_length = 0.0
+        motor_radius = 0.0
     logger.info("Collected motor geometry: motor length and motor radius.")
 
     # get motor mass properties
@@ -183,7 +189,9 @@ def __get_motor_mass(datapoints, data_labels):
         prop_mass_vector = list(prop_mass_vector)
         logger.info("The motor dry mass is %.3f kg.", motor_dry_mass)
     else:
-        raise ValueError("Neither 'Propellant mass' nor 'Motor mass' found in data_labels.")
+        raise ValueError(
+            "Neither 'Propellant mass' nor 'Motor mass' found in data_labels."
+        )
 
     normalize = np.array(prop_mass_vector)
     normalize = normalize - normalize[np.argmin(normalize)]

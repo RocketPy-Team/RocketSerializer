@@ -70,10 +70,14 @@ def search_trapezoidal_fins(bs, elements):
         logger.info("Span retrieved: %f", span)
 
         sweep_length = (
-            float(getattr(fin.find("sweeplength"), "text", "0")) if fin.find("sweeplength") else None
+            float(getattr(fin.find("sweeplength"), "text", "0"))
+            if fin.find("sweeplength")
+            else None
         )
         sweep_angle = (
-            float(getattr(fin.find("sweepangle"), "text", "0")) if fin.find("sweepangle") else None
+            float(getattr(fin.find("sweepangle"), "text", "0"))
+            if fin.find("sweepangle")
+            else None
         )
         logger.info(
             "Sweep length and angle retrieved: %s, %s", sweep_length, sweep_angle

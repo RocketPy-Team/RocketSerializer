@@ -217,7 +217,7 @@ def ork2json(filepath, output=None, ork_jar=None, encoding="utf-8", verbose=Fals
 @click.option("--ork_jar", type=str, default=None, required=False)
 @click.option("--encoding", type=str, default="utf-8", required=False)
 @click.option("--verbose", is_flag=True, default=False, help="Enable verbose logging")
-def ork2notebook(filepath, output, ork_jar=None, encoding="utf-8", verbose=False):
+def ork2notebook(filepath, output, ork_jar=None, encoding="utf-8", verbose=False):  # pylint: disable=unused-argument
     """Generates a .ipynb file from the .ork file.
 
     Notes

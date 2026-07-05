@@ -48,7 +48,7 @@ def ork_extractor(bs, filepath, output_folder, ork):
     def _safe_search(func, default_ret, *args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error("Error extracting %s: %s", func.__name__, e, exc_info=True)
             return default_ret
 
@@ -71,7 +71,10 @@ def ork_extractor(bs, filepath, output_folder, ork):
     rocket_data = _safe_search(
         search_rocket,
         ({"center_of_mass_without_propellant": 0, "mass": 0, "radius": 0}, 0),
-        bs, datapoints, data_labels, burnout_position
+        bs,
+        datapoints,
+        data_labels,
+        burnout_position,
     )
     rocket, motor_position = rocket_data
     motors["position"] = motor_position
@@ -88,7 +91,11 @@ def ork_extractor(bs, filepath, output_folder, ork):
     elements = _safe_search(
         process_elements_position,
         {},
-        ork.getRocket(), {}, center_of_dry_mass, rocket_mass, top_position=0
+        ork.getRocket(),
+        {},
+        center_of_dry_mass,
+        rocket_mass,
+        top_position=0,
     )
     logger.info("The elements are:\n%s", _dict_to_string(elements, indent=23))
 
@@ -101,7 +108,11 @@ def ork_extractor(bs, filepath, output_folder, ork):
     stored_results = _safe_search(
         search_stored_results,
         {},
-        bs, datapoints, data_labels, time_vector, burnout_position
+        bs,
+        datapoints,
+        data_labels,
+        time_vector,
+        burnout_position,
     )
 
     # save everything to a dictionary
