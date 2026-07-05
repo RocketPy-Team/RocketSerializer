@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/python.exe -c \"import rocketserializer; print\\(''Import OK''\\)\")",
+      "Bash(java -version)"
+    ]
+  }
+}
