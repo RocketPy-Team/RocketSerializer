@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import subprocess
 
 import nbformat as nbf
 
@@ -743,5 +744,5 @@ class NotebookBuilder:
         logger.info("[NOTEBOOK BUILDER] Notebook saved to '%s'", out_file)
 
         # apply black formatting after saving (requires black[jupyter])
-        os.system(f"black {out_file}")
+        subprocess.run(["black", out_file], check=False)
         logger.info("[NOTEBOOK BUILDER] Black formatting applied to the final notebook")

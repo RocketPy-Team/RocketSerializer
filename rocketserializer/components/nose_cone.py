@@ -26,12 +26,13 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
     """
     settings = {}
     nosecone = bs.find("nosecone")  # TODO: allow for multiple nosecones
-    name = nosecone.find("name").text if nosecone else "nosecone"
+    name = getattr(nosecone.find("name"), "text", "") if nosecone else "nosecone"
 
     if not nosecone:
         nosecones = list(
             filter(
-                lambda x: x.find("name").text == "Nosecone", bs.find_all("transition")
+                lambda x: getattr(x.find("name"), "text", "") == "Nosecone",
+                bs.find_all("transition"),
             )
         )
         if len(nosecones) == 0:
@@ -41,9 +42,9 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
             logger.info("Multiple nosecones found, using only the first one")
         nosecone = nosecones[0]  # only the first nosecone is considered
 
-    length = float(nosecone.find("length").text)
-    kind = nosecone.find("shape").text
-    base_radius = nosecone.find("aftradius").text
+    length = float(getattr(nosecone.find("length"), "text", "0"))
+    kind = getattr(nosecone.find("shape"), "text", "")
+    base_radius = getattr(nosecone.find("aftradius"), "text", "")
     try:
         base_radius = float(base_radius)
     except ValueError:
@@ -83,10 +84,11 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
     if kind == "haack":
         logger.info("Nosecone is a haack nosecone, searching for the shape parameter")
 
-        shape_parameter = float(nosecone.find("shapeparameter").text)
+        shape_parameter = float(getattr(nosecone.find("shapeparameter"), "text", "0"))
         kind = "Von Karman" if shape_parameter == 0.0 else "lvhaack"
-        settings.update({"noseShapeParameter": shape_parameter})
         logger.info("Shape parameter of the nosecone: %s", shape_parameter)
+    else:
+        shape_parameter = None
 
     settings = {
         "name": name,
@@ -95,5 +97,8 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
         "base_radius": base_radius,
         "position": get_position(name, length),
     }
+    if shape_parameter is not None:
+        settings["noseShapeParameter"] = shape_parameter
+
     logger.info("Nosecone setting defined:\n %s", _dict_to_string(settings, indent=23))
     return settings

@@ -54,7 +54,7 @@ def search_transitions(bs, elements, ork):
     for idx, transition in enumerate(transitions):
         logger.info("Starting to collect the settings of the transition number %d", idx)
 
-        label = transition.find("name").text
+        label = getattr(transition.find("name"), "text", "")
         logger.info("Collected the name of the transition number %d", idx)
 
         # Try to find matching Java transition by name or index
@@ -68,21 +68,21 @@ def search_transitions(bs, elements, ork):
 
         if transition_ork is not None:
             top_radius = float(transition_ork.getForeRadius())
+            bottom_radius = float(transition_ork.getAftRadius())
         else:
             logger.warning(
-                "Could not find Java transition for '%s', using foreradius from XML.",
+                "Could not find Java transition for '%s', using radii from XML.",
                 label,
             )
             fore_tag = transition.find("foreradius")
             fore_text = fore_tag.text if fore_tag else "0"
             top_radius = 0.0 if "auto" in fore_text else float(fore_text)
 
-        bottom_radius = (
-            transition.find("aftradius").text
-            if "auto" in transition.find("aftradius").text
-            else float(transition.find("aftradius").text)
-        )
-        length = float(transition.find("length").text)
+            aft_tag = transition.find("aftradius")
+            aft_text = aft_tag.text if aft_tag else "0"
+            bottom_radius = 0.0 if "auto" in aft_text else float(aft_text)
+
+        length = float(getattr(transition.find("length"), "text", "0"))
         logger.info("Collected the dimensions of the transition number %d", idx)
 
         def get_position(name, length):

@@ -24,20 +24,31 @@ def search_id_info(bs, filepath):
         "filepath".
     """
     settings = {}
-    settings["rocket_name"] = bs.find("rocket").find("name").text
-    logger.info("Collected the rocket name: '%s'", settings["rocket_name"])
+    rocket_tag = bs.find("rocket")
+    if rocket_tag:
+        settings["rocket_name"] = getattr(rocket_tag.find("name"), "text", "")
+        logger.info("Collected the rocket name: '%s'", settings["rocket_name"])
 
-    try:
-        settings["comment"] = bs.find("rocket").find("comment").text.replace("\n", "")
-        logger.info("Collected the comment saved in the file: %s", settings["comment"])
-    except AttributeError:
-        logger.warning("No auxiliary comment was found in the file.")
+        comment_tag = rocket_tag.find("comment")
+        if comment_tag and comment_tag.text:
+            settings["comment"] = comment_tag.text.replace("\n", "")
+            logger.info(
+                "Collected the comment saved in the file: %s", settings["comment"]
+            )
+        else:
+            logger.warning("No auxiliary comment was found in the file.")
+            settings["comment"] = None
+
+        designer_tag = rocket_tag.find("designer")
+        if designer_tag and designer_tag.text:
+            settings["designer"] = designer_tag.text
+            logger.info("Collected the designer name: %s", settings["designer"])
+        else:
+            logger.warning("No designer name was found in the file.")
+            settings["designer"] = None
+    else:
+        settings["rocket_name"] = ""
         settings["comment"] = None
-    try:
-        settings["designer"] = bs.find("rocket").find("designer").text
-        logger.info("Collected the designer name: %s", settings["designer"])
-    except AttributeError:
-        logger.warning("No designer name was found in the file.")
         settings["designer"] = None
     # settings["ork_version"] = bs.attrs["creator"]
     settings["filepath"] = Path(filepath).as_posix()

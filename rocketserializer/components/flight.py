@@ -21,9 +21,9 @@ def search_launch_conditions(bs):
     """
     settings = {}
 
-    launch_rod_length = float(bs.find("launchrodlength").text)
-    launch_rod_angle = float(bs.find("launchrodangle").text)
-    launch_rod_direction = float(bs.find("launchroddirection").text)
+    launch_rod_length = float(getattr(bs.find("launchrodlength"), "text", "0"))
+    launch_rod_angle = float(getattr(bs.find("launchrodangle"), "text", "0"))
+    launch_rod_direction = float(getattr(bs.find("launchroddirection"), "text", "0"))
     logger.info(
         "Collected launch conditions: launch rod length, launch rod angle, "
         "launch rod direction."

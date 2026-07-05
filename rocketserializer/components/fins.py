@@ -38,7 +38,7 @@ def search_trapezoidal_fins(bs, elements):
             "Starting collecting the settings for the trapezoidal fin set number '%d'",
             idx,
         )
-        label = fin.find("name").text
+        label = getattr(fin.find("name"), "text", "")
         try:
 
             def get_element_by_name(name):
@@ -57,32 +57,36 @@ def search_trapezoidal_fins(bs, elements):
             logger.error(message)
             raise KeyError(message)
 
-        n_fin = int(fin.find("fincount").text)
+        n_fin = int(getattr(fin.find("fincount"), "text", "0"))
         logger.info("Number of fins retrieved: %d", n_fin)
 
-        root_chord = float(fin.find("rootchord").text)
+        root_chord = float(getattr(fin.find("rootchord"), "text", "0"))
         logger.info("Root chord retrieved: %f", root_chord)
 
-        tip_chord = float(fin.find("tipchord").text)
+        tip_chord = float(getattr(fin.find("tipchord"), "text", "0"))
         logger.info("Tip chord retrieved: %f", tip_chord)
 
-        span = float(fin.find("height").text)
+        span = float(getattr(fin.find("height"), "text", "0"))
         logger.info("Span retrieved: %f", span)
 
         sweep_length = (
-            float(fin.find("sweeplength").text) if fin.find("sweeplength") else None
+            float(getattr(fin.find("sweeplength"), "text", "0"))
+            if fin.find("sweeplength")
+            else None
         )
         sweep_angle = (
-            float(fin.find("sweepangle").text) if fin.find("sweepangle") else None
+            float(getattr(fin.find("sweepangle"), "text", "0"))
+            if fin.find("sweepangle")
+            else None
         )
         logger.info(
             "Sweep length and angle retrieved: %s, %s", sweep_length, sweep_angle
         )
 
-        cant_angle = float(fin.find("cant").text)
+        cant_angle = float(getattr(fin.find("cant"), "text", "0"))
         logger.info("Cant angle retrieved: %f", cant_angle)
 
-        section = fin.find("crosssection").text
+        section = getattr(fin.find("crosssection"), "text", "")
         logger.info("Crosssection format retrieved")
 
         fin_settings = {
@@ -145,7 +149,7 @@ def search_elliptical_fins(bs, elements):
             "Starting collecting the settings for the elliptical fin set number '%d'",
             idx,
         )
-        label = fin.find("name").text
+        label = getattr(fin.find("name"), "text", "")
         try:
 
             def get_element_by_name(name):
@@ -164,19 +168,19 @@ def search_elliptical_fins(bs, elements):
             logger.error(message)
             raise KeyError(message)
 
-        n_fin = int(fin.find("fincount").text)
+        n_fin = int(getattr(fin.find("fincount"), "text", "0"))
         logger.info("Number of fins retrieved: %d", n_fin)
 
-        root_chord = float(fin.find("rootchord").text)
+        root_chord = float(getattr(fin.find("rootchord"), "text", "0"))
         logger.info("Root chord retrieved: %f", root_chord)
 
-        span = float(fin.find("height").text)
+        span = float(getattr(fin.find("height"), "text", "0"))
         logger.info("Span retrieved: %f", span)
 
-        cant_angle = float(fin.find("cant").text)
+        cant_angle = float(getattr(fin.find("cant"), "text", "0"))
         logger.info("Cant angle retrieved: %f", cant_angle)
 
-        section = fin.find("crosssection").text
+        section = getattr(fin.find("crosssection"), "text", "")
         logger.info("Crosssection format retrieved")
 
         fin_settings = {
