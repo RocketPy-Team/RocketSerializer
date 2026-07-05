@@ -5,6 +5,7 @@ from pathlib import Path
 
 import jpype
 import jpype.imports
+import orhelper
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +144,7 @@ def ensure_java_compatibility(jar_path: Path):
     )
 
 
-class OpenRocketSession:
+class OpenRocketSession(orhelper.OpenRocketInstance):
     def __init__(self, jar_path, log_level="OFF"):
         self.jar_path = Path(jar_path)
         if not self.jar_path.exists():
@@ -151,9 +152,14 @@ class OpenRocketSession:
                 f"Jar file '{self.jar_path.as_posix()}' does not exist"
             )
 
-        self.log_level = log_level
+        # Get the default JVM path early so we can pass it
+        jvm_path = jpype.getDefaultJVMPath()
+        # Initialize the base class with kwargs to bypass auto-discovery
+        super().__init__(jar=str(self.jar_path), jvm=str(jvm_path), loglevel=log_level)
         self.openrocket = None
-        self.started = False
+        # for newest orhelper support
+        self.openrocket_core = None
+        self.openrocket_swing = None
 
     def _resolve_packages(self):
         try:
@@ -173,8 +179,6 @@ class OpenRocketSession:
             field.setAccessible(False)
             loader.blockUntilLoaded()
         except (AttributeError, TypeError, RuntimeError, jpype.JException):
-            # New OpenRocket versions can change internals; loading still works
-            # without explicitly waiting in most cases.
             pass
 
     def __enter__(self):
@@ -200,19 +204,19 @@ class OpenRocketSession:
                 f"-Djava.class.path={self.jar_path.as_posix()}",
             )
 
-        self.openrocket, swing = self._resolve_packages()
+        self.openrocket_core, self.openrocket_swing = self._resolve_packages()
+        self.openrocket = self.openrocket_core  # for legacy orhelper versions
 
         guice = jpype.JPackage("com").google.inject.Guice
         logger_factory = jpype.JPackage("org").slf4j.LoggerFactory
         logger_class = jpype.JPackage("ch").qos.logback.classic.Logger
-        logger_level = jpype.JPackage("ch").qos.logback.classic.Level
 
-        gui_module = swing.startup.GuiModule()
-        plugin_module = self.openrocket.plugin.PluginModule()
+        gui_module = self.openrocket_swing.startup.GuiModule()
+        plugin_module = self.openrocket_core.plugin.PluginModule()
 
         injector = guice.createInjector(gui_module, plugin_module)
 
-        app = self.openrocket.startup.Application
+        app = self.openrocket_core.startup.Application
         app.setInjector(injector)
 
         gui_module.startLoader()
@@ -220,9 +224,7 @@ class OpenRocketSession:
         self._block_loader(gui_module, "motorLoader")
 
         root_logger = logger_factory.getLogger(logger_class.ROOT_LOGGER_NAME)
-        root_logger.setLevel(
-            getattr(logger_level, str(self.log_level), logger_level.ERROR)
-        )
+        root_logger.setLevel(self._translate_log_level())
 
         self.started = True
         return self
@@ -235,18 +237,11 @@ class OpenRocketSession:
                         window.dispose()
                 except (AttributeError, TypeError, RuntimeError, jpype.JException):
                     pass
-                # Do not call shutdownJVM() here: JPype <1.5 cannot restart the
-                # JVM in the same process, so shutting it down automatically would
-                # break any subsequent OpenRocketSession (e.g. in notebooks or
-                # programmatic use). The JVM is cleaned up by JPype's atexit hook
-                # when the process exits.
+                # Do not call shutdownJVM() here: JPype <1.5 cannot restart the JVM
         finally:
             self.started = False
 
     def load_doc(self, ork_filename: str):
         if not self.started:
             raise RuntimeError("OpenRocketSession has not been started")
-
-        java_file = jpype.java.io.File(ork_filename)
-        loader = self.openrocket.file.GeneralRocketLoader(java_file)
-        return loader.load()
+        return orhelper.Helper(self).load_doc(ork_filename)
