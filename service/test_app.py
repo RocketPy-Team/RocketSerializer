@@ -119,6 +119,13 @@ class TestClassify:
                 "This usually means the file is saved in a non-English language",
                 "non_english",
             ),
+            (
+                (
+                    "ValueError: The .ork file is not in UTF-8. Please open the "
+                    ".ork file in a text editor and save it as UTF-8."
+                ),
+                "invalid_encoding",
+            ),
             ("The .ork file or zip archive does not exist.", "invalid_file"),
             ("java.lang.NullPointerException", None),
             ("", None),

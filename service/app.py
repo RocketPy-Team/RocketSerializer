@@ -52,6 +52,10 @@ _USER_ERRORS = (
     ("must contain the simulation data", "no_simulation_data"),
     ("saved in English", "non_english"),
     ("non-English", "non_english"),
+    # parse_ork_file raises this both for a genuine non-UTF-8 .ork and for any
+    # file that is not an OpenRocket archive at all, so the caller-facing copy
+    # has to cover both readings.
+    ("is not in UTF-8", "invalid_encoding"),
     ("does not exist", "invalid_file"),
 )
 

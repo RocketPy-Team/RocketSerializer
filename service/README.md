@@ -48,6 +48,7 @@ the cheapest available check on whether a parse was faithful.
 | 413 | `too_large` | Upload over `MAX_UPLOAD_BYTES` |
 | 422 | `no_simulation_data` | `.ork` has no saved simulation — user must run one in OpenRocket first |
 | 422 | `non_english` | `.ork` saved in a non-English locale |
+| 422 | `invalid_encoding` | Not an OpenRocket archive, or a `.ork` saved in a non-UTF-8 encoding |
 | 422 | `invalid_file` | Empty or unreadable upload |
 | 500 | `parse_failed` | Anything else; `detail` is the tail of stderr |
 | 504 | `timeout` | Exceeded `CONVERT_TIMEOUT_S` |
@@ -119,4 +120,14 @@ docker build -f service/Dockerfile -t ork-serializer .        # from repo root
 docker network create ork-net                                 # once, on the host
 CONTAINER_NAME=ork-serializer-staging IMAGE_TAG=<sha> \
   docker compose -f service/docker-compose.yml up -d
+```
+
+**Architecture matters here.** `jpype1` is pinned `<1.5`, which predates
+aarch64 wheels, so on arm64 (Apple Silicon) pip compiles it from source — hence
+the `build-essential` step. On amd64 a prebuilt wheel exists and that step is a
+no-op. A build on an Apple Silicon laptop produces an **arm64 image that will
+not run on an amd64 host**, so target the deployment architecture explicitly:
+
+```bash
+docker buildx build --platform linux/amd64 -f service/Dockerfile -t ork-serializer .
 ```

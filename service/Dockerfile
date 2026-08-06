@@ -22,12 +22,25 @@ WORKDIR /app
 
 # Dependencies first so application edits don't re-resolve rocketpy/numpy.
 COPY requirements.in service/requirements.txt ./deps/
-RUN pip3 install --no-cache-dir -r deps/requirements.in -r deps/requirements.txt
+
+# jpype1 is pinned <1.5, which predates aarch64 wheels, so pip compiles it from
+# source on arm64 hosts. The toolchain is installed and purged inside one layer
+# so it never lands in the published image.
+# jammy's pip is 22.0.2, whose bundled setuptools predates the PEP 660
+# build_editable hook, so the package install below needs a newer one.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential python3-dev \
+    && pip3 install --no-cache-dir --upgrade pip setuptools wheel \
+    && pip3 install --no-cache-dir -r deps/requirements.in -r deps/requirements.txt \
+    && apt-get purge -y --auto-remove build-essential python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml README.md LICENSE.md ./
 COPY rocketserializer ./rocketserializer
 COPY service ./service
-RUN pip3 install --no-cache-dir --no-deps -e .
+# Not editable: an image has no reason to hot-reload the package, and --no-deps
+# keeps this from re-resolving the layer above.
+RUN pip3 install --no-cache-dir --no-deps .
 
 # Only the pinned jar ships; the version is baked into SERIALIZER_VERSION so a
 # parse can always be traced back to the parser that produced it.
