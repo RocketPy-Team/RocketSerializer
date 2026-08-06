@@ -1,7 +1,9 @@
 import logging
 import os
 import re
+import shutil
 from pathlib import Path
+from typing import Optional, Sequence
 
 import jpype
 import jpype.imports
@@ -67,25 +69,35 @@ def _minimum_java_required(jar_path: Path):
     return 8
 
 
-def _find_windows_jdk(minimum_major: int):
-    search_roots = [
+def _find_windows_jdk(
+    minimum_major: int,
+    search_roots: Optional[Sequence[Path]] = None,
+):
+    search_roots = list(search_roots or [
         Path("C:/Program Files/Java"),
+        Path("C:/Program Files/Microsoft"),
         Path("C:/Program Files/Eclipse Adoptium"),
         Path("C:/Program Files/AdoptOpenJDK"),
-    ]
+        Path("C:/Program Files/OpenJDK"),
+        Path("C:/Program Files/Temurin"),
+        Path("C:/Program Files/Common Files/Oracle/Java"),
+    ])
 
     candidates = []
     for root in search_roots:
         if not root.exists():
             continue
 
-        for child in root.iterdir():
+        for child in root.rglob("*"):
             if not child.is_dir():
                 continue
             major = _extract_java_major(child.name)
             if major is None:
                 continue
-            if major >= minimum_major and (child / "bin" / "java.exe").exists():
+            if major >= minimum_major and (
+                (child / "bin" / "java.exe").exists()
+                or (child / "bin" / "java").exists()
+            ):
                 candidates.append((major, child))
 
     if not candidates:
@@ -95,31 +107,97 @@ def _find_windows_jdk(minimum_major: int):
     return candidates[0][1]
 
 
-def ensure_java_compatibility(jar_path: Path):
-    required_major = _minimum_java_required(jar_path)
-    if required_major <= 8:
-        return
+def _find_java_home_from_path() -> Optional[Path]:
+    java_binary = shutil.which("java")
+    if not java_binary:
+        return None
 
-    java_home_major = _extract_java_major(os.environ.get("JAVA_HOME", ""))
-    if java_home_major and java_home_major >= required_major:
-        return
+    java_path = Path(java_binary)
+    if not java_path.exists():
+        return None
 
-    default_jvm_major = None
+    if java_path.name.lower() not in {"java", "java.exe"}:
+        return None
+
+    for candidate in [java_path.parent.parent, java_path.parent.parent.parent]:
+        if not candidate.exists():
+            continue
+        if (candidate / "bin" / "java").exists() or (
+            candidate / "bin" / "java.exe"
+        ).exists():
+            return candidate
+
+    return None
+
+
+def _find_jvm_library(jdk_root: Path) -> Optional[Path]:
+    candidates = [
+        jdk_root / "bin" / "server" / "jvm.dll",
+        jdk_root / "jre" / "bin" / "server" / "jvm.dll",
+        jdk_root / "lib" / "server" / "jvm.dll",
+        jdk_root / "jre" / "lib" / "server" / "jvm.dll",
+        jdk_root / "lib" / "jli" / "libjli.so",
+        jdk_root / "lib" / "server" / "libjvm.so",
+        jdk_root / "jre" / "lib" / "server" / "libjvm.so",
+        jdk_root / "bin" / "server" / "libjvm.so",
+        jdk_root / "bin" / "jvm.dll",
+        jdk_root / "jre" / "bin" / "jvm.dll",
+        jdk_root / "bin" / "libjvm.so",
+    ]
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    return None
+
+
+def _resolve_jvm_path() -> Optional[str]:
+    java_home = os.environ.get("JAVA_HOME")
+    if java_home:
+        jdk_root = Path(java_home)
+        if jdk_root.exists():
+            jvm_library = _find_jvm_library(jdk_root)
+            if jvm_library:
+                return str(jvm_library)
+
+    java_home_from_path = _find_java_home_from_path()
+    if java_home_from_path:
+        os.environ["JAVA_HOME"] = str(java_home_from_path)
+        jvm_library = _find_jvm_library(java_home_from_path)
+        if jvm_library:
+            return str(jvm_library)
+
     try:
-        default_jvm_major = _extract_java_major(jpype.getDefaultJVMPath())
+        return jpype.getDefaultJVMPath()
     except (
         jpype.JVMNotFoundException,
         jpype.JVMNotSupportedException,
         OSError,
     ):
-        default_jvm_major = None
+        return None
 
-    if default_jvm_major and default_jvm_major >= required_major:
+
+def ensure_java_compatibility(jar_path: Path):
+    required_major = _minimum_java_required(jar_path)
+    if required_major <= 8:
         return
+
+    java_home = os.environ.get("JAVA_HOME", "")
+    java_home_major = _extract_java_major(java_home)
+    if java_home_major and java_home_major >= required_major:
+        return
+
+    jvm_path = _resolve_jvm_path()
+    if jvm_path:
+        default_jvm_major = _extract_java_major(jvm_path)
+        if default_jvm_major and default_jvm_major >= required_major:
+            return
 
     if os.name != "nt":
         logger.warning(
-            "OpenRocket %s requires Java %d+, but no compatible JVM was detected.",
+            "OpenRocket %s requires Java %d+, but no compatible JVM was detected. "
+            "Install a JDK/JRE 17+ and ensure JAVA_HOME is configured correctly.",
             jar_path.name,
             required_major,
         )
@@ -129,7 +207,9 @@ def ensure_java_compatibility(jar_path: Path):
     if not selected_jdk:
         logger.warning(
             "OpenRocket %s requires Java %d+, but no compatible JDK was found in "
-            "standard Windows locations.",
+            "standard Windows locations. Install Temurin/Adoptium/OpenJDK 17+ "
+            "or set JAVA_HOME manually, for example: $env:JAVA_HOME='C:/Program "
+            "Files/Java/jdk-17'",
             jar_path.name,
             required_major,
         )
@@ -186,7 +266,9 @@ class OpenRocketSession(orhelper.OpenRocketInstance):
         # before starting JVM
         ensure_java_compatibility(Path(self.jar_path))
 
-        jvm_path = jpype.getDefaultJVMPath()
+        jvm_path = _resolve_jvm_path()
+        if not jvm_path:
+            jvm_path = jpype.getDefaultJVMPath()
         logger.info(
             "Starting JVM from '%s' with OpenRocket '%s'",
             jvm_path,
