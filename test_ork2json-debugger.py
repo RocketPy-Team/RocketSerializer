@@ -8,7 +8,7 @@ if __name__ == "__main__":
     ork2json(
         [
             "--filepath",
-            "examples/databank/Team24/rocket.ork",
+            "examples/ProjetoJupiter--Valetudo--2019/rocket.ork",
         ],
         standalone_mode=False,
     )

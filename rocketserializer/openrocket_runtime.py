@@ -11,6 +11,12 @@ import orhelper
 
 logger = logging.getLogger(__name__)
 
+from .getDefaultJVMPath import (
+    getDefaultJVMPath,
+    JVMNotFoundException,
+    JVMNotSupportedException,
+)
+
 
 def _jar_version_tuple(jar_path: Path):
     match = re.search(r"OpenRocket[-_]?(\d+(?:\.\d+)*)", jar_path.name, re.IGNORECASE)
@@ -73,15 +79,18 @@ def _find_windows_jdk(
     minimum_major: int,
     search_roots: Optional[Sequence[Path]] = None,
 ):
-    search_roots = list(search_roots or [
-        Path("C:/Program Files/Java"),
-        Path("C:/Program Files/Microsoft"),
-        Path("C:/Program Files/Eclipse Adoptium"),
-        Path("C:/Program Files/AdoptOpenJDK"),
-        Path("C:/Program Files/OpenJDK"),
-        Path("C:/Program Files/Temurin"),
-        Path("C:/Program Files/Common Files/Oracle/Java"),
-    ])
+    search_roots = list(
+        search_roots
+        or [
+            Path("C:/Program Files/Java"),
+            Path("C:/Program Files/Microsoft"),
+            Path("C:/Program Files/Eclipse Adoptium"),
+            Path("C:/Program Files/AdoptOpenJDK"),
+            Path("C:/Program Files/OpenJDK"),
+            Path("C:/Program Files/Temurin"),
+            Path("C:/Program Files/Common Files/Oracle/Java"),
+        ]
+    )
 
     candidates = []
     for root in search_roots:
@@ -169,10 +178,10 @@ def _resolve_jvm_path() -> Optional[str]:
             return str(jvm_library)
 
     try:
-        return jpype.getDefaultJVMPath()
+        return getDefaultJVMPath()
     except (
-        jpype.JVMNotFoundException,
-        jpype.JVMNotSupportedException,
+        JVMNotFoundException,
+        JVMNotSupportedException,
         OSError,
     ):
         return None
@@ -268,7 +277,7 @@ class OpenRocketSession(orhelper.OpenRocketInstance):
 
         jvm_path = _resolve_jvm_path()
         if not jvm_path:
-            jvm_path = jpype.getDefaultJVMPath()
+            jvm_path = getDefaultJVMPath()
         logger.info(
             "Starting JVM from '%s' with OpenRocket '%s'",
             jvm_path,
