@@ -1,0 +1,27 @@
+# Deployed as its own compose project, separate from the app stacks.
+#
+# Two reasons it must not live in the app's compose file: the app's deploy
+# script runs `docker-compose down` before `up`, which would kill conversions
+# in flight for the *other* environment; and prod/staging need independently
+# pinned serializer tags so a parser bump can be validated on staging first.
+#
+# One-time host setup:
+#   docker network create ork-net
+#
+# Note there is no `ports:` stanza. The service is reachable only from
+# containers on ork-net, so the host never exposes it.
+services:
+  ork-serializer:
+    image: ghcr.io/rocketpy-team/ork-serializer:${IMAGE_TAG:-latest}
+    container_name: ${CONTAINER_NAME:-ork-serializer}
+    restart: unless-stopped
+    environment:
+      ORK_JAR: /opt/openrocket/OpenRocket-23.09.jar
+      CONVERT_CONCURRENCY: ${CONVERT_CONCURRENCY:-2}
+      CONVERT_TIMEOUT_S: ${CONVERT_TIMEOUT_S:-120}
+    networks:
+      - ork-net
+
+networks:
+  ork-net:
+    external: true
