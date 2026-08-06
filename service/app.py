@@ -88,19 +88,40 @@ def _inline_csv(parameters: dict, section: str, key: str, out_dir: Path) -> None
     is not self-contained. Inlining here means the caller receives one object
     that already matches its own schema, with no file lifecycle to manage.
     """
-    value = parameters.get(section, {}).get(key)
+    # ork_extractor wraps every component lookup in _safe_search and falls back
+    # to defaults, so a section can legitimately come back null rather than as
+    # a dict. Chaining .get() through that would raise AttributeError.
+    block = parameters.get(section)
+    if not isinstance(block, dict):
+        return
+
+    value = block.get(key)
     if not isinstance(value, str):
         return
 
     csv_path = out_dir / Path(value.replace("\\", "/")).name
-    parameters[section][key] = _read_pairs(csv_path) if csv_path.exists() else None
+    block[key] = _read_pairs(csv_path) if csv_path.exists() else None
+
+
+def _safe_name(filename: str) -> str:
+    """Reduce a client-supplied filename to a plain basename.
+
+    ``Path(...).name`` alone is not enough: it returns ``".."`` unchanged, so
+    ``job_dir / ".."`` would escape to the parent directory, and it does not
+    split on backslashes under POSIX, so a Windows client's ``C:\\a\\b.ork``
+    would arrive whole.
+    """
+    name = Path(filename.replace("\\", "/")).name
+    if name in {"", ".", ".."}:
+        return "rocket.ork"
+    return name
 
 
 def _convert(ork_bytes: bytes, filename: str) -> tuple[int, dict]:
     """Run ork2json in an isolated temp directory. Returns (status, body)."""
     job_dir = Path(tempfile.mkdtemp(prefix="ork-"))
     try:
-        ork_path = job_dir / (Path(filename).name or "rocket.ork")
+        ork_path = job_dir / _safe_name(filename)
         ork_path.write_bytes(ork_bytes)
         out_dir = job_dir / "out"
 
@@ -146,13 +167,22 @@ def _convert(ork_bytes: bytes, filename: str) -> tuple[int, dict]:
                 "detail": "ork2json exited 0 but wrote no parameters.json",
             }
 
-        parameters = json.loads(params_path.read_text(encoding="utf-8"))
-        _inline_csv(parameters, "motors", "thrust_source", out_dir)
-        _inline_csv(parameters, "rocket", "drag_curve", out_dir)
+        # Malformed output is a parse failure, not a crash: a non-numeric CSV
+        # cell or truncated JSON must not surface as an unhandled traceback.
+        try:
+            parameters = json.loads(params_path.read_text(encoding="utf-8"))
+            _inline_csv(parameters, "motors", "thrust_source", out_dir)
+            _inline_csv(parameters, "rocket", "drag_curve", out_dir)
+        except (ValueError, OSError) as exc:
+            return 500, {
+                "error": "parse_failed",
+                "detail": f"unreadable ork2json output: {exc}",
+            }
 
         # Absolute host paths leak the temp directory; the caller has no use
         # for them.
-        parameters.get("id", {}).pop("filepath", None)
+        if isinstance(parameters.get("id"), dict):
+            parameters["id"].pop("filepath", None)
 
         return 200, {
             "serializer_version": SERIALIZER_VERSION,
@@ -173,6 +203,20 @@ async def health() -> dict:
 
 @app.post("/convert")
 async def convert(file: UploadFile = _UPLOAD) -> JSONResponse:
+    too_large = JSONResponse(
+        status_code=413,
+        content={
+            "error": "too_large",
+            "detail": f"upload exceeds {MAX_UPLOAD_BYTES} bytes",
+        },
+    )
+
+    # Reject on the declared size before reading, so an oversized body is not
+    # pulled into memory just to be discarded. The post-read check stays as a
+    # fallback for clients that send no size.
+    if file.size is not None and file.size > MAX_UPLOAD_BYTES:
+        return too_large
+
     ork_bytes = await file.read()
 
     if not ork_bytes:
@@ -180,13 +224,7 @@ async def convert(file: UploadFile = _UPLOAD) -> JSONResponse:
             status_code=422, content={"error": "invalid_file", "detail": "empty upload"}
         )
     if len(ork_bytes) > MAX_UPLOAD_BYTES:
-        return JSONResponse(
-            status_code=413,
-            content={
-                "error": "too_large",
-                "detail": f"upload exceeds {MAX_UPLOAD_BYTES} bytes",
-            },
-        )
+        return too_large
 
     # Each job boots a JVM and loads OpenRocket's full preset database, so
     # unbounded concurrency would thrash the box rather than go faster.
