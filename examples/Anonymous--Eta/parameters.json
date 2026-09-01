@@ -16,6 +16,7 @@
         "inclination": 90.0,
         "rail_length": 5.2
     },
+    "freeform_fins": {},
     "id": {
         "comment": null,
         "designer": null,

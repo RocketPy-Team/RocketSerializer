@@ -46,11 +46,10 @@ def search_parachutes(bs):
         # deployment settings
         deploy_event = getattr(chute.find("deployevent"), "text", "")
         deploy_delay = float(getattr(chute.find("deploydelay"), "text", "0"))
-        deploy_altitude = (
-            float(getattr(chute.find("deployaltitude"), "text", "0"))
-            if deploy_event == "altitude"
-            else None
-        )
+        # recorded for EVERY event type: consumers deciding to revive a
+        # disabled ('never') chute want the altitude the file carries
+        altitude_tag = chute.find("deployaltitude")
+        deploy_altitude = float(altitude_tag.text) if altitude_tag else None
         logger.info("Parachute '%s' will deploy at %s", name, deploy_event)
 
         setting = {

@@ -51,129 +51,141 @@ def get_settings(ork_path, output_path, ork_document):
     return settings
 
 
-# Pre-compute all settings at import time using a single OpenRocket session
+# Pre-compute all settings at import time using a single OpenRocket session.
+# When no JVM is available the acceptance fixtures are skipped, but the
+# JVM-free test suites (tests/unit, tests/validation) still run.
 _cached_settings = {}
+_jvm_error = None
 
-with OpenRocketSession(select_latest_openrocket_jar(ROOT_DIR), "OFF") as session:
-    for name, rel_path in EXAMPLES.items():
-        ork_filepath = ROOT_DIR / rel_path / "rocket.ork"
-        ork_filepath = extract_ork_from_zip(ork_filepath, ork_filepath.parent)
-        output_dir = ROOT_DIR / "tests" / "acceptance" / Path(rel_path).name
-        ork_doc = session.load_doc(str(ork_filepath))
-        _cached_settings[name] = get_settings(ork_filepath, output_dir, ork_doc)
+try:
+    with OpenRocketSession(select_latest_openrocket_jar(ROOT_DIR), "OFF") as session:
+        for name, rel_path in EXAMPLES.items():
+            ork_filepath = ROOT_DIR / rel_path / "rocket.ork"
+            ork_filepath = extract_ork_from_zip(ork_filepath, ork_filepath.parent)
+            output_dir = ROOT_DIR / "tests" / "acceptance" / Path(rel_path).name
+            ork_doc = session.load_doc(str(ork_filepath))
+            _cached_settings[name] = get_settings(ork_filepath, output_dir, ork_doc)
+except Exception as _error:  # pylint: disable=broad-except
+    _jvm_error = _error
+
+
+def _cached(name):
+    if name not in _cached_settings:
+        pytest.skip("OpenRocket JVM unavailable: %s" % _jvm_error)
+    return _cached_settings[name]
 
 
 # Create fixtures for each example
 @pytest.fixture()
 def valetudo_settings():
-    return _cached_settings["valetudo"]
+    return _cached("valetudo")
 
 
 @pytest.fixture()
 def ndrt_settings():
-    return _cached_settings["ndrt"]
+    return _cached("ndrt")
 
 
 @pytest.fixture()
 def epfl_settings():
-    return _cached_settings["epfl"]
+    return _cached("epfl")
 
 
 @pytest.fixture()
 def wert_settings():
-    return _cached_settings["wert"]
+    return _cached("wert")
 
 
 @pytest.fixture()
 def elliptical_fins_settings():
-    return _cached_settings["elliptical_fins"]
+    return _cached("elliptical_fins")
 
 
 @pytest.fixture()
 def alpha_settings():
-    return _cached_settings["alpha"]
+    return _cached("alpha")
 
 
 @pytest.fixture()
 def beta_settings():
-    return _cached_settings["beta"]
+    return _cached("beta")
 
 
 @pytest.fixture()
 def gamma_settings():
-    return _cached_settings["gamma"]
+    return _cached("gamma")
 
 
 @pytest.fixture()
 def delta_settings():
-    return _cached_settings["delta"]
+    return _cached("delta")
 
 
 @pytest.fixture()
 def epsilon_settings():
-    return _cached_settings["epsilon"]
+    return _cached("epsilon")
 
 
 @pytest.fixture()
 def zeta_settings():
-    return _cached_settings["zeta"]
+    return _cached("zeta")
 
 
 @pytest.fixture()
 def eta_settings():
-    return _cached_settings["eta"]
+    return _cached("eta")
 
 
 @pytest.fixture()
 def theta_settings():
-    return _cached_settings["theta"]
+    return _cached("theta")
 
 
 @pytest.fixture()
 def iota_settings():
-    return _cached_settings["iota"]
+    return _cached("iota")
 
 
 @pytest.fixture()
 def kappa_settings():
-    return _cached_settings["kappa"]
+    return _cached("kappa")
 
 
 @pytest.fixture()
 def lambda_settings():
-    return _cached_settings["lambda"]
+    return _cached("lambda")
 
 
 @pytest.fixture()
 def mu_settings():
-    return _cached_settings["mu"]
+    return _cached("mu")
 
 
 @pytest.fixture()
 def nu_settings():
-    return _cached_settings["nu"]
+    return _cached("nu")
 
 
 @pytest.fixture()
 def xi_settings():
-    return _cached_settings["xi"]
+    return _cached("xi")
 
 
 @pytest.fixture()
 def omicron_settings():
-    return _cached_settings["omicron"]
+    return _cached("omicron")
 
 
 @pytest.fixture()
 def pi_settings():
-    return _cached_settings["pi"]
+    return _cached("pi")
 
 
 @pytest.fixture()
 def rho_settings():
-    return _cached_settings["rho"]
+    return _cached("rho")
 
 
 @pytest.fixture()
 def sigma_settings():
-    return _cached_settings["sigma"]
+    return _cached("sigma")

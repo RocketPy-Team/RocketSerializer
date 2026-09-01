@@ -47,6 +47,7 @@ classifiers = [
 [project.scripts]
 ork2json = "rocketserializer.cli:ork2json"
 ork2notebook = "rocketserializer.cli:ork2notebook"
+ork2dragcurve = "rocketserializer.cli:ork2dragcurve"
 
 
 [project.urls]

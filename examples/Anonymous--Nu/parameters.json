@@ -16,6 +16,7 @@
         "inclination": 90.0,
         "rail_length": 4.0
     },
+    "freeform_fins": {},
     "id": {
         "comment": null,
         "designer": "PoliWRocket",

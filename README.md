@@ -104,15 +104,49 @@ ork2notebook --filepath your_rocket.ork
 
 The options are pretty much the same as the serialization command!
 
+### Computing the drag curve without OpenRocket (no Java, no simulation)
+
+```bash
+ork2dragcurve --filepath your_rocket.ork
+```
+
+Writes `drag_curve.csv` (Mach, Cd) computed by a pure-Python re-implementation
+of OpenRocket 24.12's zero-lift drag build-up (`rocketserializer.dragmodel`).
+Unlike `ork2json`'s drag curve, it does not read simulation datapoints from
+the file — it evaluates the drag model directly from the geometry, so it works
+for `.ork` files saved in any language and **without any simulation run**.
+The model reproduces OpenRocket's stored `Drag coefficient`,
+`Friction/Pressure/Base drag coefficient` and `Axial drag coefficient`
+columns to within their serialized precision for every up-to-date simulation
+of every 22.02/23.09/24.12 file it has been tested against.
+
+### Serializing without a simulation (and without Java)
+
+`ork2json` no longer requires a saved simulation or an English-language file:
+
+- **Files without simulation data** are handled automatically with no JVM:
+  the drag curve is computed from the geometry (`rocketserializer.dragmodel`),
+  the thrust curve comes from a bundled `.eng` file found next to the `.ork`
+  (verified against the design's motor `<digest>`) or from the pre-exported
+  OpenRocket motor database (`rocketserializer/data/openrocket_motors.json.gz`,
+  1418 commercial motors), and the rocket's mass, center of mass and inertia
+  come from a pure-Python port of OpenRocket's mass model
+  (`rocketserializer.massmodel`).
+- **Non-English files** (OpenRocket 22.02 / 23.09 / 24.12) work through the
+  normal simulation path: the localized simulation column labels are resolved
+  positionally, since OpenRocket's column order is fixed per version.
+- `--no-jvm` forces the JVM-free path even when a simulation is present;
+  `--eng path/to/motor.eng` pins the thrust source explicitly.
+
 ### Limitations
 
-This code won't work for your rocket if it has any of the following features:
-
-- Your .ork file must be saved in English
-- Your .ork file must be saved with at least 1 simulation data
-- Only one single stage is supported
-- Only a single motor is supported
-- Only a single nose cone is supported
+- Serial multi-stage designs are supported for mass/drag; pods, boosters and
+  motor clusters are not.
+- Only a single motor (the default flight configuration) is serialized.
+- Component *presets* (e.g. manufacturer parachutes) are not resolved; their
+  packed dimensions fall back to the stored values.
+- If the design's motor is custom, has no bundled `.eng`, and no simulation
+  was run, the output has `"thrust_source": null`.
 
 ## Roadmap
 

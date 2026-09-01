@@ -16,6 +16,7 @@
         "inclination": 90.0,
         "rail_length": 1.0
     },
+    "freeform_fins": {},
     "id": {
         "comment": "",
         "designer": "Anonymous",

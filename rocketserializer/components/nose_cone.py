@@ -87,6 +87,13 @@ def search_nosecone(bs, elements=None, rocket_radius=None, just_radius=False):
         shape_parameter = float(getattr(nosecone.find("shapeparameter"), "text", "0"))
         kind = "Von Karman" if shape_parameter == 0.0 else "lvhaack"
         logger.info("Shape parameter of the nosecone: %s", shape_parameter)
+    elif kind == "power":
+        # power-series noses REQUIRE the exponent downstream (RocketPy raises
+        # on kind='powerseries' without it); OpenRocket's default is 0.5
+        shape_parameter = float(
+            getattr(nosecone.find("shapeparameter"), "text", "0.5") or "0.5"
+        )
+        logger.info("Shape parameter of the power nosecone: %s", shape_parameter)
     else:
         shape_parameter = None
 

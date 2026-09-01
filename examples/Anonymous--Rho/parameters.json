@@ -16,6 +16,7 @@
         "inclination": 84.0,
         "rail_length": 9.0
     },
+    "freeform_fins": {},
     "id": {
         "comment": "Linear density; 4,7 g/cm",
         "designer": null,

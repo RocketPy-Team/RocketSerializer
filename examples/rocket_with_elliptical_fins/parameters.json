@@ -26,6 +26,7 @@
         "inclination": 90.0,
         "rail_length": 1.0
     },
+    "freeform_fins": {},
     "id": {
         "comment": "This rocket doesn't exist, it is hear for testing purposes only.",
         "designer": "Gui Fernandes",

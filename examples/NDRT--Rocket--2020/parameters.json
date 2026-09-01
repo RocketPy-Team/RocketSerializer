@@ -16,6 +16,7 @@
         "inclination": 85.0,
         "rail_length": 2.7432000000000003
     },
+    "freeform_fins": {},
     "id": {
         "comment": "Actual weight: 68 ozNoseconre + epoxy: 69.7 oz",
         "designer": null,

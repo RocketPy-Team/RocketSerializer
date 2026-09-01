@@ -16,6 +16,7 @@
         "inclination": 84.7,
         "rail_length": 5.7
     },
+    "freeform_fins": {},
     "id": {
         "comment": "Foguete voou no fim da tarde do dia 10 de agosto de 2019, mais precisamente às 17:56 no horário de Brasília. O apogeu registrado pelo altímetro comercial RRC3 foi de 872 metros, enquanto que nossas estimativas feitas com o uso do Rocketpy foram de 840-850 metros",
         "designer": "Projeto Jupiter - Gerência 2019-2020",

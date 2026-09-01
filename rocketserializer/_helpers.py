@@ -79,6 +79,17 @@ def parse_ork_file(ork_path: Path):
             # Use only the first databranch to avoid mixing data from
             # different simulation branches (e.g. recovery events)
             first_branch = bs.find("databranch")
+            if first_branch is not None:
+                # Non-English files: rewrite the localized column labels to
+                # the canonical English list positionally (no-op for English
+                # files, so the existing behavior is byte-identical).
+                from ._labels import canonicalize_types
+
+                if canonicalize_types(bs, first_branch):
+                    logger.info(
+                        "Remapped non-English simulation column labels to "
+                        "English (positional, creator-version based)."
+                    )
             datapoints = first_branch.find_all("datapoint") if first_branch else []
             logger.info(
                 "Successfully parsed .ork file at '%s' with %d datapoints",

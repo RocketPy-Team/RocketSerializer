@@ -5,39 +5,73 @@ from .._helpers import _dict_to_string
 logger = logging.getLogger(__name__)
 
 
-def search_rocket(bs, datapoints, data_labels, burnout_position):
+def search_rocket(
+    bs,
+    datapoints,
+    data_labels,
+    burnout_position,
+    motor_dry_mass=0.0,
+    motor_radius=0.0,
+    motor_length=0.0,
+):
+    """Rocket mass properties WITHOUT the motor, from the simulation columns.
+
+    The simulation's "Mass" / "CG location" / inertia columns include the
+    motor; RocketPy's ``Rocket`` expects motor-less values (the motor is added
+    separately with its own dry mass).  The motor's burnout (casing) mass is
+    therefore subtracted here, using the motor as an on-axis cylinder at the
+    propellant position -- previously the casing was double-counted (once in
+    ``rocket.mass`` and once in ``motors.dry_mass``).
+    """
     settings = {}
 
     # get radius
     settings["radius"] = get_rocket_radius(bs)
     logger.info("Collected rocket radius.")
 
-    # get mass
+    # simulation values at burnout (they still include the motor casing)
     cg_location_vector = [
         float(datapoint.text.split(",")[data_labels.index("CG location")])
         for datapoint in datapoints
     ]
-    settings["mass"] = get_mass(datapoints, data_labels, burnout_position)
-    logger.info("Collected rocket mass.")
-
-    # get inertias
+    burnout_mass = get_mass(datapoints, data_labels, burnout_position)
     inertia_z, inertia_i = get_inertias(data_labels, burnout_position, datapoints)
-    settings["inertia"] = (inertia_i, inertia_i, inertia_z)
-    logger.info("Collected rocket inertia.")
 
     # get center of mass
     center_of_dry_mass = cg_location_vector[burnout_position]
     center_of_mass = cg_location_vector[0]
-    rocket_dry_mass = settings["mass"]
-    propellant_mass = get_mass(datapoints, data_labels, 0) - rocket_dry_mass
+    propellant_mass = get_mass(datapoints, data_labels, 0) - burnout_mass
 
     center_of_propellant_mass = (
-        center_of_mass * (rocket_dry_mass + propellant_mass)
-        - rocket_dry_mass * center_of_dry_mass
+        center_of_mass * (burnout_mass + propellant_mass)
+        - burnout_mass * center_of_dry_mass
     ) / propellant_mass
     motor_position = center_of_propellant_mass
-    settings["center_of_mass_without_propellant"] = center_of_dry_mass
-    logger.info("Collected rocket center of mass.")
+
+    # subtract the motor casing to obtain motor-less structure values
+    structure_mass = burnout_mass - motor_dry_mass
+    if motor_dry_mass > 0 and structure_mass > 0:
+        structure_cg = (
+            burnout_mass * center_of_dry_mass - motor_dry_mass * motor_position
+        ) / structure_mass
+        casing_iyy = motor_dry_mass * (3 * motor_radius**2 + motor_length**2) / 12
+        casing_ixx = motor_dry_mass * motor_radius**2 / 2
+        inertia_i = (
+            inertia_i
+            - casing_iyy
+            - motor_dry_mass * (motor_position - center_of_dry_mass) ** 2
+            - structure_mass * (structure_cg - center_of_dry_mass) ** 2
+        )
+        inertia_z = inertia_z - casing_ixx
+        inertia_i = max(inertia_i, 0.0)
+        inertia_z = max(inertia_z, 0.0)
+    else:
+        structure_cg = center_of_dry_mass
+
+    settings["mass"] = structure_mass
+    settings["inertia"] = (inertia_i, inertia_i, inertia_z)
+    settings["center_of_mass_without_propellant"] = structure_cg
+    logger.info("Collected rocket mass, inertia and center of mass.")
 
     # get coordinate system orientation
     settings["coordinate_system_orientation"] = "nose_to_tail"

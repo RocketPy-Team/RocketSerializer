@@ -205,8 +205,84 @@ def search_elliptical_fins(bs, elements):
     return settings
 
 
-def search_free_form_fins(bs, elements):  # pylint: disable=unused-argument
-    return {}
+def search_free_form_fins(bs, elements):
+    """Search for freeform fins in the bs and return the settings as a dict.
+
+    Parameters
+    ----------
+    bs : bs4.BeautifulSoup
+        The BeautifulSoup object of the open rocket file.
+    elements : dict
+        Dictionary with the settings for the elements of the rocket.
+
+    Returns
+    -------
+    settings : dict
+        Dictionary with the settings for the freeform fins. The keys are
+        integers and the values are dicts containing the settings for each
+        freeform fin set. The keys of the freeform fin set dicts are: "name",
+        "number", "shape_points", "position", "cant_angle", "section".
+
+    Notes
+    -----
+    OpenRocket's ``<finpoints>`` use the same convention RocketPy's
+    ``FreeFormFins`` expects: origin at the root-chord leading edge, x
+    positive toward the tail, y positive away from the body.
+    """
+    settings = {}
+    fins = bs.find_all("freeformfinset")
+    logger.info("A total of %d freeform fin sets were detected", len(fins))
+
+    for idx, fin in enumerate(fins):
+        label = getattr(fin.find("name"), "text", "")
+
+        element = None
+        for candidate in elements.values():
+            if candidate["name"] == label:
+                element = candidate
+                break
+        if element is None:
+            logger.error(
+                "Couldn't find the element '%s' in the elements dictionary; "
+                "the freeform fin set position will be missing.",
+                label,
+            )
+
+        n_fin = int(getattr(fin.find("fincount"), "text", "0"))
+        cant_angle = float(getattr(fin.find("cant"), "text", "0") or "0")
+        section = getattr(fin.find("crosssection"), "text", "")
+
+        finpoints = fin.find("finpoints")
+        shape_points = [
+            [float(point["x"]), float(point["y"])]
+            for point in (finpoints.find_all("point") if finpoints else [])
+        ]
+        if len(shape_points) < 3:
+            logger.error(
+                "Freeform fin set '%s' has %d shape points (need at least 3); "
+                "skipping it.",
+                label,
+                len(shape_points),
+            )
+            continue
+
+        fin_settings = {
+            "name": label,
+            "number": n_fin,
+            "shape_points": shape_points,
+            "position": element["position"] if element else None,
+            "cant_angle": cant_angle,
+            "section": section,
+        }
+        settings[idx] = fin_settings
+        logger.info(
+            "Freeform fin set number '%d' was defined:\n%s",
+            idx,
+            _dict_to_string(fin_settings, indent=23),
+        )
+
+    logger.info("Finished collecting all the freeform fins.")
+    return settings
 
 
 # TODO: support for tubefinset (low priority)

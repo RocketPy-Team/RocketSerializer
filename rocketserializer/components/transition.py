@@ -16,6 +16,46 @@ def _find_transitions_recursive(component):
     return results
 
 
+def _parse_radius(text, resolved=None):
+    """Parse a radius that may be ``auto`` or ``auto <cached value>``.
+
+    OpenRocket re-resolves automatic radii at load time, so when a resolved
+    value (from the neighboring components) is available it wins; the value
+    cached after the ``auto`` keyword is used otherwise, and a bare ``auto``
+    (written by old OpenRocket versions) falls back to the resolved value or
+    0.0.
+    """
+    text = (text or "0").strip().lower()
+    if text.startswith("auto"):
+        if resolved is not None:
+            return resolved
+        rest = text[4:].strip()
+        return float(rest) if rest else 0.0
+    return float(text)
+
+
+def _resolved_transition_radii(bs):
+    """Neighbor-resolved (fore, aft) radii per transition, in document order.
+
+    Uses the drag model's symmetric-component parser, which resolves
+    ``auto`` radii the way OpenRocket does (from the adjacent components).
+    Returns None when the design cannot be parsed.
+    """
+    try:
+        # pylint: disable=import-outside-toplevel
+        from ..dragmodel.components import Rocket as _DragRocket
+
+        parsed = _DragRocket(bs)
+        return [
+            (c.fore_radius, c.aft_radius)
+            for c in parsed.symmetric
+            if c.kind == "transition"
+        ]
+    except Exception:  # pylint: disable=broad-except
+        logger.warning("could not resolve transition radii from neighbors")
+        return None
+
+
 def search_transitions(bs, elements, ork):
     """Search for the transitions in the bs and return the settings as a dict.
 
@@ -41,7 +81,8 @@ def search_transitions(bs, elements, ork):
     logger.info("A total of %d transitions were found", len(transitions))
 
     # Recursively search for Transition components in the Java model
-    transitions_ork = _find_transitions_recursive(ork.getRocket())
+    # (JVM-free mode passes ork=None and relies on the XML radii below)
+    transitions_ork = _find_transitions_recursive(ork.getRocket()) if ork else []
 
     if len(transitions_ork) != len(transitions):
         logger.warning(
@@ -51,6 +92,7 @@ def search_transitions(bs, elements, ork):
             len(transitions_ork),
         )
 
+    resolved_radii = None
     for idx, transition in enumerate(transitions):
         logger.info("Starting to collect the settings of the transition number %d", idx)
 
@@ -74,13 +116,18 @@ def search_transitions(bs, elements, ork):
                 "Could not find Java transition for '%s', using radii from XML.",
                 label,
             )
+            if resolved_radii is None:
+                resolved_radii = _resolved_transition_radii(bs) or []
+            resolved = (
+                resolved_radii[idx] if idx < len(resolved_radii) else (None, None)
+            )
             fore_tag = transition.find("foreradius")
             fore_text = fore_tag.text if fore_tag else "0"
-            top_radius = 0.0 if "auto" in fore_text else float(fore_text)
+            top_radius = _parse_radius(fore_text, resolved[0])
 
             aft_tag = transition.find("aftradius")
             aft_text = aft_tag.text if aft_tag else "0"
-            bottom_radius = 0.0 if "auto" in aft_text else float(aft_text)
+            bottom_radius = _parse_radius(aft_text, resolved[1])
 
         length = float(getattr(transition.find("length"), "text", "0"))
         logger.info("Collected the dimensions of the transition number %d", idx)

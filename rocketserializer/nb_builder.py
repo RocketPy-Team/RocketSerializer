@@ -18,6 +18,7 @@ class NotebookBuilder:
         self.parameters_json = parameters_json
         self.trapezoidal_fins_check = False
         self.elliptical_fins_check = False
+        self.freeform_fins_check = False
         self.__extract_output_folder_from_parameters_json()
         self.read()
         self.process()
@@ -81,7 +82,7 @@ class NotebookBuilder:
         # import classes
         text = (
             "from rocketpy import Environment, SolidMotor, Rocket, Flight, "
-            + "TrapezoidalFins, EllipticalFins, RailButtons, NoseCone, Tail, "
+            + "TrapezoidalFins, EllipticalFins, FreeFormFins, RailButtons, NoseCone, Tail, "
             + "Parachute\n"
         )
         text += "import datetime\n"
@@ -280,6 +281,12 @@ class NotebookBuilder:
                     f"{self.parameters['elliptical_fins'][str(i)]['position']}, "
                 )
         # free form fins
+        if self.freeform_fins_check:
+            for i in range(len(self.parameters["freeform_fins"])):
+                surface_text += f"freeform_fins[{i}], "
+                position_text += (
+                    f"{self.parameters['freeform_fins'][str(i)]['position']}, "
+                )
 
         # adding tails
         for i in range(len(self.parameters["tails"])):
@@ -387,6 +394,30 @@ class NotebookBuilder:
         else:
             pass
         # free form fins
+        # add a code cell
+        if len(self.parameters.get("freeform_fins", {})) > 0:
+            self.freeform_fins_check = True
+            fin_counter += len(self.parameters["freeform_fins"])
+            text = "freeform_fins = {}\n"
+            nb["cells"].append(nbf.v4.new_code_cell(text))
+            for i in range(len(self.parameters["freeform_fins"])):
+                freeform_fins_i = self.parameters["freeform_fins"][str(i)]
+
+                number = freeform_fins_i["number"]
+                shape_points = freeform_fins_i["shape_points"]
+                rocket_radius = self.parameters["rocket"]["radius"]
+                cant_angle = freeform_fins_i["cant_angle"]
+                name = freeform_fins_i["name"]
+
+                text = f"freeform_fins[{i}] = FreeFormFins(\n"
+                text += f"    n={number},\n"
+                text += f"    shape_points={[tuple(p) for p in shape_points]},\n"
+                text += f"    rocket_radius={rocket_radius},\n"
+                text += f"    cant_angle={cant_angle},\n"
+                text += f"    name='{name}',\n"
+                text += ")\n\n"
+                nb["cells"].append(nbf.v4.new_code_cell(text))
+            logger.info("[NOTEBOOK BUILDER] Freeform fins created.")
         # checking if fins were added
         if fin_counter > 0:
             logger.info(

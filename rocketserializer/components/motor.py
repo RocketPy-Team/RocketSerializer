@@ -38,8 +38,16 @@ def search_motor(bs, datapoints, data_labels):
     """
     settings = {}
 
-    # retrieve motor geometry
-    motormount = bs.find("motormount")
+    # retrieve motor geometry -- use the motor mount that actually CONTAINS a
+    # <motor> element (a rocket can have several mounts, and the first one in
+    # the document may be an empty placeholder without dimensions)
+    motormount = None
+    for candidate in bs.find_all("motormount"):
+        if candidate.find("motor") is not None:
+            motormount = candidate
+            break
+    if motormount is None:
+        motormount = bs.find("motormount")
     if motormount is not None:
         motor_length = float(getattr(motormount.find("length"), "text", "") or "0")
         diam = getattr(motormount.find("diameter"), "text", "") or "0"
@@ -65,7 +73,16 @@ def search_motor(bs, datapoints, data_labels):
         * (grain_outer_radius**2 - grain_initial_inner_radius**2)
         * grain_initial_height
     ) / grain_number
-    grain_density = total_propellant_mass / (grain_volume * grain_number)
+    if grain_volume > 0:
+        grain_density = total_propellant_mass / (grain_volume * grain_number)
+    else:
+        # degenerate motor dimensions (some files store diameter/length 0):
+        # avoid emitting Infinity into parameters.json
+        logger.warning(
+            "Motor dimensions are zero; grain_density set to 0. "
+            "Fix the motor entry in OpenRocket or supply an .eng file."
+        )
+        grain_density = 0.0
     grains_center_of_mass_position = 0
     logger.info("Calculated motor mass properties.")
 
