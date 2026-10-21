@@ -68,9 +68,9 @@
         "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "examples/rocket_with_elliptical_fins/drag_curve.csv",
         "inertia": [
-            0.000278,
-            0.000278,
-            0.024
+            0.024,
+            0.024,
+            0.000278
         ],
         "mass": 0.437,
         "radius": 0.025

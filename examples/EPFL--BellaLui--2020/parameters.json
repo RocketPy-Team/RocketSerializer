@@ -58,9 +58,9 @@
         "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "examples\\EPFL--BellaLui--2020\\drag_curve.csv",
         "inertia": [
-            0.096246,
-            0.096246,
-            5.8581
+            5.8581,
+            5.8581,
+            0.096246
         ],
         "mass": 8.419,
         "radius": 0.078
