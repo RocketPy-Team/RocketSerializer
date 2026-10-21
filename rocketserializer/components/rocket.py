@@ -21,7 +21,7 @@ def search_rocket(bs, datapoints, data_labels, burnout_position):
     logger.info("Collected rocket mass.")
 
     # get inertias
-    inertia_z, inertia_i = get_inertias(data_labels, burnout_position, datapoints)
+    inertia_i, inertia_z = get_inertias(data_labels, burnout_position, datapoints)
     settings["inertia"] = (inertia_i, inertia_i, inertia_z)
     logger.info("Collected rocket inertia.")
 
