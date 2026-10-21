@@ -74,9 +74,9 @@
         "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "examples/ProjetoJupiter--Valetudo--2019/drag_curve.csv",
         "inertia": [
-            0.01467,
-            0.01467,
-            5.5915
+            5.5915,
+            5.5915,
+            0.01467
         ],
         "mass": 8.2564,
         "radius": 0.04045000000000001
