@@ -1,7 +1,7 @@
 import json
+import math
 
 import pytest
-import math
 
 
 @pytest.mark.parametrize(
