@@ -20,9 +20,9 @@
         "radius": 0.078,
         "mass": 8.419,
         "inertia": [
-            0.096246,
-            0.096246,
-            5.8581
+            5.8581,
+            5.8581,
+            0.096246
         ],
         "center_of_mass_without_propellant": 1.559,
         "coordinate_system_orientation": "nose_to_tail",

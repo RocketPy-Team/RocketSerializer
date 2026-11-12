@@ -83,9 +83,9 @@
         "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "examples\\Anonymous--Epsilon\\drag_curve.csv",
         "inertia": [
-            0.055,
-            0.055,
-            14.862
+            14.862,
+            14.862,
+            0.055
         ],
         "mass": 22.578,
         "radius": 0.0665

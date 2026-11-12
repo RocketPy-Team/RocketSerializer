@@ -95,9 +95,9 @@
         "coordinate_system_orientation": "nose_to_tail",
         "drag_curve": "examples\\Anonymous--Beta\\drag_curve.csv",
         "inertia": [
-            0.012064,
-            0.012064,
-            1.2632
+            1.2632,
+            1.2632,
+            0.012064
         ],
         "mass": 4.8422,
         "radius": 0.0508

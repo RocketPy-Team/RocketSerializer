@@ -1,4 +1,5 @@
 import json
+import math
 
 import pytest
 
@@ -47,6 +48,11 @@ def test_ork_extractor(expected_results_file, fixture, request):
 
     # assert all the keys are equal
     assert set(settings.keys()) == set(expected_results.keys())
+
+    # roll inertia < pitch inertia for slender rockets
+    inertia = settings["rocket"]["inertia"]
+    if not math.isnan(inertia[0]):
+        assert inertia[2] < inertia[0]
 
     # remove sensitive keys
     settings, expected_results = remove_sensitive_keys(settings, expected_results)
